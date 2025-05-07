@@ -17,8 +17,8 @@ package donjon
     class Donjon
     {
         -obstacles : String[*]
-        -posEntite : String[*]
-            ' posEntite est un Dictionnaire dont la clé est une Entite
+        -posEntitee : String[*]
+            ' posEntitee est un Dictionnaire dont la clé est une Entitee
         -posEquip : String[*]
             ' posEquipe est un Dictionnaire dont la clé est un Equipement
         -tailleMap : Integer[2]
@@ -43,17 +43,17 @@ package donjon
 }
 package entitee
 {
-    abstract class Entite
+    abstract class Entitee
     {
         -stats : Integer[5]
-        +<<create>>Entite()
-        +<<create>>Entite(tabStat : Integer[5])
+        +<<create>>Entitee()
+        +<<create>>Entitee(tabStat : Integer[5])
         +seDeplacer()
         +attaquer()
     }
     package Personnage
     {
-        class Personnage extends entitee.Entite
+        class Personnage extends entitee.Entitee
         {
             -nom : String
             +<<create>>Personnage()
@@ -121,7 +121,7 @@ package entitee
             Guerrier *---> "3\n{static}equipementBase" .equipement.Equipement
         }
     }
-    class Monstre extends Entite
+    class Monstre extends Entitee
     {
         -espece : String
         -numMonstre : Integer
