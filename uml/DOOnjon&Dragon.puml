@@ -1,22 +1,53 @@
 @startuml
 
-skinparam classAttributeIconSize 0
-skinparam classFontStyle Bold
-skinparam style strictuml
+
 hide empty members
 
+class Affichage
+{
+    +{static}afficherDonjon()
+    +{static}affiche()
+}
+class Des
+{
+    +{static}lancerDes(nbFaces : Integer) : Integer
+}
 package donjon
 {
     class Donjon
     {
-
+        -obstacles : String[*]
+        -posEntite : String[*]
+            ' posEntite est un Dictionnaire dont la clé est une Entite
+        -posEquip : String[*]
+            ' posEquipe est un Dictionnaire dont la clé est un Equipement
+        -tailleMap : Integer[2]
+        +<<create>>Donjon()
+                'Dans le cas où on utilise un donjon par défaut, construct vide
+        +<<create>>Donjon(tailleMap : Integer[2])
+                'Dans le cas où le MJ souhaite créer son propre donjon
+        + static creerDonjon(listePersos : Personnage[]) : Donjon
+        /'
+            1 Demande au MJ sil veut un donjon par defaut
+            2a S'il dit oui on lui genere le donjon de façon aleatoire (taille random entre 15 et 25)
+            2b Si non il va - Indiquer la taille de la carte
+        Mettre les obstacles
+        Créer les monstres avec leurs stats + les placer
+        Placer les joueurs
+        Positionner des équipements (à voir si on devrait ptet créer les équipements avant de parler de Donjon)/!\ En dehors des obstacles les placements
+        3 MJ Lance les dés d'initiative des monstres
+        4 Joueurs lancent leurs dés d'initiative
+        5 Faire en sorte que les joueurs et monstres soient ordonnés par valeur d'initiative décroissante
+        6 Proposer aux joueurs d'équiper leurs équipements'/
     }
 }
 package entitee
 {
     abstract class Entite
     {
-        -stats : Integer[]
+        -stats : Integer[5]
+        +<<create>>Entite()
+        +<<create>>Entite(tabStat : Integer[5])
         +seDeplacer()
         +attaquer()
     }
@@ -25,22 +56,80 @@ package entitee
         class Personnage extends entitee.Entite
         {
             -nom : String
+            +<<create>>Personnage()
             +ramasserObjet()
             +sequiper()
         }
-        class Race
+        Personnage o-down-> "1\n race" race.Race: est un >
+        Personnage o-down-> "1\n classe" classe.Classe: est un >
+        Personnage *-right--> "2\n equipement" .equipement.Equipement: a equiper >
+        Personnage *-right--> "*\n inventaire" equipement.Equipement: possède >
+        Package race
         {
-            -stats : Integer[]
-            getStats : Integer[]
+            abstract class Race
+            {
+            }
+            class Nain extends Race
+            {
+                -{static}stats : Integer[5]
+                +<<create>>Nain()
+            }
+            class  Humain extends Race
+            {
+                -{static}stats : Integer[5]
+                +<<create>>Humain()
+            }
+            class  Elfe extends Race
+            {
+                -{static}stats : Integer[5]
+                +<<create>>Elfe()
+            }
+            class  Halfelin extends Race
+            {
+                -{static}stats : Integer[5]
+                +<<create>>Halfelin()
+            }
         }
-        class Classe
+        Package classe
         {
-
+            abstract class Classe
+            {
+            }
+            class Clerc extends Classe
+            {
+                -{static} pv : Integer
+                +<<create>>Clerc()
+            }
+            class Guerrier extends Classe
+            {
+                -{static} pv : Integer
+                +<<create>>Guerrier()
+            }
+            class Magicien extends Classe
+            {
+                -{static} pv : Integer
+                +<<create>>Magicien()
+            }
+            class Roublard extends Classe
+            {
+                -{static} pv : Integer
+                +<<create>>Roublard()
+            }
+            Roublard *--> "2\n {static}equipementBase" .equipement.arme.Arme
+            Magicien *--> "2\n {static}equipementBase" .equipement.arme.Arme
+            Clerc *--> "3\n{static}equipementBase" .equipement.Equipement
+            Guerrier *---> "3\n{static}equipementBase" .equipement.Equipement
         }
     }
-    class Monstre
+    class Monstre extends Entite
     {
-
+        -espece : String
+        -numMonstre : Integer
+        'numMonstre : s'il y a plusieurs fois un monstre de la meme espece
+        -portee : Integer
+        -degats : Integer
+        -nbDesDeg : Integer
+        +<<create>>Monstre()
     }
 }
 
@@ -50,37 +139,43 @@ Package equipement
     abstract class Equipement
     {
         -nom : String
-        -modifStat : Integer[]
+        -modifStat : Integer[5]
+        +<<create>>Equipement()
     }
     package Armure
     {
-        /'Enum Poids
+        Enum Poids
         {
             LEGERE
             LOURD
-        }'/
+        }
         class Armure extends equipement.Equipement
         {
-            -CA : Integer
+            -cA : Integer
+            -poid : Poids
+            +<<create>>Armure()
             +getCA() : Integer
         }
     }
-    package Arme
+    package arme
     {
-        /'Enum typeCaC
+        Enum TypeCaC
         {
             COURANTE
             GUERRE
-        }'/
+        }
         class Arme extends equipement.Equipement
         {
             -nbDesDeg : Integer
             -degats : Integer
             -portee : Integer
-
+            -type : TypeCaC
+            +<<create>>Arme()
+            +infligerDegats() : Integer
         }
     }
 }
+
 
 
 
