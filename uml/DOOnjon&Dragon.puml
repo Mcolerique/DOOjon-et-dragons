@@ -1,0 +1,87 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+skinparam classFontStyle Bold
+skinparam style strictuml
+hide empty members
+
+package donjon
+{
+    class Donjon
+    {
+
+    }
+}
+package entitee
+{
+    abstract class Entite
+    {
+        -stats : Integer[]
+        +seDeplacer()
+        +attaquer()
+    }
+    package Personnage
+    {
+        class Personnage extends entitee.Entite
+        {
+            -nom : String
+            +ramasserObjet()
+            +sequiper()
+        }
+        class Race
+        {
+            -stats : Integer[]
+            getStats : Integer[]
+        }
+        class Classe
+        {
+
+        }
+    }
+    class Monstre
+    {
+
+    }
+}
+
+
+Package equipement
+{
+    abstract class Equipement
+    {
+        -nom : String
+        -modifStat : Integer[]
+    }
+    package Armure
+    {
+        /'Enum Poids
+        {
+            LEGERE
+            LOURD
+        }'/
+        class Armure extends equipement.Equipement
+        {
+            -CA : Integer
+            +getCA() : Integer
+        }
+    }
+    package Arme
+    {
+        /'Enum typeCaC
+        {
+            COURANTE
+            GUERRE
+        }'/
+        class Arme extends equipement.Equipement
+        {
+            -nbDesDeg : Integer
+            -degats : Integer
+            -portee : Integer
+
+        }
+    }
+}
+
+
+
+@enduml
