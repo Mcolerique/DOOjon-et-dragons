@@ -2,15 +2,20 @@
 
 
 hide empty members
-
-class Affichage
+package affichage
 {
-    +{static}afficherDonjon()
-    +{static}affiche()
+    class Affichage
+    {
+        +{static}afficherDonjon()
+        +{static}affiche()
+    }
 }
-class Des
+package des
 {
-    +{static}lancerDes(nbFaces : Integer) : Integer
+    class Des
+    {
+        +{static}lancerDes(nbFaces : Integer) : Integer
+    }
 }
 package donjon
 {
@@ -46,10 +51,14 @@ package entitee
     abstract class Entitee
     {
         -stats : Integer[5]
+        -pvActuelle
         +<<create>>Entitee()
-        +<<create>>Entitee(tabStat : Integer[5])
-        +seDeplacer()
+        +<<create>>Entitee(tabStat : Integer[5], tabEquip : Equipement[2])
+        +seDeplacer(distance : Integer) : Boolean
         +attaquer()
+        +seFaireAttaquer(jetAttaque : Integer) : Boolean
+        +sePrendreDegats(degats : Integer)
+        +{abstract}choisirCible() : Entitee
     }
     package Personnage
     {
@@ -62,7 +71,7 @@ package entitee
         }
         Personnage o-down-> "1\n race" race.Race: est un >
         Personnage o-down-> "1\n classe" classe.Classe: est un >
-        Personnage *-right--> "2\n equipement" .equipement.Equipement: a equiper >
+        Entitee *-right--> "2\n equipement" .equipement.Equipement: a equiper >
         Personnage *-right--> "*\n inventaire" equipement.Equipement: possède >
         Package race
         {
