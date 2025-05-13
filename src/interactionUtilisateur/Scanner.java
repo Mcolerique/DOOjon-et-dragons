@@ -1,4 +1,4 @@
-package affichage;
+package interactionUtilisateur;
 
 public class Scanner {
     public static String demandeString()

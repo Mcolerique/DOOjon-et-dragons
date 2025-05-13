@@ -1,15 +1,13 @@
 package entitee;
 
-import affichage.Affichage;
-import affichage.Scanner;
+import interactionUtilisateur.Affichage;
+import interactionUtilisateur.Scanner;
 import equipement.Equipement;
 import equipement.arme.Arme;
 import equipement.armure.Armure;
 import des.Des;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Set;
 
 public abstract class Entitee {
     protected int[] m_stats = new int[5];

@@ -1,6 +1,4 @@
 package entitee;
-import affichage.Affichage;
-import equipement.arme.Arme;
 
 public class Monstre extends Entitee{
     private String m_espece;

@@ -2,12 +2,17 @@
 
 skinparam linetype ortho
 hide empty members
-package affichage
+package interactionUtilisateur
 {
     class Affichage
     {
         +{static}afficherDonjon()
         +{static}affiche()
+    }
+    class Scanner
+    {
+        +{static}demandeString() : String
+        +{static}demandeInt() : Integer
     }
 }
 package des
