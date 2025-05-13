@@ -1,9 +1,15 @@
 package entitee;
 
+import affichage.Affichage;
+import affichage.Scanner;
 import equipement.Equipement;
 import equipement.arme.Arme;
 import equipement.armure.Armure;
 import des.Des;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Set;
 
 public abstract class Entitee {
     protected int[] m_stats = new int[5];
@@ -41,7 +47,7 @@ public abstract class Entitee {
     }
     public boolean seDeplacer(int distance)
     {
-        if(distance > m_stats[4])
+        if(distance > m_stats[3])
         {
             return false;
         }
@@ -50,14 +56,38 @@ public abstract class Entitee {
             return true;
         }
     }
-    public void attaquer()
+    public void attaquer(Entitee ennemie)
     {
-        Entitee ennemie = choisirCible();
         int jetAttaque = Des.lancerDes(20) + this.m_stats[this.m_equipement[1].quelleStat()];
         if(ennemie.seFaireAttaquer(jetAttaque))
         {
             ennemie.sePrendreDegats(this.m_equipement[1].infligerDegats());
         }
     }
-    public abstract Entitee choisirCible();
+    public Entitee choisirCible(ArrayList<Entitee> list)
+    {
+        boolean f = false;
+        int choix;
+        while (f) {
+            Affichage.afficheListeEntitee(list);
+            choix = Scanner.demandeInt() - 1;
+            if(choix > list.size())
+            {
+                Affichage.affiche("Index invalide, veillez sélectionnez un index valide");
+            }
+            else if(choix == 0)
+            {
+                return null;
+            }
+            else
+            {
+                return list.get(choix-1);
+            }
+        }
+        return null;
+    }
+    public int getPorteeArme()
+    {
+        return m_equipement[1].getPortee();
+    }
 }

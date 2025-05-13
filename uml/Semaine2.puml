@@ -21,15 +21,16 @@ package donjon
 {
     class Donjon
     {
-        -obstacles : Integer[2]
-        -posEntitee : Integer[2]
+        -obstacles : String[*]
+        -posEntitee : String[*]
             ' posEntitee est un Dictionnaire dont la clé est une Entitee
-        -posEquip : Integer[2]
+        -posEquip : String[*]
             ' posEquipe est un Dictionnaire dont la clé est un Equipement
         -tailleMap : Integer[2]
         +<<create>>Donjon()
                 'Dans le cas où on utilise un donjon par défaut, construct vide
         +<<create>>Donjon(tailleMap : Integer[2])
+        +listeCible(attaquant : Entitee) : ArrayList<Entitee>
                 'Dans le cas où le MJ souhaite créer son propre donjon
         + static creerDonjon(listePersos : Personnage[]) : Donjon
         /'
@@ -59,8 +60,6 @@ package entitee
         +seFaireAttaquer(jetAttaque : Integer) : Boolean
         +sePrendreDegats(degats : Integer)
         +choisirCible(cibles : ArrayList<Entitee>) : Entitee
-        +getPorteeArme() : Integer
-
         +getPorteeArme() : Integer
     }
     package Personnage
@@ -195,8 +194,5 @@ Package equipement
         }
     }
 }
-
-
-
 
 @enduml
