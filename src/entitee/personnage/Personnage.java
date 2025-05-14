@@ -43,7 +43,7 @@ public class Personnage extends Entitee{
     }
     public void equiper()
     {
-        Equipement aEquiper = choixEquipement();
+        Equipement aEquiper = this.choixEquipement();
         if( aEquiper.getClass() == Arme.class)
         {
             if(m_equipement[1] != null)

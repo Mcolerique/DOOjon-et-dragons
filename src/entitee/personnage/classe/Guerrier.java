@@ -17,8 +17,8 @@ public class Guerrier extends Classe{
     public int getPV() {
         return m_pv;
     }
-    public Equipement[] equipementBase()
-    {
+    @Override
+    public Equipement[] getEquipement() {
         return m_equipementBase;
     }
 }
