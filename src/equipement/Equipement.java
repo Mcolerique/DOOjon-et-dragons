@@ -16,5 +16,9 @@ public abstract class Equipement {
     public int[] getModifStat(){
         return m_modifStat;
     }
+    public abstract int getCA();
+    public abstract int quelleStat();
+    public abstract int getPortee();
+    public abstract int infligerDegats();
 
 }

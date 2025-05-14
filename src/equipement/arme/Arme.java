@@ -1,4 +1,5 @@
 package equipement.arme;
+import des.Des;
 import equipement.Equipement;
 
 public class Arme extends Equipement {
@@ -43,10 +44,8 @@ public class Arme extends Equipement {
     public int infligerDegats() {
         int degats = 0;
         for(int i = 0; i<m_nbDesDeg;i++){
-            degats += lancerDes(m_degats);
-            //faudra juste import le package Des quand on aura merge
+            degats += Des.lancerDes(m_degats);
         }
-
         return degats;
     }
 
@@ -54,5 +53,10 @@ public class Arme extends Equipement {
         return this.m_portee>1 ? 2 : 1;
         //Si portée sup à 1 donc arme à distance alors la statistique qui importe
         //c'est la dextérité, si c'est CàC alors ce serait force
+    }
+
+    @Override
+    public int getCA() {
+        return -1;
     }
 }

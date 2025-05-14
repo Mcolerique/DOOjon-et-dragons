@@ -50,7 +50,7 @@ public class Personnage extends Entitee{
             {
                 for (int i = 0; i<5; i++)
                 {
-                    m_stats += m_equipement[1].getModifStat()[i];
+                    m_stats[i] += m_equipement[1].getModifStat()[i];
                 }
                 m_inventaire.add(m_equipement[1]);
             }
@@ -58,7 +58,7 @@ public class Personnage extends Entitee{
             m_inventaire.remove(aEquiper);
             for (int i = 0; i<5; i++)
             {
-                m_stats -= m_equipement[1].getModifStat()[i];
+                m_stats[i] -= m_equipement[1].getModifStat()[i];
             }
         }
         else
@@ -67,7 +67,7 @@ public class Personnage extends Entitee{
             {
                 for (int i = 0; i<5; i++)
                 {
-                    m_stats += m_equipement[1].getModifStat()[i];
+                    m_stats[i] += m_equipement[1].getModifStat()[i];
                 }
                 m_inventaire.add(m_equipement[1]);
             }
@@ -75,7 +75,7 @@ public class Personnage extends Entitee{
             m_inventaire.remove(aEquiper);
             for (int i = 0; i<5; i++)
             {
-                m_stats -= m_equipement[0].getModifStat()[i];
+                m_stats[i] -= m_equipement[0].getModifStat()[i];
             }
         }
     }
