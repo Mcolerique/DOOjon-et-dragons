@@ -1,8 +1,6 @@
 @startuml
 
 
-hide empty members
-
 class Affichage
 {
     +{static}afficherDonjon()
@@ -175,8 +173,4 @@ Package equipement
         }
     }
 }
-
-
-
-
 @enduml

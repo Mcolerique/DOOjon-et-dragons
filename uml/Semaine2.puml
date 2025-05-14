@@ -1,0 +1,203 @@
+@startuml
+
+skinparam linetype ortho
+hide empty members
+package interactionUtilisateur
+{
+    class Affichage
+    {
+        +{static}afficherDonjon()
+        +{static}affiche()
+    }
+    class Scanner
+    {
+        +{static}demandeString() : String
+        +{static}demandeInt() : Integer
+    }
+}
+package des
+{
+    class Des
+    {
+        +{static}lancerDes(nbFaces : Integer) : Integer
+    }
+}
+package donjon
+{
+    class Donjon
+    {
+        -obstacles : String[*]
+        -posEntitee : String[*]
+            ' posEntitee est un Dictionnaire dont la clé est une Entitee
+        -posEquip : String[*]
+            ' posEquipe est un Dictionnaire dont la clé est un Equipement
+        -tailleMap : Integer[2]
+        +<<create>>Donjon()
+                'Dans le cas où on utilise un donjon par défaut, construct vide
+        +<<create>>Donjon(tailleMap : Integer[2])
+        +listeCible(attaquant : Entitee) : ArrayList<Entitee>
+                'Dans le cas où le MJ souhaite créer son propre donjon
+        + static creerDonjon(listePersos : Personnage[]) : Donjon
+        /'
+            1 Demande au MJ sil veut un donjon par defaut
+            2a S'il dit oui on lui genere le donjon de façon aleatoire (taille random entre 15 et 25)
+            2b Si non il va - Indiquer la taille de la carte
+        Mettre les obstacles
+        Créer les monstres avec leurs stats + les placer
+        Placer les joueurs
+        Positionner des équipements (à voir si on devrait ptet créer les équipements avant de parler de Donjon)/!\ En dehors des obstacles les placements
+        3 MJ Lance les dés d'initiative des monstres
+        4 Joueurs lancent leurs dés d'initiative
+        5 Faire en sorte que les joueurs et monstres soient ordonnés par valeur d'initiative décroissante
+        6 Proposer aux joueurs d'équiper leurs équipements'/
+    }
+}
+package entitee
+{
+    abstract class Entitee
+    {
+        -stats : Integer[5]
+        -pvActuelle
+        +<<create>>Entitee()
+        +<<create>>Entitee(tabStat : Integer[5], tabEquip : Equipement[2])
+        +seDeplacer(distance : Integer) : Boolean
+        +attaquer(ennemie : Entitee)
+        +seFaireAttaquer(jetAttaque : Integer) : Boolean
+        +sePrendreDegats(degats : Integer)
+        +choisirCible(cibles : ArrayList<Entitee>) : Entitee
+        +getPorteeArme() : Integer
+    }
+    package Personnage
+    {
+        class Personnage extends entitee.Entitee
+        {
+            -nom : String
+            +<<create>>Personnage()
+            +ramasserObjet()
+            +sequiper()
+        }
+        Personnage o-down-> "1\n race" race.Race: est un >
+        Personnage o-down-> "1\n classe" classe.Classe: est un >
+        Entitee *-right--> "2\n equipement" .equipement.Equipement: a equiper >
+        Personnage *-right--> "*\n inventaire" equipement.Equipement: possède >
+        Package race
+        {
+            abstract class Race
+            {
+                +{abstract}getPv() : Integer
+                +{abstract}getForce() : Integer
+                +{abstract}getDex() : Integer
+                +{abstract}getVitesse() : Integer
+                +{abstract}getInitiative() : Integer
+            }
+            class Nain extends Race
+            {
+                -{static}stats : Integer[5]
+                +<<create>>Nain()
+            }
+            class  Humain extends Race
+            {
+                -{static}stats : Integer[5]
+                +<<create>>Humain()
+            }
+            class  Elfe extends Race
+            {
+                -{static}stats : Integer[5]
+                +<<create>>Elfe()
+            }
+            class  Halfelin extends Race
+            {
+                -{static}stats : Integer[5]
+                +<<create>>Halfelin()
+            }
+        }
+        Package classe
+        {
+            abstract class Classe
+            {
+                +{abstract}getPv() : Integer
+                +{abstract}getEqui() : Equipement[]
+            }
+            class Clerc extends Classe
+            {
+                -{static} pv : Integer
+                +<<create>>Clerc()
+            }
+            class Guerrier extends Classe
+            {
+                -{static} pv : Integer
+                +<<create>>Guerrier()
+            }
+            class Magicien extends Classe
+            {
+                -{static} pv : Integer
+                +<<create>>Magicien()
+            }
+            class Roublard extends Classe
+            {
+                -{static} pv : Integer
+                +<<create>>Roublard()
+            }
+            Roublard *--> "2\n {static}equipementBase" .equipement.arme.Arme
+            Magicien *--> "2\n {static}equipementBase" .equipement.arme.Arme
+            Clerc *--> "3\n{static}equipementBase" .equipement.Equipement
+            Guerrier *---> "3\n{static}equipementBase" .equipement.Equipement
+        }
+    }
+    class Monstre extends Entitee
+    {
+        -espece : String
+        -numMonstre : Integer
+        'numMonstre : s'il y a plusieurs fois un monstre de la meme espece
+        +<<create>>Monstre()
+    }
+}
+
+
+Package equipement
+{
+    abstract class Equipement
+    {
+        -nom : String
+        -modifStat : Integer[5]
+        +<<create>>Equipement()
+    }
+    package Armure
+    {
+        Enum Poids
+        {
+            LEGERE
+            LOURD
+        }
+        class Armure extends equipement.Equipement
+        {
+            -cA : Integer
+            -poid : Poids
+            +<<create>>Armure()
+            +<<create>>Armure(nom : String, cA : Integer, p : Poids)
+            +getCA() : Integer
+        }
+    }
+    package arme
+    {
+        Enum TypeCaC
+        {
+            COURANTE
+            GUERRE
+        }
+        class Arme extends equipement.Equipement
+        {
+            -nbDesDeg : Integer
+            -degats : Integer
+            -portee : Integer
+            -type : TypeCaC
+            +<<create>>Arme()
+            +<<create>>Arme(nom : String, nbDes : Integer, nbFaces : Integer, portee : Integer)
+            +<<create>>Arme(nom : String, nbDes : Integer, nbFaces : Integer, type : TypeCaC)
+            +infligerDegats() : Integer
+            quelleStat() : Integer
+        }
+    }
+}
+
+@enduml
