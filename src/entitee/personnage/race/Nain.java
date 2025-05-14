@@ -5,6 +5,9 @@ public class Nain extends Race{
     public Nain()
     {
     }
+    public int[] getStats() {
+        return m_stats;
+    }
     @Override
     public int getPv() {
         return m_stats[0];

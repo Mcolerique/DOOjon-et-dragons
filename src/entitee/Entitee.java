@@ -15,11 +15,15 @@ public abstract class Entitee {
     protected int m_pvActuelle;
     public Entitee()
     {
-        m_equipement[0] = new Armure();
-        m_equipement[1] = new Arme();
-        for (int i = 0; i<5; i++) {
-            m_stats[i] = Des.lancerDes(20);
+        for (int i = 0; i<5; i++)
+        {
+            m_stats[i] = 10;
         }
+        m_pvActuelle =m_stats[0] ;
+    }
+    public Entitee (int[] s)
+    {
+        m_stats = s;
         m_pvActuelle = m_stats[0];
     }
     public Entitee(int[] s, Equipement[] e)
@@ -73,13 +77,13 @@ public abstract class Entitee {
             {
                 Affichage.affiche("Index invalide, veillez sélectionnez un index valide");
             }
-            else if(choix == 0)
+            else if(choix < 0)
             {
                 return null;
             }
             else
             {
-                return list.get(choix-1);
+                return list.get(choix);
             }
         }
         return null;

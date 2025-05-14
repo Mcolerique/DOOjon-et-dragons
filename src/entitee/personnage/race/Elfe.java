@@ -5,6 +5,9 @@ public class Elfe extends Race{
     public Elfe()
     {
     }
+    public int[] getStats() {
+        return m_stats;
+    }
     @Override
     public int getPv() {
         return m_stats[0];

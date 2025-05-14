@@ -1,30 +1,23 @@
 @startuml
 
-skinparam linetype ortho
-hide empty members
-package affichage
+
+class Affichage
 {
-    class Affichage
-    {
-        +{static}afficherDonjon()
-        +{static}affiche()
-    }
+    +{static}afficherDonjon()
+    +{static}affiche()
 }
-package des
+class Des
 {
-    class Des
-    {
-        +{static}lancerDes(nbFaces : Integer) : Integer
-    }
+    +{static}lancerDes(nbFaces : Integer) : Integer
 }
 package donjon
 {
     class Donjon
     {
-        -obstacles : Integer[2]
-        -posEntitee : Integer[2]
+        -obstacles : String[*]
+        -posEntitee : String[*]
             ' posEntitee est un Dictionnaire dont la clé est une Entitee
-        -posEquip : Integer[2]
+        -posEquip : String[*]
             ' posEquipe est un Dictionnaire dont la clé est un Equipement
         -tailleMap : Integer[2]
         +<<create>>Donjon()
@@ -51,17 +44,10 @@ package entitee
     abstract class Entitee
     {
         -stats : Integer[5]
-        -pvActuelle
         +<<create>>Entitee()
-        +<<create>>Entitee(tabStat : Integer[5], tabEquip : Equipement[2])
-        +seDeplacer(distance : Integer) : Boolean
-        +attaquer(ennemie : Entitee)
-        +seFaireAttaquer(jetAttaque : Integer) : Boolean
-        +sePrendreDegats(degats : Integer)
-        +choisirCible(cibles : ArrayList<Entitee>) : Entitee
-        +getPorteeArme() : Integer
-
-        +getPorteeArme() : Integer
+        +<<create>>Entitee(tabStat : Integer[5])
+        +seDeplacer()
+        +attaquer()
     }
     package Personnage
     {
@@ -74,17 +60,12 @@ package entitee
         }
         Personnage o-down-> "1\n race" race.Race: est un >
         Personnage o-down-> "1\n classe" classe.Classe: est un >
-        Entitee *-right--> "2\n equipement" .equipement.Equipement: a equiper >
+        Personnage *-right--> "2\n equipement" .equipement.Equipement: a equiper >
         Personnage *-right--> "*\n inventaire" equipement.Equipement: possède >
         Package race
         {
             abstract class Race
             {
-                +{abstract}getPv() : Integer
-                +{abstract}getForce() : Integer
-                +{abstract}getDex() : Integer
-                +{abstract}getVitesse() : Integer
-                +{abstract}getInitiative() : Integer
             }
             class Nain extends Race
             {
@@ -111,8 +92,6 @@ package entitee
         {
             abstract class Classe
             {
-                +{abstract}getPv() : Integer
-                +{abstract}getEqui() : Equipement[]
             }
             class Clerc extends Classe
             {
@@ -145,6 +124,9 @@ package entitee
         -espece : String
         -numMonstre : Integer
         'numMonstre : s'il y a plusieurs fois un monstre de la meme espece
+        -portee : Integer
+        -degats : Integer
+        -nbDesDeg : Integer
         +<<create>>Monstre()
     }
 }
@@ -170,7 +152,6 @@ Package equipement
             -cA : Integer
             -poid : Poids
             +<<create>>Armure()
-            +<<create>>Armure(nom : String, cA : Integer, p : Poids)
             +getCA() : Integer
         }
     }
@@ -188,15 +169,8 @@ Package equipement
             -portee : Integer
             -type : TypeCaC
             +<<create>>Arme()
-            +<<create>>Arme(nom : String, nbDes : Integer, nbFaces : Integer, portee : Integer)
-            +<<create>>Arme(nom : String, nbDes : Integer, nbFaces : Integer, type : TypeCaC)
             +infligerDegats() : Integer
-            quelleStat() : Integer
         }
     }
 }
-
-
-
-
 @enduml

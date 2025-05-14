@@ -5,6 +5,9 @@ public class Halfelin extends Race{
     public Halfelin()
     {
     }
+    public int[] getStats() {
+        return m_stats;
+    }
     @Override
     public int getPv() {
         return m_stats[0];
