@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class Partie {
     private Donjon m_donjon;
-    private ArrayList<Personnage> m_perso;
+    private final ArrayList<Personnage> m_perso;
     private int m_numDonjon;
 
     public Partie()
@@ -39,6 +39,7 @@ public class Partie {
         for (int i = 0; i<3 ; i++)
         {
             m_donjon = Donjon.creerDonjon(m_perso);
+            equiperPerso();
             ordreEntite = m_donjon.lancerInitiative();
             while (!m_donjon.estVaincu() || !defaite)
             {
@@ -51,7 +52,7 @@ public class Partie {
                     }
                     else
                     {
-                        if(e.equals(Personnage.class))
+                        if(e.getClass() == Personnage.class)
                         {
                             defaite(e);
                             defaite = true;
@@ -92,9 +93,9 @@ public class Partie {
         char a = 'A';
         char x;
         int[] pos = new int[2];
-        switch (choix.substring(0,2)) {
+        switch (choix.substring(0,3)) {
             case "att":
-                x = choix.substring(4, 5).toUpperCase().charAt(0);
+                x = choix.toUpperCase().charAt(4);
                 pos[0] = (a + x) % 26;
                 pos[1] = Integer.parseInt(choix.substring(5));
                 if (!attaquePossible(e, pos)) {
@@ -109,7 +110,7 @@ public class Partie {
                 return true;
                 break;
             case "dep":
-                x = choix.substring(4, 5).toUpperCase().charAt(0);
+                x = choix.toUpperCase().charAt(4);
                 if(!verifCharValide(x))
                 {
                     Affichage.affiche("Déplacement impossible, séléctionnez un emplacement valide");
@@ -118,7 +119,7 @@ public class Partie {
                 }
                 pos[0] = (a + x) % 26;
                 pos[1] = Integer.parseInt(choix.substring(5));
-                if (!verifEntierValide(pos[1]) || !deplacementPossible(e, pos)) ;
+                if(!verifEntierValide(pos[1]) || !deplacementPossible(e, pos))
                 {
                     Affichage.affiche("Déplacement impossible, séléctionnez un emplacement valide");
                     return false;
@@ -128,7 +129,7 @@ public class Partie {
                 return true;
                 break;
             default:
-                if(e instanceof Personnage)
+                if(e.getClass() == Personnage.class)
                 {
                     Personnage p = (Personnage) e;
                     return tourPerso(p, choix);
@@ -144,7 +145,7 @@ public class Partie {
     }
     public boolean tourPerso(Personnage p, String choix)
     {
-        switch (choix)
+        switch (choix.substring(0,3))
         {
             case "com":
                 Affichage.affiche(choix.substring(4));
@@ -187,7 +188,14 @@ public class Partie {
     {
         return c >= 'A' && c <= 'Z';
     }
-
+    public void equiperPerso()
+    {
+        for (int i = 0; i < m_perso.size(); i++)
+        {
+            m_perso.get(i).equiperArmure();
+            m_perso.get(i).equiperArme();
+        }
+    }
     public void defaite(Entitee e){
         Affichage.defaite(e);
     }

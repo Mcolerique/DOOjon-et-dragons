@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class Personnage extends Entitee{
     private String m_nom;
-    private Race m_race;
-    private Classe m_classe;
+    private final Race m_race;
+    private final Classe m_classe;
     private ArrayList<Equipement> m_inventaire;
     public Personnage()
     {
@@ -90,6 +90,40 @@ public class Personnage extends Entitee{
                 m_stats[i] -= m_equipement[0].getModifStat()[i];
             }
         }
+    }
+    public void equiperArme()
+    {
+        int choix;
+        ArrayList<Integer> index = new ArrayList<Integer>();
+        ArrayList<Arme> arme = new ArrayList<>();
+        for(int i = 0; i < m_inventaire.size(); i++)
+        {
+            if(m_inventaire.get(i).getClass() == Arme.class)
+            {
+                arme.add((Arme) m_inventaire.get(i));
+                index.add(i);
+            }
+        }
+        Affichage.listeArme(arme);
+        choix = Scanner.demandeInt();
+        equiper(index.get(choix));
+    }
+    public void equiperArmure()
+    {
+        int choix;
+        ArrayList<Integer> index = new ArrayList<Integer>();
+        ArrayList<Armure> armure = new ArrayList<>();
+        for(int i = 0; i < m_inventaire.size(); i++)
+        {
+            if(m_inventaire.get(i).getClass() == Armure.class)
+            {
+                armure.add((Armure) m_inventaire.get(i));
+                index.add(i);
+            }
+        }
+        Affichage.listeArmure(armure);
+        choix = Scanner.demandeInt();
+        equiper(index.get(choix));
     }
     public void ramasserObjet(Equipement objet)
     {
