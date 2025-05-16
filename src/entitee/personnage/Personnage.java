@@ -2,12 +2,11 @@ package entitee.personnage;
 
 import des.Des;
 import entitee.Entitee;
-import entitee.personnage.classe.Classe;
-import entitee.personnage.classe.Guerrier;
-import entitee.personnage.race.Halfelin;
-import entitee.personnage.race.Race;
+import entitee.personnage.classe.*;
+import entitee.personnage.race.*;
 import equipement.Equipement;
 import equipement.arme.Arme;
+import equipement.armure.Armure;
 import interactionUtilisateur.Affichage;
 import interactionUtilisateur.Scanner;
 
@@ -24,6 +23,17 @@ public class Personnage extends Entitee{
         m_nom = "Saral Porcattache";
         m_race = new Halfelin();
         m_classe = new Guerrier();
+        setPerso();
+    }
+    public Personnage(String nom, Race r, Classe c)
+    {
+        m_nom = nom;
+        m_race = r;
+        m_classe = c;
+        setPerso();
+    }
+    public void setPerso()
+    {
         m_stats[0] = m_classe.getPV();
         for(int i=1; i<5; i++)
         {
@@ -44,9 +54,9 @@ public class Personnage extends Entitee{
     }
     public void equiper(int e)
     {
-        Equipement aEquiper = this.m_inventaire.get(e);
-        if( aEquiper.getClass() == Arme.class)
+        if( m_inventaire.get(e).getClass() == Arme.class)
         {
+            Arme aEquiper = (Arme) m_inventaire.get(e);
             if(m_equipement[1] != null)
             {
                 for (int i = 0; i<5; i++)
@@ -64,6 +74,7 @@ public class Personnage extends Entitee{
         }
         else
         {
+            Armure aEquiper = (Armure) m_inventaire.get(e);
             if(m_equipement[0] != null)
             {
                 for (int i = 0; i<5; i++)
@@ -87,5 +98,21 @@ public class Personnage extends Entitee{
     public int getTailleInventaire()
     {
         return m_inventaire.size();
+    }
+    public static Personnage creePersonnage()
+    {
+        int choix;
+        Race[] raceDispo = {new Humain(), new Halfelin(), new Elfe(), new Nain()};
+        Classe[] classeDispo = {new Guerrier(), new Magicien(), new Clerc(), new Roublard()};
+
+        Affichage.Affiche("Nom du personnage : ");
+        String nom = Scanner.demandeString();
+        Affichage.selectionTableau(raceDispo);
+        choix = Scanner.demandeInt() -1 ;
+        Race r = raceDispo[choix];
+        Affichage.selectionTableau(classeDispo);
+        choix = Scanner.demandeInt() -1 ;
+        Classe c  = classeDispo[choix];
+        return new Personnage(nom, r, c);
     }
 }

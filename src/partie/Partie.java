@@ -27,7 +27,7 @@ public class Partie {
         choix = Scanner.demandeInt();
         for(int i = 0; i<choix; i++)
         {
-            perso.add(Partie.creePersonnage());
+            perso.add(Personnage.creePersonnage());
         }
         return perso;
     }
@@ -190,10 +190,5 @@ public class Partie {
 
     public void defaite(Entitee e){
         Affichage.defaite(e);
-    }
-
-    public static Personnage creePersonnage()
-    {
-        return null;
     }
 }

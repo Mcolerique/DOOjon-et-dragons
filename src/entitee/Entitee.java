@@ -34,7 +34,8 @@ public abstract class Entitee {
     }
     public boolean seFaireAttaquer(int jetAttaque)
     {
-        if(jetAttaque >= m_equipement[0].getCA())
+        Armure a = (Armure) m_equipement[0];
+        if(jetAttaque >= a.getCA())
         {
             return true;
         }
@@ -60,10 +61,11 @@ public abstract class Entitee {
     }
     public void attaquer(Entitee ennemie)
     {
-        int jetAttaque = Des.lancerDes(20) + this.m_stats[this.m_equipement[1].quelleStat()];
+        Arme a = (Arme) m_equipement[1];
+        int jetAttaque = Des.lancerDes(20) + this.m_stats[a.quelleStat()];
         if(ennemie.seFaireAttaquer(jetAttaque))
         {
-            ennemie.sePrendreDegats(this.m_equipement[1].infligerDegats());
+            ennemie.sePrendreDegats(a.infligerDegats());
         }
     }
     public Entitee choisirCible(ArrayList<Entitee> list)
@@ -90,7 +92,8 @@ public abstract class Entitee {
     }
     public int getPorteeArme()
     {
-        return m_equipement[1].getPortee();
+        Arme a = (Arme) m_equipement[1];
+        return a.getPortee();
     }
     public boolean estVivant()
     {
