@@ -1,4 +1,5 @@
 package entitee.personnage;
+
 import des.Des;
 import entitee.Entitee;
 import entitee.personnage.classe.Classe;
@@ -41,9 +42,9 @@ public class Personnage extends Entitee{
             m_inventaire.add(m_equipement[i]);
         }
     }
-    public void equiper()
+    public void equiper(int e)
     {
-        Equipement aEquiper = this.choixEquipement();
+        Equipement aEquiper = this.m_inventaire.get(e);
         if( aEquiper.getClass() == Arme.class)
         {
             if(m_equipement[1] != null)
@@ -79,32 +80,12 @@ public class Personnage extends Entitee{
             }
         }
     }
-    public Equipement choixEquipement()
-    {
-        {
-            boolean f = false;
-            int choix;
-            while (f) {
-                Affichage.afficheInventaire(m_inventaire);
-                choix = Scanner.demandeInt() - 1;
-                if(choix > m_inventaire.size())
-                {
-                    Affichage.affiche("Index invalide, veillez sélectionnez un index valide");
-                }
-                else if(choix < 0)
-                {
-                    return null;
-                }
-                else
-                {
-                    return m_inventaire.get(choix);
-                }
-            }
-            return null;
-        }
-    }
     public void ramasserObjet(Equipement objet)
     {
         m_inventaire.add(objet);
+    }
+    public int getTailleInventaire()
+    {
+        return m_inventaire.size();
     }
 }

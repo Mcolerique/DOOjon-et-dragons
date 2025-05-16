@@ -92,4 +92,8 @@ public abstract class Entitee {
     {
         return m_equipement[1].getPortee();
     }
+    public boolean estVivant()
+    {
+        return m_pvActuelle <= 0;
+    }
 }
