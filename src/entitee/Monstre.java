@@ -7,6 +7,6 @@ public class Monstre extends Entitee{
     {
         super();
         m_numMonstre = 0;
-        m_espece = "missigno";
+        m_espece = "MissingNo."; //pas mal la ref Favien
     }
 }

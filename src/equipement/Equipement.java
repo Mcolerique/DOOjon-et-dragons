@@ -17,4 +17,8 @@ public abstract class Equipement {
         return m_modifStat;
     }
 
+    public String getNom() {
+        return m_nom;
+    }
+
 }

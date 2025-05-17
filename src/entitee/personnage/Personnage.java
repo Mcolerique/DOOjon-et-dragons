@@ -89,7 +89,7 @@ public class Personnage extends Entitee{
                 choix = Scanner.demandeInt() - 1;
                 if(choix > m_inventaire.size())
                 {
-                    Affichage.affiche("Index invalide, veillez sélectionnez un index valide");
+                    Affichage.affiche("Index invalide, veillez sélectionner un index valide");
                 }
                 else if(choix < 0)
                 {
