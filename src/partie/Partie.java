@@ -38,9 +38,9 @@ public class Partie {
         Entitee e;
         int numTour = 1;
         boolean defaite = false;
-        for (int i = 0; i<3 ; i++)
+        for (int i = 0; i < 3 ; i++)
         {
-            m_donjon = Donjon.creerDonjon(m_perso);
+            m_donjon = Donjon.creerDonjon(m_perso, m_numDonjon);
             equiperPerso();
             ordreEntite = m_donjon.lancerInitiative();
             while (!m_donjon.estVaincu() || !defaite)
@@ -87,7 +87,7 @@ public class Partie {
             finAction = false;
             while (!finAction)
             {
-                objetARecup = m_donjon.objetAPos(m_donjon.getPosEntitee(e));
+                objetARecup = m_donjon.equipAPos(m_donjon.getPosEntitee(e));
                 Affichage.afficheAction(e, i, objetARecup);
                 choix = Scanner.demandeString();
                 finAction = tour(e, choix, objetARecup);
@@ -168,9 +168,9 @@ public class Partie {
             default:
                 if(objetARecup && choix.substring(0, 3).equals("ram"))
                 {
-                    Equipement equipRam = m_donjon.objetAPos(m_donjon.getPosEntitee(e));
+                    Equipement equipRam = m_donjon.getEquipAPos(m_donjon.getPosEntitee(p));
                     p.ramasserObjet(equipRam);
-                    m_numDonjon.supprObjet(equipRam);
+                    m_donjon.supprEquip(equipRam);
                     return true;
                 }
                 Affichage.affiche("Sélectionner une action valide");
@@ -180,13 +180,13 @@ public class Partie {
     public boolean deplacementPossible(Entitee entitee, int[] pos)
     {
         int[] posEntitee = m_donjon.getPosEntitee(entitee);
-        int distance = (int)Math.sqrt(Math.pow(pos[0] - posEntitee[0], 2) + Math.pow(pos[1] - posEntitee[1], 2)); ;
+        int distance = (int)Math.sqrt(Math.pow(pos[0] - posEntitee[0], 2) + Math.pow(pos[1] - posEntitee[1], 2));
         return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.seDeplacer(distance) && m_donjon.existeEmplacement(pos);
     }
     public boolean attaquePossible(Entitee entitee, int[] pos)
     {
         int[] posEntitee = m_donjon.getPosEntitee(entitee);
-        int distance = (int)Math.sqrt(Math.pow(pos[0] - posEntitee[0], 2) + Math.pow(pos[1] - posEntitee[1], 2)); ;
+        int distance = (int)Math.sqrt(Math.pow(pos[0] - posEntitee[0], 2) + Math.pow(pos[1] - posEntitee[1], 2));
         return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.getPorteeArme()<distance;
     }
     public boolean verifEntierValide(int e)
@@ -199,7 +199,7 @@ public class Partie {
     }
     public void equiperPerso()
     {
-        for (int i = 0; i < m_perso.size(); i++)
+        for(int i = 0; i < m_perso.size(); i++)
         {
             m_perso.get(i).equiperArmure();
             m_perso.get(i).equiperArme();
