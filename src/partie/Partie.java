@@ -35,6 +35,7 @@ public class Partie {
     {
         ArrayList<Entitee> ordreEntite;
         Entitee e;
+        int numTour = 1;
         boolean defaite = false;
         for (int i = 0; i<3 ; i++)
         {
@@ -45,6 +46,7 @@ public class Partie {
             {
                 for (int j = 0; j<ordreEntite.size(); j++)
                 {
+                    Affichage.afficheTour(ordreEntite, j,m_donjon, m_numDonjon+1, numTour);
                     e = ordreEntite.get(j);
                     if(e.estVivant())
                     {
@@ -64,6 +66,7 @@ public class Partie {
                         }
                     }
                 }
+                numTour ++;
             }
             if(defaite)
             {
@@ -82,7 +85,7 @@ public class Partie {
             finAction = false;
             while (!finAction)
             {
-                Affichage.afficheTour(e);
+                Affichage.afficheAction(e, i);
                 choix = Scanner.demandeString();
                 finAction = tourMonstre(e, choix);
             }
@@ -107,7 +110,7 @@ public class Partie {
                 break;
             case "mj ":
                 Affichage.affiche(choix.substring(4));
-                return true;
+                return false;
                 break;
             case "dep":
                 x = choix.toUpperCase().charAt(4);
@@ -149,30 +152,26 @@ public class Partie {
         {
             case "com":
                 Affichage.affiche(choix.substring(4));
-                break;
+                return false;
             case "equ":
                 int ie = Integer.parseInt(choix.substring(4));
                 if(ie >= p.getTailleInventaire())
                 {
                     Affichage.affiche("Equipement sélectionnez invalide");
                     return false;
-                    break;
                 }
                 p.equiper(ie);
                 return true;
-                break;
             default:
                 Affichage.affiche("Sélectionner une action valide");
                 return false;
-                break;
         }
-        return false;
     }
     public boolean deplacementPossible(Entitee entitee, int[] pos)
     {
         int[] posEntitee = m_donjon.getPosEntitee(entitee);
         int distance = (int)Math.sqrt(Math.pow(pos[0] - posEntitee[0], 2) + Math.pow(pos[1] - posEntitee[1], 2)); ;
-        return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.seDeplacer(distance);
+        return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.seDeplacer(distance) && m_donjon.existeEmplacement(pos);
     }
     public boolean attaquePossible(Entitee entitee, int[] pos)
     {

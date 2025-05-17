@@ -95,16 +95,16 @@ public class Personnage extends Entitee{
     {
         int choix;
         ArrayList<Integer> index = new ArrayList<Integer>();
-        ArrayList<Arme> arme = new ArrayList<>();
+        ArrayList<Equipement> arme = new ArrayList<>();
         for(int i = 0; i < m_inventaire.size(); i++)
         {
             if(m_inventaire.get(i).getClass() == Arme.class)
             {
-                arme.add((Arme) m_inventaire.get(i));
+                arme.add(m_inventaire.get(i));
                 index.add(i);
             }
         }
-        Affichage.listeArme(arme);
+        Affichage.listeEquipement(arme);
         choix = Scanner.demandeInt();
         equiper(index.get(choix));
     }
@@ -112,16 +112,16 @@ public class Personnage extends Entitee{
     {
         int choix;
         ArrayList<Integer> index = new ArrayList<Integer>();
-        ArrayList<Armure> armure = new ArrayList<>();
+        ArrayList<Equipement> armure = new ArrayList<>();
         for(int i = 0; i < m_inventaire.size(); i++)
         {
             if(m_inventaire.get(i).getClass() == Armure.class)
             {
-                armure.add((Armure) m_inventaire.get(i));
+                armure.add(m_inventaire.get(i));
                 index.add(i);
             }
         }
-        Affichage.listeArmure(armure);
+        Affichage.listeEquipement(armure);
         choix = Scanner.demandeInt();
         equiper(index.get(choix));
     }
@@ -139,7 +139,7 @@ public class Personnage extends Entitee{
         Race[] raceDispo = {new Humain(), new Halfelin(), new Elfe(), new Nain()};
         Classe[] classeDispo = {new Guerrier(), new Magicien(), new Clerc(), new Roublard()};
 
-        Affichage.Affiche("Nom du personnage : ");
+        Affichage.affiche("Nom du personnage : ");
         String nom = Scanner.demandeString();
         Affichage.selectionTableau(raceDispo);
         choix = Scanner.demandeInt() -1 ;
