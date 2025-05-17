@@ -140,18 +140,18 @@ public class Affichage {
         // Affichage final
         affiche(sb.toString());
     }
-    public static void afficheAction(Entitee e, int numAction)
+    public static void afficheAction(Entitee e, int numAction, boolean objetARecup)
     {
         if (e.getClass() == Personnage.class)
         {
-            afficheActionPerso((Personnage) e, numAction);
+            afficheActionPerso((Personnage) e, numAction, objetARecup);
         }
         else
         {
             afficheActionMonstre((Monstre) e, numAction);
         }
     }
-    public static void afficheActionPerso(Personnage e, int numAction)
+    public static void afficheActionPerso(Personnage e, int numAction, boolean objetARecup)
     {
         StringBuilder sb = new StringBuilder();
 
@@ -204,6 +204,10 @@ public class Affichage {
         sb.append("  - attaquer (att <Case>)\n");
         sb.append("  - se déplacer (dep <Case>)\n");
         sb.append("  - s'équiper (equ <numero equipement>)\n");
+        if(objetARecup)
+        {
+            sb.append("  - ramasser objet (ram)\n");
+        }
 
         // Affichage final
         affiche(sb.toString());

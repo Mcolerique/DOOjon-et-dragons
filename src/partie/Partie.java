@@ -3,6 +3,7 @@ package partie;
 import donjon.Donjon;
 import entitee.Entitee;
 import entitee.personnage.Personnage;
+import equipement.Equipement;
 import interactionUtilisateur.Affichage;
 import interactionUtilisateur.Scanner;
 
@@ -78,6 +79,7 @@ public class Partie {
     }
     public void nouveauTour(Entitee e)
     {
+        boolean objetARecup;
         String choix;
         boolean finAction;
         for(int i=0; i<3; i++)
@@ -85,13 +87,14 @@ public class Partie {
             finAction = false;
             while (!finAction)
             {
-                Affichage.afficheAction(e, i);
+                objetARecup = m_donjon.objetAPos(m_donjon.getPosEntitee(e));
+                Affichage.afficheAction(e, i, objetARecup);
                 choix = Scanner.demandeString();
-                finAction = tourMonstre(e, choix);
+                finAction = tour(e, choix, objetARecup);
             }
         }
     }
-    public boolean tourMonstre(Entitee e, String choix)
+    public boolean tour(Entitee e, String choix, boolean objetARecup)
     {
         char a = 'A';
         char x;
@@ -135,7 +138,7 @@ public class Partie {
                 if(e.getClass() == Personnage.class)
                 {
                     Personnage p = (Personnage) e;
-                    return tourPerso(p, choix);
+                    return tourPerso(p, choix, objetARecup);
                     break;
                 }
                 else {
@@ -146,7 +149,7 @@ public class Partie {
         }
         return false;
     }
-    public boolean tourPerso(Personnage p, String choix)
+    public boolean tourPerso(Personnage p, String choix, boolean objetARecup)
     {
         switch (choix.substring(0,3))
         {
@@ -163,6 +166,13 @@ public class Partie {
                 p.equiper(ie);
                 return true;
             default:
+                if(objetARecup && choix.substring(0, 3).equals("ram"))
+                {
+                    Equipement equipRam = m_donjon.objetAPos(m_donjon.getPosEntitee(e));
+                    p.ramasserObjet(equipRam);
+                    m_numDonjon.supprObjet(equipRam);
+                    return true;
+                }
                 Affichage.affiche("Sélectionner une action valide");
                 return false;
         }
