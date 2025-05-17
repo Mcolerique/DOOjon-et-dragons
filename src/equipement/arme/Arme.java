@@ -1,4 +1,5 @@
 package equipement.arme;
+import des.Des;
 import equipement.Equipement;
 
 public class Arme extends Equipement {
@@ -43,10 +44,8 @@ public class Arme extends Equipement {
     public int infligerDegats() {
         int degats = 0;
         for(int i = 0; i<m_nbDesDeg;i++){
-            degats += lancerDes(m_degats);
-            //faudra juste import le package Des quand on aura merge
+            degats += Des.lancerDes(m_degats);
         }
-
         return degats;
     }
 

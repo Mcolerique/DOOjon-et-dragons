@@ -13,12 +13,15 @@ public abstract class Equipement {
         m_modifStat[4] = 0;
     }
 
-    public int[] getModifStat(){
+    public int[] getModifStat() {
         return m_modifStat;
     }
+<<<<<<< HEAD
 
     public String getNom() {
         return m_nom;
     }
 
+=======
+>>>>>>> 71aeb895a0e1be7112e4fb8c34fba74e81f8f97d
 }

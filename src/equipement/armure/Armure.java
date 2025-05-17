@@ -20,7 +20,6 @@ public class Armure extends Equipement {
             m_modifStat[3] = -4;
         }
     }
-
     public int getCA() {
         return m_cA;
     }
