@@ -23,19 +23,4 @@ public class Armure extends Equipement {
     public int getCA() {
         return m_cA;
     }
-
-    @Override
-    public int quelleStat() {
-        return  -1;
-    }
-
-    @Override
-    public int getPortee() {
-        return -1;
-    }
-
-    @Override
-    public int infligerDegats() {
-        return 0;
-    }
 }

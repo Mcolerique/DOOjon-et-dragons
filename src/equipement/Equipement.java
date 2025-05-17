@@ -13,12 +13,7 @@ public abstract class Equipement {
         m_modifStat[4] = 0;
     }
 
-    public int[] getModifStat(){
+    public int[] getModifStat() {
         return m_modifStat;
     }
-    public abstract int getCA();
-    public abstract int quelleStat();
-    public abstract int getPortee();
-    public abstract int infligerDegats();
-
 }

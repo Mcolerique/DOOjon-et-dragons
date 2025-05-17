@@ -1,12 +1,12 @@
 package entitee.personnage;
+
 import des.Des;
 import entitee.Entitee;
-import entitee.personnage.classe.Classe;
-import entitee.personnage.classe.Guerrier;
-import entitee.personnage.race.Halfelin;
-import entitee.personnage.race.Race;
+import entitee.personnage.classe.*;
+import entitee.personnage.race.*;
 import equipement.Equipement;
 import equipement.arme.Arme;
+import equipement.armure.Armure;
 import interactionUtilisateur.Affichage;
 import interactionUtilisateur.Scanner;
 
@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class Personnage extends Entitee{
     private String m_nom;
-    private Race m_race;
-    private Classe m_classe;
+    private final Race m_race;
+    private final Classe m_classe;
     private ArrayList<Equipement> m_inventaire;
     public Personnage()
     {
@@ -23,6 +23,17 @@ public class Personnage extends Entitee{
         m_nom = "Saral Porcattache";
         m_race = new Halfelin();
         m_classe = new Guerrier();
+        setPerso();
+    }
+    public Personnage(String nom, Race r, Classe c)
+    {
+        m_nom = nom;
+        m_race = r;
+        m_classe = c;
+        setPerso();
+    }
+    public void setPerso()
+    {
         m_stats[0] = m_classe.getPV();
         for(int i=1; i<5; i++)
         {
@@ -41,11 +52,11 @@ public class Personnage extends Entitee{
             m_inventaire.add(m_equipement[i]);
         }
     }
-    public void equiper()
+    public void equiper(int e)
     {
-        Equipement aEquiper = this.choixEquipement();
-        if( aEquiper.getClass() == Arme.class)
+        if( m_inventaire.get(e).getClass() == Arme.class)
         {
+            Arme aEquiper = (Arme) m_inventaire.get(e);
             if(m_equipement[1] != null)
             {
                 for (int i = 0; i<5; i++)
@@ -63,6 +74,7 @@ public class Personnage extends Entitee{
         }
         else
         {
+            Armure aEquiper = (Armure) m_inventaire.get(e);
             if(m_equipement[0] != null)
             {
                 for (int i = 0; i<5; i++)
@@ -79,32 +91,62 @@ public class Personnage extends Entitee{
             }
         }
     }
-    public Equipement choixEquipement()
+    public void equiperArme()
     {
+        int choix;
+        ArrayList<Integer> index = new ArrayList<Integer>();
+        ArrayList<Arme> arme = new ArrayList<>();
+        for(int i = 0; i < m_inventaire.size(); i++)
         {
-            boolean f = false;
-            int choix;
-            while (f) {
-                Affichage.afficheInventaire(m_inventaire);
-                choix = Scanner.demandeInt() - 1;
-                if(choix > m_inventaire.size())
-                {
-                    Affichage.affiche("Index invalide, veillez sélectionnez un index valide");
-                }
-                else if(choix < 0)
-                {
-                    return null;
-                }
-                else
-                {
-                    return m_inventaire.get(choix);
-                }
+            if(m_inventaire.get(i).getClass() == Arme.class)
+            {
+                arme.add((Arme) m_inventaire.get(i));
+                index.add(i);
             }
-            return null;
         }
+        Affichage.listeArme(arme);
+        choix = Scanner.demandeInt();
+        equiper(index.get(choix));
+    }
+    public void equiperArmure()
+    {
+        int choix;
+        ArrayList<Integer> index = new ArrayList<Integer>();
+        ArrayList<Armure> armure = new ArrayList<>();
+        for(int i = 0; i < m_inventaire.size(); i++)
+        {
+            if(m_inventaire.get(i).getClass() == Armure.class)
+            {
+                armure.add((Armure) m_inventaire.get(i));
+                index.add(i);
+            }
+        }
+        Affichage.listeArmure(armure);
+        choix = Scanner.demandeInt();
+        equiper(index.get(choix));
     }
     public void ramasserObjet(Equipement objet)
     {
         m_inventaire.add(objet);
+    }
+    public int getTailleInventaire()
+    {
+        return m_inventaire.size();
+    }
+    public static Personnage creePersonnage()
+    {
+        int choix;
+        Race[] raceDispo = {new Humain(), new Halfelin(), new Elfe(), new Nain()};
+        Classe[] classeDispo = {new Guerrier(), new Magicien(), new Clerc(), new Roublard()};
+
+        Affichage.Affiche("Nom du personnage : ");
+        String nom = Scanner.demandeString();
+        Affichage.selectionTableau(raceDispo);
+        choix = Scanner.demandeInt() -1 ;
+        Race r = raceDispo[choix];
+        Affichage.selectionTableau(classeDispo);
+        choix = Scanner.demandeInt() -1 ;
+        Classe c  = classeDispo[choix];
+        return new Personnage(nom, r, c);
     }
 }

@@ -54,9 +54,4 @@ public class Arme extends Equipement {
         //Si portée sup à 1 donc arme à distance alors la statistique qui importe
         //c'est la dextérité, si c'est CàC alors ce serait force
     }
-
-    @Override
-    public int getCA() {
-        return -1;
-    }
 }
