@@ -99,4 +99,39 @@ public abstract class Entitee {
     {
         return m_pvActuelle <= 0;
     }
+    public int lancerInitiative()
+    {
+        return Des.lancerDes(20) + m_stats[4];
+    }
+    public int getForce()
+    {
+        return m_stats[1];
+    }
+    public int getDexterite()
+    {
+        return m_stats[2];
+    }
+    public int getVitesse()
+    {
+        return m_stats[3];
+    }
+    public int getPv()
+    {
+        return m_stats[0];
+    }
+    public int getPvActuelle()
+    {
+        return m_pvActuelle;
+    }
+    public String getNomArmure()
+    {
+        return m_equipement[0].getNom();
+    }
+    public Arme getArme()
+    {
+        return (Arme)m_equipement[1];
+    }
+    public abstract String getNom();
+    public abstract String getDescription();
+
 }

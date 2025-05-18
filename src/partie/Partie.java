@@ -107,21 +107,18 @@ public class Partie {
                 if (!attaquePossible(e, pos)) {
                     Affichage.affiche("Attaque impossible, séléctionnez un emplacement valide");
                     return false;
-                    break;
                 }
                 e.attaquer(m_donjon.getEntiteeAPos(pos));
                 break;
             case "mj ":
                 Affichage.affiche(choix.substring(4));
                 return false;
-                break;
             case "dep":
                 x = choix.toUpperCase().charAt(4);
                 if(!verifCharValide(x))
                 {
                     Affichage.affiche("Déplacement impossible, séléctionnez un emplacement valide");
                     return false;
-                    break;
                 }
                 pos[0] = (a + x) % 26;
                 pos[1] = Integer.parseInt(choix.substring(5));
@@ -129,23 +126,19 @@ public class Partie {
                 {
                     Affichage.affiche("Déplacement impossible, séléctionnez un emplacement valide");
                     return false;
-                    break;
                 }
                 m_donjon.deplacerEntitee(e, pos);
                 return true;
-                break;
             default:
                 if(e.getClass() == Personnage.class)
                 {
                     Personnage p = (Personnage) e;
                     return tourPerso(p, choix, objetARecup);
-                    break;
                 }
                 else {
                     Affichage.affiche("Sélectionner une action valide");
                     return false;
                 }
-                break;
         }
         return false;
     }
@@ -181,7 +174,7 @@ public class Partie {
     {
         int[] posEntitee = m_donjon.getPosEntitee(entitee);
         int distance = (int)Math.sqrt(Math.pow(pos[0] - posEntitee[0], 2) + Math.pow(pos[1] - posEntitee[1], 2));
-        return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.seDeplacer(distance) && m_donjon.existeEmplacement(pos);
+        return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.seDeplacer(distance) && m_donjon.existeAEmplacement(pos);
     }
     public boolean attaquePossible(Entitee entitee, int[] pos)
     {

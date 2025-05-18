@@ -44,7 +44,7 @@ public class Affichage {
 
             String prefixe = estActif ? "-> " : "   ";
 
-            String identifiant = estMonstre ? " " + ((Monstre) ent).getSymbole() + " " : ent.getNomCourt();
+            String identifiant = estMonstre ? " " + ((Monstre) ent).getSymbole() + " " : ((Personnage) ent).getInitiale();
             String nomEtDesc = ent.getNom() + " (" + ent.getDescription();
             int pvActuels = ent.getPvActuelle();
             int pvMax = ent.getPv();
@@ -97,7 +97,7 @@ public class Affichage {
             String symbole = " ? ";
 
             if (entite instanceof Personnage) {
-                String nom = entite.getInitiale(); // Ex: "Alt"
+                String nom = ((Personnage) entite).getInitiale(); // Ex: "Alt"
                 symbole = " " + nom.charAt(0) + " ";
             } else if (entite instanceof Monstre) {
                 symbole = " " + ((Monstre) entite).getSymbole() + " ";
@@ -157,10 +157,10 @@ public class Affichage {
 
         // Nom et stats
         sb.append(e.getNom()).append("\n");
-        sb.append("  Vie : ").append(e.getPvActuelle()).append("/").append(e.getPvMax()).append("\n");
+        sb.append("  Vie : ").append(e.getPvActuelle()).append("/").append(e.getPv()).append("\n");
 
         // Armure
-        String armure = e.getArmure();
+        String armure = e.getNomArmure();
         sb.append("  Armure: ").append(armure != null ? armure : "aucune").append("\n");
 
         // Arme
@@ -218,10 +218,10 @@ public class Affichage {
 
         // Nom et stats
         sb.append(e.getNom()).append("\n");
-        sb.append("  Vie : ").append(e.getPvActuelle()).append("/").append(e.getPvMax()).append("\n");
+        sb.append("  Vie : ").append(e.getPvActuelle()).append("/").append(e.getPv()).append("\n");
 
         // Armure
-        String armure = e.getArmure();
+        String armure = e.getNomArmure();
         sb.append("  Armure: ").append(armure != null ? armure : "aucune").append("\n");
 
         // Arme

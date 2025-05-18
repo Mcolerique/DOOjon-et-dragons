@@ -48,7 +48,10 @@ public class Arme extends Equipement {
         }
         return degats;
     }
-
+    public String getDegats()
+    {
+        return m_nbDesDeg+"d"+m_degats;
+    }
     public int quelleStat(){
         return this.m_portee>1 ? 2 : 1;
         //Si portée sup à 1 donc arme à distance alors la statistique qui importe

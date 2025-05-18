@@ -23,4 +23,16 @@ public class Monstre extends Entitee{
     public String getAppellation(){
         return (m_espece + m_numMonstre);
     }
+    public String getSymbole()
+    {
+        return m_espece.substring(0,2) + m_numMonstre;
+    }
+    public String getNom()
+    {
+        return m_espece;
+    }
+    public  String getDescription()
+    {
+        return ""+m_numMonstre;
+    }
 }

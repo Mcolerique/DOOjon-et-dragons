@@ -11,6 +11,7 @@ import interactionUtilisateur.Affichage;
 import interactionUtilisateur.Scanner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Personnage extends Entitee{
     private String m_nom;
@@ -47,10 +48,7 @@ public class Personnage extends Entitee{
             m_stats[i] += m_race.getStats()[i];
         }
         m_inventaire = new ArrayList<>();
-        for(int i = 0; i<m_classe.getEquipement().length; i++)
-        {
-            m_inventaire.add(m_equipement[i]);
-        }
+        m_inventaire.addAll(Arrays.asList(m_classe.getEquipement()));
     }
     public void equiper(int e)
     {
@@ -148,5 +146,21 @@ public class Personnage extends Entitee{
         choix = Scanner.demandeInt() -1 ;
         Classe c  = classeDispo[choix];
         return new Personnage(nom, r, c);
+    }
+
+    public ArrayList<Equipement> getInventaire() {
+        return m_inventaire;
+    }
+    public String getNom()
+    {
+        return m_nom;
+    }
+    public String getDescription()
+    {
+        return m_race.toString()+" "+m_classe.toString();
+    }
+    public String getInitiale()
+    {
+        return m_nom.substring(0,3);
     }
 }
