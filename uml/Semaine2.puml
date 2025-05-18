@@ -1,6 +1,9 @@
 @startuml
 
 skinparam linetype ortho
+skinparam classAttributeIconSize 0
+skinparam classFontStyle Bold
+skinparam style strictuml
 hide empty members
 package interactionUtilisateur
 {
@@ -46,8 +49,6 @@ package donjon
 
         +<<create>>Donjon(tailleMap : Integer[2])
         +<<create>>Donjon(posEntitee : Integer[2], posEquip : Integer[2], obstacles : [*]Integer[2], tailleMap : Integer[2])
-        /'+listeCible(attaquant : Entitee) : ArrayList<Entitee>
-                'Dans le cas où le MJ souhaite créer son propre donjon'/
         + {static} creerDonjon(listePersos : Personnage[]) : Donjon
         - setValeurDonjon(posEntitee : Integer[2], posEquip : Integer[2], obstacles : [*]Integer[2])
         - {static} donjonAuto(personnages : Personnage[*], numDonjon : Integer ) : Donjon
@@ -69,22 +70,9 @@ package donjon
         + getObstacle() : [*]Integer[2]
         + getPositionEntitee() : Integer[2]
         + getPositionEquipement() : Integer[2]
-
-
-
-        /'
-            1 Demande au MJ sil veut un donjon par defaut
-            2a S'il dit oui on lui genere le donjon de façon aleatoire (taille random entre 15 et 25)
-            2b Si non il va - Indiquer la taille de la carte
-        Mettre les obstacles
-        Créer les monstres avec leurs stats + les placer
-        Placer les joueurs
-        Positionner des équipements (à voir si on devrait ptet créer les équipements avant de parler de Donjon)/!\ En dehors des obstacles les placements
-        3 MJ Lance les dés d'initiative des monstres
-        4 Joueurs lancent leurs dés d'initiative
-        5 Faire en sorte que les joueurs et monstres soient ordonnés par valeur d'initiative décroissante
-        6 Proposer aux joueurs d'équiper leurs équipements'/
     }
+    Donjon .> Affichage : "<<call>>"
+    Donjon ..> Scanner : "<<call>>"
 }
 package entitee
 {
@@ -114,6 +102,10 @@ package entitee
         +{abstract}getNom() : String
         +{abstract}getDescription() : String
     }
+
+    Entitee .> Affichage : "<<call>>"
+    Entitee ..> Scanner : "<<call>>"
+
     package Personnage
     {
         class Personnage extends entitee.Entitee
@@ -136,6 +128,8 @@ package entitee
             +getDescription : String
             +getInitiale : String
         }
+        Personnage .> Affichage : "<<call>>"
+        Personnage .> Scanner : "<<call>>"
         Personnage o-down-> "1\n race" race.Race: est un >
         Personnage o-down-> "1\n classe" classe.Classe: est un >
         Entitee *-right--> "2\n equipement" .equipement.Equipement: a equiper >
@@ -230,8 +224,9 @@ package entitee
         +{static}utiliserMonstre(listeMonstre : Integer, monstre : Integer) : Monstre
         +{static}utiliserMonstreAuto(listeMonstre : Integer, monstre : Integer) : Monstre
         +{static}getNomMonstre(listeMonstre : Integer, monstre : Integer) : String
-
     }
+    ListeMonstres .> Affichage : "<<call>>"
+    ListeMonstres ..> Scanner : "<<call>>"
 }
 
 
@@ -257,6 +252,9 @@ package equipement
         +{static}utiliserEquipement()
         +{static}utiliserEquipAuto(listeEquip : Integer, equip : Integer) : Equipement
     }
+
+    ListeEquipements .> Affichage : "<<call>>"
+    ListeEquipements ..> Scanner : "<<call>>"
 
     package Armure
     {
@@ -297,5 +295,37 @@ package equipement
         }
     }
 }
+
+package partie
+{
+    class Partie
+    {
+        -donjon : Donjon
+        -perso : Personnage[*]
+        -numDonjon : Integer
+        +<<create>>Partie()
+        +miseEnPlacePerso() : Personnage[*]
+        +lancerPartie()
+        +tour(e : Entitee, choix : String, objetARecup : Boolean) : boolean
+        +tourPerso(p : Personnage, choix : String, objetARecup : Boolean) : boolean
+        +deplacementPossible(entitee : Entitee, pos Integer[2]) : Boolean
+        +attaquePossible(entitee : Entitee, position : Integer[2]) : Boolean
+        +verifEntierValide(e : Integer) return Boolean
+        +verifCharValide(c : String) : Boolean
+        +equiperPerso()
+        +defaite(e : Entitee)
+        +getNumDonjon() : Integer
+    }
+
+    Partie .> Affichage : "<<call>>"
+    Partie .> Scanner : "<<call>>"
+    Partie *-> "\t3\n \t-m_donjon" Donjon : \tse déroule pendant \t\t >
+}
+
+
+    class Main{
+            +{static} main(args: String[*])
+        }
+    Main *-> "1\n -m_progression" Partie : est lancée \t\t >
 
 @enduml
