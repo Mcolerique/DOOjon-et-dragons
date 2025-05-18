@@ -119,24 +119,6 @@ public class Personnage extends Entitee{
             {
                 armure.add((Armure) m_inventaire.get(i));
                 index.add(i);
-        {
-            boolean f = false;
-            int choix;
-            while (f) {
-                Affichage.afficheInventaire(m_inventaire);
-                choix = Scanner.demandeInt() - 1;
-                if(choix > m_inventaire.size())
-                {
-                    Affichage.affiche("Index invalide, veillez sélectionner un index valide");
-                }
-                else if(choix < 0)
-                {
-                    return null;
-                }
-                else
-                {
-                    return m_inventaire.get(choix);
-                }
             }
         }
         Affichage.listeArmure(armure);

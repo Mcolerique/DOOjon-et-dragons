@@ -1,5 +1,6 @@
 package equipement;
 
+import entitee.Entitee;
 import equipement.arme.Arme;
 import equipement.arme.TypeCaC;
 import equipement.armure.Armure;
@@ -22,27 +23,27 @@ public class ListeEquipements {
     }
 
 
-    private ArrayList<ArrayList<Equipement>> m_listeEquipements = new ArrayList<ArrayList<Equipement>>();
+    private static ArrayList<ArrayList<Equipement>> m_listeEquipements = new ArrayList<ArrayList<Equipement>>();
 
     private void initListesEquip() {
-        ArrayList<Equipement> equipCommun = new ArrayList<Equipement>(Arrays.asList(new Arme("aaa", 2, 4, 5),
-                new Arme("bbb", 2, 4, TypeCaC.COURANTE),
-                new Arme("ccc", 2, 4, TypeCaC.GUERRE),
-                new Armure("ddd", 9, Poids.LEGERE),
-                new Armure("eee", 9, Poids.LOURDE)));
+        ArrayList<Equipement> equipCommun = new ArrayList<Equipement>(Arrays.asList(new Arme("ArmeDistance1", 2, 4, 5),
+                new Arme("ArmeCourante1", 2, 4, TypeCaC.COURANTE),
+                new Arme("ArmeGuerre1", 2, 4, TypeCaC.GUERRE),
+                new Armure("ArmureLegere1", 9, Poids.LEGERE),
+                new Armure("ArmureLourde1", 9, Poids.LOURDE)));
 
         //rajouter les equipements communs armes et armures, 1 de chaque je pense ça fait 5 elements en tout
-        ArrayList<Equipement> equipPeuCommun = new ArrayList<Equipement>(Arrays.asList(new Arme("aaa", 2, 4, 5),
-                new Arme("bbb", 2, 4, TypeCaC.COURANTE),
-                new Arme("ccc", 2, 4, TypeCaC.GUERRE),
-                new Armure("ddd", 9, Poids.LEGERE),
-                new Armure("eee", 9, Poids.LOURDE)));
+        ArrayList<Equipement> equipPeuCommun = new ArrayList<Equipement>(Arrays.asList(new Arme("ArmeDistance2", 2, 4, 5),
+                new Arme("ArmeCourant2", 2, 4, TypeCaC.COURANTE),
+                new Arme("ArmeGuerre2", 2, 4, TypeCaC.GUERRE),
+                new Armure("ArmureLegere2", 9, Poids.LEGERE),
+                new Armure("ArmureLourde2", 9, Poids.LOURDE)));
         //pareil pour ça
-        ArrayList<Equipement> equipRare = new ArrayList<Equipement>(Arrays.asList(new Arme("aaa", 2, 4, 5),
-                new Arme("bbb", 2, 4, TypeCaC.COURANTE),
-                new Arme("ccc", 2, 4, TypeCaC.GUERRE),
-                new Armure("ddd", 9, Poids.LEGERE),
-                new Armure("eee", 9, Poids.LOURDE)));
+        ArrayList<Equipement> equipRare = new ArrayList<Equipement>(Arrays.asList(new Arme("ArmeDistance3", 2, 4, 5),
+                new Arme("ArmeCourante3", 2, 4, TypeCaC.COURANTE),
+                new Arme("ArmeGuerre3", 2, 4, TypeCaC.GUERRE),
+                new Armure("ArmureLegere3", 9, Poids.LEGERE),
+                new Armure("ArmureLourde3", 9, Poids.LOURDE)));
         //et ça
 
 
@@ -51,7 +52,7 @@ public class ListeEquipements {
         m_listeEquipements.add(equipRare);
     }
 
-    private ArrayList<ArrayList<Equipement>> m_listeEquipementsUtilises = new ArrayList<ArrayList<Equipement>>();
+    private static ArrayList<ArrayList<Equipement>> m_listeEquipementsUtilises = new ArrayList<ArrayList<Equipement>>();
 
     private void initListesEquipUtilis() {
         ArrayList<Equipement> equipCommunDejaUtilis = new ArrayList<Equipement>();
@@ -138,7 +139,7 @@ public class ListeEquipements {
         //dans le cas où aPuEtreCree est retourné comme false.
     }
 
-    public void deDispoADejaUtilise(int liste, int equip){
+    public static void deDispoADejaUtilise(int liste, int equip){
         m_listeEquipementsUtilises.get(liste).add(m_listeEquipements.get(liste).get(equip));
         m_listeEquipements.get(liste).remove(equip);
     }
@@ -152,6 +153,12 @@ public class ListeEquipements {
         deDispoADejaUtilise(listeEquip, numEquip);
         System.out.println("Equipements utilisés : \n\n");
         afficherEquipUtilis();
+    }
+
+    public static Entitee utiliserEquipAuto(int listeEquip, int equip){
+        Equipement equipementAReturn = m_listeEquipements.get(listeEquip).get(equip);
+        deDispoADejaUtilise(listeEquip, equip);
+        return equipementAReturn;
     }
 
 }
