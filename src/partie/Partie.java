@@ -24,7 +24,7 @@ public class Partie {
     {
         ArrayList<Personnage> perso = new ArrayList<>();
         int choix;
-        Affichage.affiche("Combien de personnage joueur voulez vous crée ?");
+        Affichage.affiche("Combien de personnages joueurs voulez vous créer ?");
         choix = Scanner.demandeInt();
         for(int i = 0; i<choix; i++)
         {
@@ -105,7 +105,7 @@ public class Partie {
                 pos[0] = (a + x) % 26;
                 pos[1] = Integer.parseInt(choix.substring(5));
                 if (!attaquePossible(e, pos)) {
-                    Affichage.affiche("Attaque impossible, séléctionnez un emplacement valide");
+                    Affichage.affiche("Attaque impossible, sélectionnez un emplacement valide");
                     return false;
                 }
                 e.attaquer(m_donjon.getEntiteeAPos(pos));
@@ -117,14 +117,14 @@ public class Partie {
                 x = choix.toUpperCase().charAt(4);
                 if(!verifCharValide(x))
                 {
-                    Affichage.affiche("Déplacement impossible, séléctionnez un emplacement valide");
+                    Affichage.affiche("Déplacement impossible, sélectionnez un emplacement valide");
                     return false;
                 }
                 pos[0] = (a + x) % 26;
                 pos[1] = Integer.parseInt(choix.substring(5));
                 if(!verifEntierValide(pos[1]) || !deplacementPossible(e, pos))
                 {
-                    Affichage.affiche("Déplacement impossible, séléctionnez un emplacement valide");
+                    Affichage.affiche("Déplacement impossible, sélectionnez un emplacement valide");
                     return false;
                 }
                 m_donjon.deplacerEntitee(e, pos);
@@ -136,7 +136,7 @@ public class Partie {
                     return tourPerso(p, choix, objetARecup);
                 }
                 else {
-                    Affichage.affiche("Sélectionner une action valide");
+                    Affichage.affiche("Sélectionnez une action valide");
                     return false;
                 }
         }
@@ -153,7 +153,7 @@ public class Partie {
                 int ie = Integer.parseInt(choix.substring(4));
                 if(ie >= p.getTailleInventaire())
                 {
-                    Affichage.affiche("Equipement sélectionnez invalide");
+                    Affichage.affiche("Equipement sélectionné invalide");
                     return false;
                 }
                 p.equiper(ie);
@@ -166,7 +166,7 @@ public class Partie {
                     m_donjon.supprEquip(equipRam);
                     return true;
                 }
-                Affichage.affiche("Sélectionner une action valide");
+                Affichage.affiche("Sélectionnez une action valide");
                 return false;
         }
     }

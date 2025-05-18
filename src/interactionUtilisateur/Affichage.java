@@ -167,8 +167,8 @@ public class Affichage {
         Arme arme = e.getArme();
         if (arme != null) {
             sb.append("  Arme: ").append(arme.getNom())
-                    .append(" (degat: ").append(arme.getDegats())
-                    .append(", portee: ").append(arme.getPortee()).append(")\n");
+                    .append(" (dégât: ").append(arme.getDegats())
+                    .append(", portée: ").append(arme.getPortee()).append(")\n");
         } else {
             sb.append("  Arme: aucune\n");
         }
@@ -194,9 +194,9 @@ public class Affichage {
 
         // Actions restantes
         int actionsRestantes = 3 - numAction;
-        sb.append(e.getNom()).append(" il vous reste ").append(actionsRestantes)
+        sb.append(e.getNom()).append(", il vous reste ").append(actionsRestantes)
                 .append(actionsRestantes == 1 ? " action" : " actions")
-                .append(" que souhaitez vous faire ?\n");
+                .append(", que souhaitez vous faire ?\n");
 
         // Menu d’actions
         sb.append("  - laisser le maître du jeu commenter l'action précédente (mj <texte>)\n");
@@ -228,8 +228,8 @@ public class Affichage {
         Arme arme = e.getArme();
         if (arme != null) {
             sb.append("  Arme: ").append(arme.getNom())
-                    .append(" (degat: ").append(arme.getDegats())
-                    .append(", portee: ").append(arme.getPortee()).append(")\n");
+                    .append(" (dégâts: ").append(arme.getDegats())
+                    .append(", portée: ").append(arme.getPortee()).append(")\n");
         } else {
             sb.append("  Arme: aucune\n");
         }
@@ -243,9 +243,9 @@ public class Affichage {
 
         // Actions restantes
         int actionsRestantes = 3 - numAction;
-        sb.append(e.getNom()).append(" il vous reste ").append(actionsRestantes)
+        sb.append(e.getNom()).append(", il vous reste ").append(actionsRestantes)
                 .append(actionsRestantes == 1 ? " action" : " actions")
-                .append(" que souhaitez vous faire ?\n");
+                .append(", que souhaitez vous faire ?\n");
 
         // Menu d’actions
         sb.append("  - commenter action précédente (com <texte>)\n");
@@ -287,6 +287,6 @@ public class Affichage {
     }
     public static void victoireDonjon(int numDonjon)
     {
-        affiche("Félicitation, vous avez triompher du "+numDonjon+" donjon");
+        affiche("Félicitation, vous avez triomphé du "+numDonjon+" donjon");
     }
 }
