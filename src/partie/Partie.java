@@ -208,4 +208,8 @@ public class Partie {
     public void defaite(Entitee e){
         Affichage.defaite(e);
     }
+
+    public int getNumDonjon() {
+        return m_numDonjon;
+    }
 }
