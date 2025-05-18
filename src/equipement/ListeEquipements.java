@@ -145,7 +145,7 @@ public class ListeEquipements {
         afficherEquipUtilis();
     }
 
-    public static Entitee utiliserEquipAuto(int listeEquip, int equip){
+    public static Equipement utiliserEquipAuto(int listeEquip, int equip){
         Equipement equipementAReturn = m_listeEquipements.get(listeEquip).get(equip);
         deDispoADejaUtilise(listeEquip, equip);
         return equipementAReturn;
