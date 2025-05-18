@@ -6,6 +6,7 @@ import equipement.arme.Arme;
 import equipement.armure.Armure;
 import equipement.armure.Poids;
 import interactionUtilisateur.*;
+import entitee.Monstre;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,54 +17,50 @@ public class ListeMonstres{
     //add dans une liste
     //creer une liste dejaUtilise et y mettre les elements deja utilises
 
+    private static ArrayList<ArrayList<Monstre>> m_listeMonstres = new ArrayList<>() {{
 
-    public ListeMonstres() {
-        initListesMonstre();
-        initListesMonstreUtilis();
-    }
+        // Donjon 1
+        add(new ArrayList<>() {{
+            // rajouter les Monstres communs armes et armures, 1 de chaque je pense ça fait 5 elements en tout
+            add(new Monstre(1, "Gobelin", new int[] {25,15,14,0,0},
+                    new Equipement[]{new Arme("Bâton", 1, 4, 1), new Armure("Peau", 7, Poids.LEGERE)}));
+            add(new Monstre(2, "Gobelin", new int[] {25,9,17,0,0},
+                    new Equipement[]{new Arme("Bâton", 1, 4, 1), new Armure("Peau", 7, Poids.LEGERE)}));
+            add(new Monstre(1, "Troll", new int[] {21,17,0,13,0},
+                    new Equipement[]{new Arme("Catapulte", 1, 4, 6), new Armure("Peau", 7, Poids.LEGERE)}));
+        }});
 
+        // Donjon 2
+        add(new ArrayList<>() {{
+            // pareil pour ça
+            add(new Monstre(1, "Dragon blanc", new int[] {45,15,0,12,0},
+                    new Equipement[]{new Arme("Souffle flamboyant", 1, 8, 9), new Armure("Ecailles", 10, Poids.LOURDE)}));
+            add(new Monstre(1, "Dragon noir", new int[] {45,12,0,16,0},
+                    new Equipement[]{new Arme("Souffle grondant", 1, 8, 0), new Armure("Ecailles", 10, Poids.LOURDE)}));
+            add(new Monstre(1, "Gorille", new int[] {35,14,14,0,0},
+                    new Equipement[]{new Arme("Poings", 1, 6, 1), new Armure("Peau", 7, Poids.LEGERE)}));
+        }});
 
-    private static ArrayList<ArrayList<Monstre>> m_listeMonstres = new ArrayList<ArrayList<Monstre>>();
+        // Donjon 3
+        add(new ArrayList<>() {{
+            add(new Monstre(1, "Archer des abysses", new int[] {25,14,0,13,0},
+                    new Equipement[]{new Arme("Arc d'Héraclès", 1, 8, 8), new Armure("Peau", 7, Poids.LEGERE)}));
+            add(new Monstre(1, "Chevalier des abysses", new int[] {25,13,14,0,0},
+                    new Equipement[]{new Arme("Excalibur", 1, 8, 1), new Armure("Peau", 12, Poids.LOURDE)}));
+            add(new Monstre(1, "Demogorgon", new int[] {25,19,0,11,0},
+                    new Equipement[]{new Arme("Bâton", 1, 10, 4), new Armure("???", 7, Poids.LEGERE)}));
+        }});
+    }};
 
-    private void initListesMonstre() {
-        ArrayList<Monstre> niveauFacile = new ArrayList<Monstre>(Arrays.asList(
-                new Monstre(1, "Gobelin", new int[] {25,15,14,0,0}, new Equipement[]{new Arme("Bâton", 1, 4, 1), new Armure("Peau", 7, Poids.LEGERE)}),
-                new Monstre(2, "Gobelin", new int[] {25,9,17,0,0}, new Equipement[]{new Arme("Bâton", 1, 4, 1), new Armure("Peau", 7, Poids.LEGERE)}),
-                new Monstre(1, "Troll", new int[] {21,17,0,13,0}, new Equipement[]{new Arme("Catapulte", 1, 4, 6), new Armure("Peau", 7, Poids.LEGERE)})));
-
-        //rajouter les Monstres communs armes et armures, 1 de chaque je pense ça fait 5 elements en tout
-        ArrayList<Monstre> niveauMoyen = new ArrayList<Monstre>(Arrays.asList(
-                new Monstre(1, "Dragon blanc", new int[] {45,15,0,12,0}, new Equipement[]{new Arme("Souffle flamboyant", 1, 8, 9), new Armure("Ecailles", 10, Poids.LOURDE)}),
-                new Monstre(1, "Dragon noir", new int[] {45,12,0,16,0}, new Equipement[]{new Arme("Souffle grondant", 1, 8, 0), new Armure("Ecailles", 10, Poids.LOURDE)}),
-                new Monstre(1, "Gorille", new int[] {35,14,14,0,0}, new Equipement[]{new Arme("Poings", 1, 6, 1), new Armure("Peau", 7, Poids.LEGERE)})));
-        //pareil pour ça
-        ArrayList<Monstre> niveauDifficile = new ArrayList<Monstre>(Arrays.asList(
-                new Monstre(1, "Archer des abysses", new int[] {25,14,0,13,0}, new Equipement[]{new Arme("Arc d'Héraclès", 1, 8, 8), new Armure("Peau", 7, Poids.LEGERE)}),
-                new Monstre(1, "Chevalier des abysses", new int[] {25,13,14,0,0}, new Equipement[]{new Arme("Excalibur", 1, 8, 1), new Armure("Peau", 12, Poids.LOURDE)}),
-                new Monstre(1, "Demogorgon", new int[] {25,19,0,11,0}, new Equipement[]{new Arme("Bâton", 1, 10, 4), new Armure("???", 7, Poids.LEGERE)})));
-        //et ça
-
-
-        m_listeMonstres.add(niveauFacile);
-        m_listeMonstres.add(niveauMoyen);
-        m_listeMonstres.add(niveauDifficile);
-    }
-
-    private static ArrayList<ArrayList<Monstre>> m_listeMonstresUtilises = new ArrayList<ArrayList<Monstre>>();
-
-    private void initListesMonstreUtilis() {
-        ArrayList<Monstre> niveauFacileDejaUtilis = new ArrayList<Monstre>();
-        ArrayList<Monstre> niveauMoyenDejaUtilis = new ArrayList<Monstre>();
-        ArrayList<Monstre> niveauDifficileDejaUtilis = new ArrayList<Monstre>();
-
-
-        m_listeMonstresUtilises.add(niveauFacileDejaUtilis);
-        m_listeMonstresUtilises.add(niveauMoyenDejaUtilis);
-        m_listeMonstresUtilises.add(niveauDifficileDejaUtilis);
-    }
+    // Liste des monstres utilisés pour chaque donjon
+    private static ArrayList<ArrayList<Monstre>> m_listeMonstresUtilises = new ArrayList<>() {{
+        add(new ArrayList<>());
+        add(new ArrayList<>());
+        add(new ArrayList<>());
+    }};
 
 
-    public void afficherMonstreDispo(){
+    public static void afficherMonstreDispo(){
         for(int i = 0; i < m_listeMonstres.size(); i++){
             String difficulte = "";
             switch(i){
@@ -86,9 +83,9 @@ public class ListeMonstres{
         }
     }
 
-    public void monstresDispoParDiff(int numDonjon){
+    public static void monstresDispoParDiff(int numDonjon){
         String difficulte = "";
-        switch(numDonjon-1){
+        switch(numDonjon){
             case 0:
                 difficulte = "facile";
                 break;
@@ -109,7 +106,7 @@ public class ListeMonstres{
         System.out.println("\n\n");
     }
 
-    public int nbMonstresDispoParDiff(int difficulte){
+    public static int nbMonstresDispoParDiff(int difficulte){
         return m_listeMonstres.get(difficulte).size();
     }
 
@@ -136,7 +133,7 @@ public class ListeMonstres{
         }
     }
 
-    public boolean addMonstre (Monstre Monstre){
+    public static boolean addMonstre (Monstre Monstre){
         int difficulte;
         boolean aPuEtreCree;
 
@@ -183,7 +180,7 @@ public class ListeMonstres{
         return monstreAReturn;
     }
 
-    public String getNomMonstre(int listeMonstre, int monstre){
+    public static String getNomMonstre(int listeMonstre, int monstre){
         return m_listeMonstres.get(listeMonstre).get(monstre).getAppellation();
     }
 

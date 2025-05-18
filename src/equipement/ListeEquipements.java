@@ -17,56 +17,46 @@ public class ListeEquipements {
     //creer une liste dejaUtilise et y mettre les elements deja utilises
 
 
-    public ListeEquipements() {
-        initListesEquip();
-        initListesEquipUtilis();
-    }
 
+    // Liste des équipements disponibles (par rareté)
+    private static ArrayList<ArrayList<Equipement>> m_listeEquipements = new ArrayList<>() {{
 
-    private static ArrayList<ArrayList<Equipement>> m_listeEquipements = new ArrayList<ArrayList<Equipement>>();
-
-    private void initListesEquip() {
-        ArrayList<Equipement> equipCommun = new ArrayList<Equipement>(Arrays.asList(new Arme("ArmeDistance1", 2, 4, 5),
+        // rajouter les equipements communs armes et armures, 1 de chaque je pense ça fait 5 elements en tout
+        add(new ArrayList<>(Arrays.asList(
+                new Arme("ArmeDistance1", 2, 4, 5),
                 new Arme("ArmeCourante1", 2, 4, TypeCaC.COURANTE),
                 new Arme("ArmeGuerre1", 2, 4, TypeCaC.GUERRE),
                 new Armure("ArmureLegere1", 9, Poids.LEGERE),
-                new Armure("ArmureLourde1", 9, Poids.LOURDE)));
+                new Armure("ArmureLourde1", 9, Poids.LOURDE)
+        )));
 
-        //rajouter les equipements communs armes et armures, 1 de chaque je pense ça fait 5 elements en tout
-        ArrayList<Equipement> equipPeuCommun = new ArrayList<Equipement>(Arrays.asList(new Arme("ArmeDistance2", 2, 4, 5),
+        // pareil pour ça
+        add(new ArrayList<>(Arrays.asList(
+                new Arme("ArmeDistance2", 2, 4, 5),
                 new Arme("ArmeCourant2", 2, 4, TypeCaC.COURANTE),
                 new Arme("ArmeGuerre2", 2, 4, TypeCaC.GUERRE),
                 new Armure("ArmureLegere2", 9, Poids.LEGERE),
-                new Armure("ArmureLourde2", 9, Poids.LOURDE)));
-        //pareil pour ça
-        ArrayList<Equipement> equipRare = new ArrayList<Equipement>(Arrays.asList(new Arme("ArmeDistance3", 2, 4, 5),
+                new Armure("ArmureLourde2", 9, Poids.LOURDE)
+        )));
+
+        add(new ArrayList<>(Arrays.asList(
+                new Arme("ArmeDistance3", 2, 4, 5),
                 new Arme("ArmeCourante3", 2, 4, TypeCaC.COURANTE),
                 new Arme("ArmeGuerre3", 2, 4, TypeCaC.GUERRE),
                 new Armure("ArmureLegere3", 9, Poids.LEGERE),
-                new Armure("ArmureLourde3", 9, Poids.LOURDE)));
-        //et ça
+                new Armure("ArmureLourde3", 9, Poids.LOURDE)
+        )));
+    }};
+
+    // Liste des équipements utilisés (initialement vide)
+    private static ArrayList<ArrayList<Equipement>> m_listeEquipementsUtilises = new ArrayList<>() {{
+        add(new ArrayList<>());
+        add(new ArrayList<>());
+        add(new ArrayList<>());
+    }};
 
 
-        m_listeEquipements.add(equipCommun);
-        m_listeEquipements.add(equipPeuCommun);
-        m_listeEquipements.add(equipRare);
-    }
-
-    private static ArrayList<ArrayList<Equipement>> m_listeEquipementsUtilises = new ArrayList<ArrayList<Equipement>>();
-
-    private void initListesEquipUtilis() {
-        ArrayList<Equipement> equipCommunDejaUtilis = new ArrayList<Equipement>();
-        ArrayList<Equipement> equipPeuCommunDejaUtilis = new ArrayList<Equipement>();
-        ArrayList<Equipement> equipRareDejaUtilis = new ArrayList<Equipement>();
-
-
-        m_listeEquipementsUtilises.add(equipCommunDejaUtilis);
-        m_listeEquipementsUtilises.add(equipPeuCommunDejaUtilis);
-        m_listeEquipementsUtilises.add(equipRareDejaUtilis);
-    }
-
-
-    public void afficherEquipDispo(){
+    public static void afficherEquipDispo(){
         for(int i = 0; i < m_listeEquipements.size(); i++){
             String rarete = "";
             switch(i){
@@ -89,7 +79,7 @@ public class ListeEquipements {
         }
     }
 
-    public void afficherEquipUtilis(){
+    public static void afficherEquipUtilis(){
         for(int i = 0; i < m_listeEquipementsUtilises.size(); i++){
             String rarete = "";
             switch(i){
@@ -112,7 +102,7 @@ public class ListeEquipements {
         }
     }
 
-    public boolean addEquipement (Equipement equipement){
+    public static boolean addEquipement (Equipement equipement){
         int rarete;
         boolean aPuEtreCree;
 
@@ -144,7 +134,7 @@ public class ListeEquipements {
         m_listeEquipements.get(liste).remove(equip);
     }
 
-    public void utiliserEquipement(){
+    public static void utiliserEquipement(){
         afficherEquipDispo();
         System.out.println("De quelle liste voulez-vous utiliser un équipement ?");
         int listeEquip = Scanner.demandeInt();

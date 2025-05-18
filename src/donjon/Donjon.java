@@ -41,8 +41,7 @@ public class Donjon {
 
 
 
-    public Donjon donjonAuto(ListeEquipements listeEquipements, ListeMonstres listeMonstres, int numDonjon,
-                             ArrayList<Personnage> personnages) {
+    public Donjon donjonAuto(ArrayList<Personnage> personnages, int numDonjon) {
 
         int[] tailleTabl = new int[] {randomValue(15, 25), randomValue(15,25)};
 
@@ -101,8 +100,7 @@ public class Donjon {
 
     }
 
-    public Donjon donjonManuel(ListeEquipements listeEquipements, ListeMonstres listeMonstres, int numDonjon,
-                               ArrayList<Personnage> personnages) {
+    public Donjon donjonManuel(ArrayList<Personnage> personnages, int numDonjon) {
 
         int[] tailleTabl = new int[2];
 
@@ -145,25 +143,25 @@ public class Donjon {
         }
 
         Hashtable<Entitee, int[]> positionEntitee = new Hashtable<>();
-        listeMonstres.afficherMonstreDispo();
+        ListeMonstres.afficherMonstreDispo();
         System.out.println("De quelle liste voulez-vous placer un monstre ?");
         int listeMonstre = Scanner.demandeInt();
         Affichage.affiche("Combien ?");
         int numMonstre;
         do{
             numMonstre = Scanner.demandeInt();
-        }while(numMonstre <= listeMonstres.nbMonstresDispoParDiff(listeMonstre));
+        }while(numMonstre <= ListeMonstres.nbMonstresDispoParDiff(listeMonstre));
 
         for(int i = 0; i < numMonstre; i++) {
             boolean placementPossible;
             do {
-                Affichage.affiche(listeMonstres.getNomMonstre(listeMonstre, numMonstre) + ". Où voulez-vous le placer ? (Format x;y)x\n");
+                Affichage.affiche(ListeMonstres.getNomMonstre(listeMonstre, numMonstre) + ". Où voulez-vous le placer ? (Format x;y)x\n");
                 String emplacementMonstre = Scanner.demandeString();
                 String[] coordonnees = emplacementMonstre.split("[;]");
                 int[] positionMonstre = {Integer.parseInt(coordonnees[0]), Integer.parseInt(coordonnees[1])};
                 placementPossible =  !existeAEmplacement(positionMonstre);
                 if(placementPossible){
-                    positionEntitee.put(listeMonstres.utiliserMonstre(listeMonstre, i),positionMonstre);
+                    positionEntitee.put(ListeMonstres.utiliserMonstre(listeMonstre, i),positionMonstre);
                 }
             }while (!placementPossible);
         }
@@ -195,7 +193,7 @@ public class Donjon {
                 int[] positionEquipement = {Integer.parseInt(coordonnees[0]), Integer.parseInt(coordonnees[1])};
                 placementPossible =  !existeAEmplacement(positionEquipement);
                 if(placementPossible){
-                    positionEntitee.put(listeEquipements.utiliserEquipAuto(numDonjon, i), positionEquipement);
+                    positionEntitee.put(ListeEquipements.utiliserEquipAuto(numDonjon, i), positionEquipement);
                 }
             }while (!placementPossible);
         }
@@ -217,15 +215,12 @@ public class Donjon {
 
         if(reponseCreation == 0){
 
-            donjonManuel();
+            return donjonManuel(personnages, numDonjon);
         }
 
         else{
-            donjonAuto();
+            return donjonAuto(personnages, numDonjon);
         }
-
-
-
     }
 
     public ArrayList<Entitee> listeCible(Entitee attaquant)
