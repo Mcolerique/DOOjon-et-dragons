@@ -1,0 +1,331 @@
+@startuml
+
+skinparam linetype ortho
+skinparam classAttributeIconSize 0
+skinparam classFontStyle Bold
+skinparam style strictuml
+hide empty members
+package interactionUtilisateur
+{
+    class Affichage
+    {
+        +{static}affiche(texte : String)
+        +{static}afficheTour(e : Entitee[*], i : Integer, d : Donjon, numDonjon : Integer, numTour : Integer)
+        +{static}afficherDonjon(d : Donjon)
+        +{static}afficheAction(e : Entitee, numAction : Integer, objetARecup : Boolean)
+        +{static}afficheActionPerso(e : Personnage, numAction : Integer, objetARecup : Boolean)
+        +{static}afficheActionMonstre(e : Monstre, numAction : Integer)
+        +{static}afficheListeEntitee(list Entitee[*])
+        +{static}listeEquipement(list Equipement[*])
+        +{static}selectionTableau(tab Object[])
+        +{static}defaite(e : Entitee)
+        +{static}victoireDonjon(numDonjon : Integer)
+
+    }
+    class Scanner
+    {
+        +{static}demandeString() : String
+        +{static}demandeInt() : Integer
+    }
+}
+package des
+{
+    class Des
+    {
+        +{static}lancerDes(nbFaces : Integer) : Integer
+    }
+}
+package donjon
+{
+    class Donjon
+    {
+        -obstacles : [*]Integer[2]
+            ' Je ne sais pas vraiment comment indiquer une liste de liste d'entiers
+        -posEntitee : Integer[2]
+            ' posEntitee est un Dictionnaire dont la clé est une Entitee
+        -posEquip : Integer[2]
+            ' posEquipe est un Dictionnaire dont la clé est un Equipement
+        -tailleMap : Integer[2]
+
+        +<<create>>Donjon(tailleMap : Integer[2])
+        +<<create>>Donjon(posEntitee : Integer[2], posEquip : Integer[2], obstacles : [*]Integer[2], tailleMap : Integer[2])
+        + {static} creerDonjon(listePersos : Personnage[]) : Donjon
+        - setValeurDonjon(posEntitee : Integer[2], posEquip : Integer[2], obstacles : [*]Integer[2])
+        - {static} donjonAuto(personnages : Personnage[*], numDonjon : Integer ) : Donjon
+        + listeCible(attaquant : Entitee) : ArrayList<Entitee>
+        + {static} randomValue(int borneInf, int borneSup) : Integer
+        + existeAEmplacement(aVerifier : Integer[2]) : Boolean
+        + verifAEmplacement(aVerifier : Integer[2]) : Boolean
+        + getLongueur() : Integer
+        + getLargeur() : Integer
+        + estVaincu() : Boolean
+        + getPosEntitee(entitee : Entitee) : Integer[2]
+        + deplacerEntitee(entitee : Entitee, position : Integer[2])
+        + getEntiteeAPos(position : Integer[2]) : Entitee
+        + equipAPos(position : Integer[2]) : Boolean
+        + getEquipAPos(position : Integer[2]) : Equipement
+        + supprEquip(equip : Equipement)
+        + lancerInitiative() : Entitee[*]
+        + triEntitees(entitees : Entitee[*], initiativeEntitee Integer[*])
+        + getObstacle() : [*]Integer[2]
+        + getPositionEntitee() : Integer[2]
+        + getPositionEquipement() : Integer[2]
+    }
+    Donjon .> Affichage : "<<call>>"
+    Donjon ..> Scanner : "<<call>>"
+}
+package entitee
+{
+    abstract class Entitee
+    {
+        #stats : Integer[5]
+        #equipement : Equipement[2]
+        #pvActuelle : Integer
+        +<<create>>Entitee()
+        +<<create>>Entitee(s : int[5])
+        +<<create>>Entitee(s : Integer[5], e : Equipement[2])
+        +seFaireAttaquer(jetAttaque : Integer) : Boolean
+        +sePrendreDegats(degats : Integer)
+        +seDeplacer(distance : Integer) : Boolean
+        +attaquer(ennemie : Entitee)
+        +choisirCible(cibles : ArrayList<Entitee>) : Entitee
+        +getPorteeArme() : Integer
+        +estVivant() : Boolean
+        +lancerInitiative() : Integer
+        +getForce() : Integer
+        +getDexterite() : Integer
+        +getVitesse() : Integer
+        +getPv() : Integer
+        +getPvActuelle() : Integer
+        +getNomArmure() : String
+        +getArme(): Arme
+        +{abstract}getNom() : String
+        +{abstract}getDescription() : String
+    }
+
+    Entitee .> Affichage : "<<call>>"
+    Entitee ..> Scanner : "<<call>>"
+
+    package Personnage
+    {
+        class Personnage extends entitee.Entitee
+        {
+            -nom : String
+            -race : Race
+            -classe : Classe
+            -inventaire : Equipement[*]
+            +<<create>>Personnage()
+            +<<create>>Personnage(nom : String, r : Race, c : Class)
+            +setPerso()
+            +equiper(e : Integer)
+            +equiperArme()
+            +equiperArmure()
+            +ramasserObjet(objet : Equipement)
+            +getTailleInventaire() : Integer
+            +{static}creerPersonnage() : Personnage
+            +getInventaire() : Equipement[*]
+            +getNom() : String
+            +getDescription : String
+            +getInitiale : String
+        }
+        Personnage .> Affichage : "<<call>>"
+        Personnage .> Scanner : "<<call>>"
+        Personnage o-down-> "1\n race" race.Race: est un >
+        Personnage o-down-> "1\n classe" classe.Classe: est un >
+        Entitee *-right--> "2\n equipement" .equipement.Equipement: a equiper >
+        Personnage *-right--> "*\n inventaire" equipement.Equipement: possède >
+        Package race
+        {
+            abstract class Race
+            {
+                +{abstract}getStats() : Integer[5]
+                +{abstract}getPv() : Integer
+                +{abstract}getForce() : Integer
+                +{abstract}getDex() : Integer
+                +{abstract}getVitesse() : Integer
+                +{abstract}getInitiative() : Integer
+            }
+            class Nain extends Race
+            {
+                -{static}stats : Integer[5]
+                +<<create>>Nain()
+            }
+            class  Humain extends Race
+            {
+                -{static}stats : Integer[5]
+                +<<create>>Humain()
+            }
+            class  Elfe extends Race
+            {
+                -{static}stats : Integer[5]
+                +<<create>>Elfe()
+            }
+            class  Halfelin extends Race
+            {
+                -{static}stats : Integer[5]
+                +<<create>>Halfelin()
+            }
+        }
+        Package classe
+        {
+            abstract class Classe
+            {
+                +{abstract}getPv() : Integer
+                +{abstract}getEquipement() : Equipement[]
+            }
+            class Clerc extends Classe
+            {
+                -{static} pv : Integer
+                +<<create>>Clerc()
+            }
+            class Guerrier extends Classe
+            {
+                -{static} pv : Integer
+                +<<create>>Guerrier()
+            }
+            class Magicien extends Classe
+            {
+                -{static} pv : Integer
+                +<<create>>Magicien()
+            }
+            class Roublard extends Classe
+            {
+                -{static} pv : Integer
+                +<<create>>Roublard()
+            }
+            Roublard *--> "2\n {static}equipementBase" .equipement.arme.Arme
+            Magicien *--> "2\n {static}equipementBase" .equipement.arme.Arme
+            Clerc *--> "3\n{static}equipementBase" .equipement.Equipement
+            Guerrier *---> "3\n{static}equipementBase" .equipement.Equipement
+        }
+    }
+    class Monstre extends Entitee
+    {
+        -espece : String
+        -numMonstre : Integer
+        +<<create>>Monstre()
+        +<<create>>Monstre(numMonstre : Integer, espece : String, stats : Integer[5], Equipement[2] attaqueEtArmure)
+        +getAppellation() : String
+        +getSymbole() : String
+        +getNom() : String
+        +getDescription() : String
+    }
+
+    class ListeMonstres
+    {
+        -{static}listeMonstres : [3]Monstre[*]
+        -{static}listeMonstresUtilises : [3]Monstre[*]
+        +{static}afficherMonstreDispo()
+        +{static}monstresDispoParDiff(numDonjon : Integer)
+        +{static}nbMonstresDispoParDiff(difficulte : Integer) : Integer
+        +{static}afficherMonstreUtilis()
+        +{static}addMonstre(monstre : Monstre) : Boolean
+        +{static}deDispoADejaUtilise(liste : Integer, monstre : Integer)
+        +{static}utiliserMonstre(listeMonstre : Integer, monstre : Integer) : Monstre
+        +{static}utiliserMonstreAuto(listeMonstre : Integer, monstre : Integer) : Monstre
+        +{static}getNomMonstre(listeMonstre : Integer, monstre : Integer) : String
+    }
+    ListeMonstres .> Affichage : "<<call>>"
+    ListeMonstres ..> Scanner : "<<call>>"
+}
+
+
+package equipement
+{
+    abstract class Equipement
+    {
+        -nom : String
+        -modifStat : Integer[5]
+        +<<create>>Equipement(nom : String)
+        +getModifStat() : Integer[5]
+        +getNom() : String
+    }
+
+    class ListeEquipements
+    {
+        -{static}listeEquipements : [3]Equipement[*]
+        -{static}listeEquipementsUtilises : [3]Equipement[*]
+        +{static}afficherEquipDispo()
+        +{static}afficherEquipUtilis()
+        +{static}addEquipement(equipement : Equipement) : Boolean
+        +{static}deDispoADejaUtilise(liste : Integer, equip : Integer)
+        +{static}utiliserEquipement()
+        +{static}utiliserEquipAuto(listeEquip : Integer, equip : Integer) : Equipement
+    }
+
+    ListeEquipements .> Affichage : "<<call>>"
+    ListeEquipements ..> Scanner : "<<call>>"
+
+    package Armure
+    {
+        Enum Poids
+        {
+            LEGERE
+            LOURD
+        }
+        class Armure extends equipement.Equipement
+        {
+            -cA : Integer
+            -poid : Poids
+            +<<create>>Armure()
+            +<<create>>Armure(nom : String, cA : Integer, poids : Poids)
+            +getCA() : Integer
+        }
+    }
+    package arme
+    {
+        Enum TypeCaC
+        {
+            COURANTE
+            GUERRE
+        }
+        class Arme extends equipement.Equipement
+        {
+            -nbDesDeg : Integer
+            -degats : Integer
+            -portee : Integer
+            -type : TypeCaC
+            +<<create>>Arme()
+            +<<create>>Arme(nom : String, nbDes : Integer, nbFaces : Integer, portee : Integer)
+            +<<create>>Arme(nom : String, nbDes : Integer, nbFaces : Integer, type : TypeCaC)
+            +getPortee() : Integer
+            +infligerDegats() : Integer
+            +getDegats() : String
+            +quelleStat() : Integer
+        }
+    }
+}
+
+package partie
+{
+    class Partie
+    {
+        -donjon : Donjon
+        -perso : Personnage[*]
+        -numDonjon : Integer
+        +<<create>>Partie()
+        +miseEnPlacePerso() : Personnage[*]
+        +lancerPartie()
+        +tour(e : Entitee, choix : String, objetARecup : Boolean) : boolean
+        +tourPerso(p : Personnage, choix : String, objetARecup : Boolean) : boolean
+        +deplacementPossible(entitee : Entitee, pos Integer[2]) : Boolean
+        +attaquePossible(entitee : Entitee, position : Integer[2]) : Boolean
+        +verifEntierValide(e : Integer) return Boolean
+        +verifCharValide(c : String) : Boolean
+        +equiperPerso()
+        +defaite(e : Entitee)
+        +getNumDonjon() : Integer
+    }
+
+    Partie .> Affichage : "<<call>>"
+    Partie .> Scanner : "<<call>>"
+    Partie *-> "\t3\n \t-m_donjon" Donjon : \tse déroule pendant \t\t >
+}
+
+
+    class Main{
+            +{static} main(args: String[*])
+        }
+    Main *-> "1\n -m_progression" Partie : est lancée \t\t >
+
+@enduml

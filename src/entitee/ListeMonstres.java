@@ -133,33 +133,6 @@ public class ListeMonstres{
         }
     }
 
-    public static boolean addMonstre (Monstre Monstre){
-        int difficulte;
-        boolean aPuEtreCree;
-
-        aPuEtreCree = (m_listeMonstres.contains(Monstre)) ? false : true;
-        if (!aPuEtreCree) {
-            return aPuEtreCree;
-        }
-
-        System.out.println("A quelle difficulté voulez-vous assigner le monstre ? : \n 0 - Facile \n 1 - Moyen \n 2 - Difficile ");
-        difficulte = Scanner.demandeInt();
-
-        if(difficulte >= 0 && difficulte < m_listeMonstres.size()){
-            m_listeMonstres.get(difficulte).add(Monstre);
-            aPuEtreCree = true;
-            System.out.println(Monstre.getAppellation() + "a pu être ajouté avec succès à la liste.");
-        }
-        else{
-            System.out.println("La liste choisie n'existe pas.");
-        }
-
-        return aPuEtreCree;
-
-        //et dcp on pourra faire en sorte de redemander à l'utilisateur sil veut ou non retenter la création d'un Monstre
-        //dans le cas où aPuEtreCree est retourné comme false.
-    }
-
     public static void deDispoADejaUtilise(int liste, int monstre){
         m_listeMonstresUtilises.get(liste).add(m_listeMonstres.get(liste).get(monstre));
         m_listeMonstres.get(liste).remove(monstre);
