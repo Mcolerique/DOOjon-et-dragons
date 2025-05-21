@@ -21,4 +21,9 @@ public class Clerc extends Classe{
     {
         return m_equipementBase;
     }
+
+    @Override
+    public String toString() {
+        return "Clerc";
+    }
 }

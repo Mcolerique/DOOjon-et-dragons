@@ -42,6 +42,7 @@ public class Personnage extends Entitee{
             {
                 m_stats[i] = Des.lancerDes(4);
             }
+            m_stats[i]+=3;
         }
         for(int i =0; i<5; i++)
         {
@@ -49,6 +50,7 @@ public class Personnage extends Entitee{
         }
         m_inventaire = new ArrayList<>();
         m_inventaire.addAll(Arrays.asList(m_classe.getEquipement()));
+        m_pvActuelle = m_stats[0];
     }
     public void equiper(int e)
     {
@@ -103,7 +105,7 @@ public class Personnage extends Entitee{
             }
         }
         Affichage.listeEquipement(arme);
-        choix = Scanner.demandeInt();
+        choix = Scanner.demandeInt()-1;
         equiper(index.get(choix));
     }
     public void equiperArmure()
@@ -120,7 +122,7 @@ public class Personnage extends Entitee{
             }
         }
         Affichage.listeEquipement(armure);
-        choix = Scanner.demandeInt();
+        choix = Scanner.demandeInt()-1;
         equiper(index.get(choix));
     }
     public void ramasserObjet(Equipement objet)
@@ -161,6 +163,13 @@ public class Personnage extends Entitee{
     }
     public String getInitiale()
     {
-        return m_nom.substring(0,3);
+        if(m_nom.length() < 3) return m_nom;
+
+        else return m_nom.substring(0,3);
+    }
+
+    @Override
+    public String toString(){
+        return m_nom;
     }
 }

@@ -20,4 +20,9 @@ public abstract class Equipement {
     public String getNom() {
         return m_nom;
     }
+
+    @Override
+    public String toString() {
+        return m_nom;
+    }
 }

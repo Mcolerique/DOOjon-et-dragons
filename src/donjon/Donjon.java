@@ -79,7 +79,7 @@ public class Donjon {
                 int[] positionMonstre = {randomValue(0, tailleTabl[0]), randomValue(0, tailleTabl[1])};
                 placementPossible =  !d.existeAEmplacement(positionMonstre);
                 if(placementPossible){
-                    positionEntitee.put(ListeMonstres.utiliserMonstreAuto(numDonjon, i), positionMonstre);
+                    positionEntitee.put(ListeMonstres.utiliserMonstreAuto(i), positionMonstre);
                 }
             }while (!placementPossible);
         }
@@ -102,7 +102,7 @@ public class Donjon {
                 int[] positionEquipement = {randomValue(0, tailleTabl[0]), randomValue(0, tailleTabl[1])};
                 placementPossible =  !d.existeAEmplacement(positionEquipement);
                 if(placementPossible){
-                    positionEquip.put(ListeEquipements.utiliserEquipAuto(numDonjon, i), positionEquipement);
+                    positionEquip.put(ListeEquipements.utiliserEquipAuto(i), positionEquipement);
                 }
             }while (!placementPossible);
         }
@@ -123,12 +123,12 @@ public class Donjon {
         do {
             Affichage.affiche("En longueur ?");
             tailleTabl[0] = Scanner.demandeInt();
-        }while (tailleTabl[0] < 15 && tailleTabl[0] > 25);
+        }while (tailleTabl[0] < 15 || tailleTabl[0] > 25);
 
         do {
             Affichage.affiche("En largeur ?");
             tailleTabl[1] = Scanner.demandeInt();
-        }while (tailleTabl[1] < 15 && tailleTabl[1] > 25);
+        }while (tailleTabl[1] < 15 || tailleTabl[1] > 25);
 
 
         //Limiter le nbr d'obstacles à placer à longueur*largeurCarte - (longueur-1)*(largeur-1)Carte
@@ -158,24 +158,22 @@ public class Donjon {
 
         Hashtable<Entitee, int[]> positionEntitee = new Hashtable<>();
         ListeMonstres.afficherMonstreDispo();
-        System.out.println("De quelle liste voulez-vous placer un monstre ?");
-        int listeMonstre = Scanner.demandeInt();
         Affichage.affiche("Combien ?");
         int numMonstre;
         do{
             numMonstre = Scanner.demandeInt();
-        }while(numMonstre <= ListeMonstres.nbMonstresDispoParDiff(listeMonstre));
+        }while(numMonstre <= ListeMonstres.nbMonstresDispo());
 
         for(int i = 0; i < numMonstre; i++) {
             boolean placementPossible;
             do {
-                Affichage.affiche(ListeMonstres.getNomMonstre(listeMonstre, numMonstre) + ". Où voulez-vous le placer ? (Format x;y)x\n");
+                Affichage.affiche(ListeMonstres.getNomMonstre(numMonstre) + ". Où voulez-vous le placer ? (Format x;y)x\n");
                 String emplacementMonstre = Scanner.demandeString();
                 String[] coordonnees = emplacementMonstre.split("[;]");
                 int[] positionMonstre = {Integer.parseInt(coordonnees[0]), Integer.parseInt(coordonnees[1])};
                 placementPossible =  !d.existeAEmplacement(positionMonstre);
                 if(placementPossible){
-                    positionEntitee.put(ListeMonstres.utiliserMonstre(listeMonstre, i),positionMonstre);
+                    positionEntitee.put(ListeMonstres.utiliserMonstre(i),positionMonstre);
                 }
             }while (!placementPossible);
         }
@@ -207,7 +205,7 @@ public class Donjon {
                 int[] positionEquipement = {Integer.parseInt(coordonnees[0]), Integer.parseInt(coordonnees[1])};
                 placementPossible =  !d.existeAEmplacement(positionEquipement);
                 if(placementPossible){
-                    positionEquip.put(ListeEquipements.utiliserEquipAuto(numDonjon, i), positionEquipement);
+                    positionEquip.put(ListeEquipements.utiliserEquipAuto(i), positionEquipement);
                 }
             }while (!placementPossible);
         }
@@ -332,6 +330,8 @@ public class Donjon {
 
     public Entitee getEntiteeAPos(int[] position){
         for(Entitee entitee : m_positionEntitee.keySet()){
+            System.out.print(entitee.getNom() + "\n");
+            System.out.println("x" + m_positionEntitee.get(entitee)[0] + " y" + m_positionEntitee.get(entitee)[1] + "\n");
             if(m_positionEntitee.get(entitee)[0] == position[0] && m_positionEntitee.get(entitee)[1] == position[1]){
                 return entitee;
             }
@@ -342,9 +342,11 @@ public class Donjon {
     public boolean equipAPos(int[] position){
         boolean equipAPos = false;
         for(Equipement equip : m_positionEquip.keySet()){
-            if(m_positionEntitee.get(equip)[0] == position[0] && m_positionEntitee.get(equip)[1] == position[1]){
+
+            if(m_positionEquip.get(equip)[0] == position[0] && m_positionEquip.get(equip)[1] == position[1]){
                 equipAPos = true;
             }
+
         }
         return equipAPos;
     }

@@ -97,7 +97,7 @@ public abstract class Entitee {
     }
     public boolean estVivant()
     {
-        return m_pvActuelle <= 0;
+        return m_pvActuelle > 0;
     }
     public int lancerInitiative()
     {

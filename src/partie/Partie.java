@@ -9,6 +9,8 @@ import interactionUtilisateur.Scanner;
 
 import java.util.ArrayList;
 
+import static java.lang.Math.abs;
+
 public class Partie {
     private Donjon m_donjon;
     private final ArrayList<Personnage> m_perso;
@@ -88,6 +90,7 @@ public class Partie {
             while (!finAction)
             {
                 objetARecup = m_donjon.equipAPos(m_donjon.getPosEntitee(e));
+                Affichage.afficherDonjon(m_donjon);
                 Affichage.afficheAction(e, i, objetARecup);
                 choix = Scanner.demandeString();
                 finAction = tour(e, choix, objetARecup);
@@ -102,8 +105,8 @@ public class Partie {
         switch (choix.substring(0,3)) {
             case "att":
                 x = choix.toUpperCase().charAt(4);
-                pos[0] = (a + x) % 26;
-                pos[1] = Integer.parseInt(choix.substring(5));
+                pos[0] = ((a + x) % 26)-1;
+                pos[1] = Integer.parseInt(choix.substring(5))-1;
                 if (!attaquePossible(e, pos)) {
                     Affichage.affiche("Attaque impossible, sélectionnez un emplacement valide");
                     return false;
@@ -120,8 +123,8 @@ public class Partie {
                     Affichage.affiche("Déplacement impossible, sélectionnez un emplacement valide");
                     return false;
                 }
-                pos[0] = (a + x) % 26;
-                pos[1] = Integer.parseInt(choix.substring(5));
+                pos[0] = ((a + x) % 26)-1;
+                pos[1] = Integer.parseInt(choix.substring(5))-1;
                 if(!verifEntierValide(pos[1]) || !deplacementPossible(e, pos))
                 {
                     Affichage.affiche("Déplacement impossible, sélectionnez un emplacement valide");
@@ -174,13 +177,13 @@ public class Partie {
     {
         int[] posEntitee = m_donjon.getPosEntitee(entitee);
         int distance = (int)Math.sqrt(Math.pow(pos[0] - posEntitee[0], 2) + Math.pow(pos[1] - posEntitee[1], 2));
-        return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.seDeplacer(distance) && m_donjon.existeAEmplacement(pos);
+        return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.seDeplacer(abs(distance)) && m_donjon.existeAEmplacement(pos);
     }
     public boolean attaquePossible(Entitee entitee, int[] pos)
     {
         int[] posEntitee = m_donjon.getPosEntitee(entitee);
         int distance = (int)Math.sqrt(Math.pow(pos[0] - posEntitee[0], 2) + Math.pow(pos[1] - posEntitee[1], 2));
-        return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.getPorteeArme()<distance;
+        return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.getPorteeArme()>=distance;
     }
     public boolean verifEntierValide(int e)
     {

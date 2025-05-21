@@ -7,4 +7,6 @@ public abstract class Race {
     public abstract int getDex();
     public abstract int getVitesse();
     public abstract int getInitiative();
+
+
 }

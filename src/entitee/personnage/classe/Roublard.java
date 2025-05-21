@@ -21,4 +21,9 @@ public class Roublard extends Classe{
     {
         return m_equipementBase;
     }
+
+    @Override
+    public String toString() {
+        return "Roublard";
+    }
 }

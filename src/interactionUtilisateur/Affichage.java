@@ -59,7 +59,7 @@ public class Affichage {
         // Affichage final
         affiche(sb.toString());
     }
-    public void afficherDonjon(Donjon d) {
+    public static void afficherDonjon(Donjon d) {
         int lignes = d.getLongueur();
         int colonnes = d.getLargeur();
         String[][] grille = new String[lignes][colonnes];

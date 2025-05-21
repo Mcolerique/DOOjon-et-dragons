@@ -21,4 +21,9 @@ public class Guerrier extends Classe{
     public Equipement[] getEquipement() {
         return m_equipementBase;
     }
+
+    @Override
+    public String toString() {
+        return "Guerrier";
+    }
 }
