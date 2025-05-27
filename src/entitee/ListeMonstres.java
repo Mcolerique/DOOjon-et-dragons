@@ -58,13 +58,12 @@ public class ListeMonstres{
     }
 
     public static void afficherMonstreUtilis(){
-        for(int i = 0; i < m_listeMonstres.size(); i++){
+        for(int i = 0; i < m_listeMonstresUtilises.size(); i++){
             System.out.println("\t Monstre n°" + i + " : " + m_listeMonstres.get(i).getAppellation() + "\n");
         }
-        System.out.println("\n\n");
+        System.out.println("\n");
     }
 
-<<<<<<< HEAD
     public static boolean addMonstre (Monstre Monstre){
         int difficulte;
         boolean aPuEtreCree;
@@ -83,21 +82,21 @@ public class ListeMonstres{
 
     }
 
-    public static void deDispoADejaUtilise(int monstre){
+    public static void deDispoADejaUtilise(int monstre) {
         m_listeMonstresUtilises.add(m_listeMonstres.get(monstre));
         m_listeMonstres.remove(monstre);
-=======
+    }
+
     public static void deDispoADejaUtilise(int liste, int monstre){
-        m_listeMonstresUtilises.get(liste).add(m_listeMonstres.get(liste).get(monstre));
-        m_listeMonstres.get(liste).remove(monstre);
->>>>>>> 74fa4d3225f44c7ddd5553ceab9bd0861f25ad65
+        m_listeMonstresUtilises.add(m_listeMonstres.get(monstre));
+        m_listeMonstres.remove(monstre);
     }
 
     public static Monstre utiliserMonstre(int monstre){
-        System.out.println("Quel monstre voulez-vous placer ?");
+        //System.out.println("Quel monstre voulez-vous placer ?");
         //int numMonstre = Scanner.demandeInt();
         deDispoADejaUtilise(monstre);
-        System.out.println("Monstre ajouté. \n Monstres placés : \n\n");
+        System.out.println("Monstre ajouté. \nMonstres placés : \n");
         afficherMonstreUtilis();
         return m_listeMonstres.get(monstre);
     }

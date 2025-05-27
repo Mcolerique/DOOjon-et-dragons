@@ -146,10 +146,17 @@ public class Donjon {
             boolean placementPossible;
             do {
                 Affichage.affiche(("Obstacle n°" + i + ". Où voulez-vous le placer ? (Format x;y)x\n"));
-                String emplacementObstacle = Scanner.demandeString();
-                String[] coordonnees = emplacementObstacle.split("[;]");
-                int[] positionObstacle = {Integer.parseInt(coordonnees[0]), Integer.parseInt(coordonnees[1])};
-                placementPossible =  !d.existeAEmplacement(positionObstacle);
+                String emplacementObstacle;
+                int[] positionObstacle = {0,0};
+                String[] coordonnees = {"",""};
+                do {
+                    emplacementObstacle = Scanner.demandeString();
+                    coordonnees = emplacementObstacle.split("[;]");
+                    if(!emplacementObstacle.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
+                }while(!emplacementObstacle.contains(";"));
+                positionObstacle[0] = Integer.parseInt(coordonnees[0]);
+                positionObstacle[1] = Integer.parseInt(coordonnees[1]);
+                placementPossible = !d.existeAEmplacement(positionObstacle);
                 if(placementPossible){
                     obstaclesDonjon.add(positionObstacle);
                 }
@@ -157,25 +164,41 @@ public class Donjon {
         }
 
         Hashtable<Entitee, int[]> positionEntitee = new Hashtable<>();
-        ListeMonstres.afficherMonstreDispo();
-        Affichage.affiche("Combien ?");
-        int numMonstre;
+        Affichage.affiche("Il y a " + ListeMonstres.nbMonstresDispo() + " monstre(s) de disponible(s)\n Combien de monstres souhaitez-vous placer ?\n");
+        int nbrMonstres;
         do{
-            numMonstre = Scanner.demandeInt();
-        }while(numMonstre <= ListeMonstres.nbMonstresDispo());
+            nbrMonstres = Scanner.demandeInt();
+        }while(!(nbrMonstres <= ListeMonstres.nbMonstresDispo()));
 
-        for(int i = 0; i < numMonstre; i++) {
+        for(int i = 0; i < nbrMonstres; i++) {
+            Affichage.affiche("Monstres disponibles : \n\n");
+            ListeMonstres.afficherMonstreDispo();
             boolean placementPossible;
             do {
+                int numMonstre = 0;
+                do{
+                    Affichage.affiche("Quel monstre ? Entrez son numéro.");
+                    numMonstre = Scanner.demandeInt();
+                }while(!(numMonstre < ListeMonstres.nbMonstresDispo()));
+
                 Affichage.affiche(ListeMonstres.getNomMonstre(numMonstre) + ". Où voulez-vous le placer ? (Format x;y)x\n");
-                String emplacementMonstre = Scanner.demandeString();
-                String[] coordonnees = emplacementMonstre.split("[;]");
-                int[] positionMonstre = {Integer.parseInt(coordonnees[0]), Integer.parseInt(coordonnees[1])};
-                placementPossible =  !d.existeAEmplacement(positionMonstre);
+                String emplacementMonstre;
+                int[] positionMonstre = {0,0};
+                String[] coordonnees = {"",""};
+                do {
+                    emplacementMonstre = Scanner.demandeString();
+                    coordonnees = emplacementMonstre.split("[;]");
+                    if(!emplacementMonstre.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
+                }while(!emplacementMonstre.contains(";"));
+                positionMonstre[0] = Integer.parseInt(coordonnees[0]);
+                positionMonstre[1] = Integer.parseInt(coordonnees[1]);
+                placementPossible = !d.existeAEmplacement(positionMonstre);
                 if(placementPossible){
-                    positionEntitee.put(ListeMonstres.utiliserMonstre(i),positionMonstre);
+                    positionEntitee.put(ListeMonstres.utiliserMonstre(numMonstre), positionMonstre);
                 }
+
             }while (!placementPossible);
+
         }
 
 
