@@ -255,6 +255,13 @@ public class Affichage {
         // Affichage final
         affiche(sb.toString());
     }
+    public static void afficheActionMJ()
+    {
+        affiche(" que souhaitez vous faire ?\n");
+        affiche("  - attaquer une entitée (att <Case>)\n");
+        affiche("  - deplacer une Entitée (dep <CaseEntitée> <CaseDestination>)\n");
+        affiche("  - ajouter un obstacle (obs <Case>)\n");
+    }
     public static void afficheListeEntitee(ArrayList<Entitee> list){
         String txt = "0.Rien sélectionner   ";
         for (int j = 0; j<list.size();j++)

@@ -414,4 +414,16 @@ public class Donjon {
     public Hashtable<Equipement, int[]> getPositionEquipement() {
         return m_positionEquip;
     }
+    public boolean ajouterObstacle(int[] position)
+    {
+        if(verifAEmplacement(position))
+        {
+            m_obstacles.add(position);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

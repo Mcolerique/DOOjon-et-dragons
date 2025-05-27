@@ -64,6 +64,7 @@ public class ListeMonstres{
         System.out.println("\n\n");
     }
 
+<<<<<<< HEAD
     public static boolean addMonstre (Monstre Monstre){
         int difficulte;
         boolean aPuEtreCree;
@@ -85,6 +86,11 @@ public class ListeMonstres{
     public static void deDispoADejaUtilise(int monstre){
         m_listeMonstresUtilises.add(m_listeMonstres.get(monstre));
         m_listeMonstres.remove(monstre);
+=======
+    public static void deDispoADejaUtilise(int liste, int monstre){
+        m_listeMonstresUtilises.get(liste).add(m_listeMonstres.get(liste).get(monstre));
+        m_listeMonstres.get(liste).remove(monstre);
+>>>>>>> 74fa4d3225f44c7ddd5553ceab9bd0861f25ad65
     }
 
     public static Monstre utiliserMonstre(int monstre){

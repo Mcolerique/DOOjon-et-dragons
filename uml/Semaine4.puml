@@ -3,7 +3,6 @@
 skinparam linetype ortho
 skinparam classAttributeIconSize 0
 skinparam classFontStyle Bold
-skinparam style strictuml
 hide empty members
 package interactionUtilisateur
 {
@@ -79,7 +78,6 @@ package entitee
     abstract class Entitee
     {
         #stats : Integer[5]
-        #equipement : Equipement[2]
         #pvActuelle : Integer
         +<<create>>Entitee()
         +<<create>>Entitee(s : int[5])
@@ -111,9 +109,6 @@ package entitee
         class Personnage extends entitee.Entitee
         {
             -nom : String
-            -race : Race
-            -classe : Classe
-            -inventaire : Equipement[*]
             +<<create>>Personnage()
             +<<create>>Personnage(nom : String, r : Race, c : Class)
             +setPerso()
@@ -125,8 +120,8 @@ package entitee
             +{static}creerPersonnage() : Personnage
             +getInventaire() : Equipement[*]
             +getNom() : String
-            +getDescription : String
-            +getInitiale : String
+            +getDescription() : String
+            +getInitiale() : String
         }
         Personnage .> Affichage : "<<call>>"
         Personnage .> Scanner : "<<call>>"
@@ -266,11 +261,11 @@ package equipement
         class Armure extends equipement.Equipement
         {
             -cA : Integer
-            -poid : Poids
             +<<create>>Armure()
             +<<create>>Armure(nom : String, cA : Integer, poids : Poids)
             +getCA() : Integer
         }
+        Armure *-> "1\n poid" Poids
     }
     package arme
     {
@@ -284,7 +279,6 @@ package equipement
             -nbDesDeg : Integer
             -degats : Integer
             -portee : Integer
-            -type : TypeCaC
             +<<create>>Arme()
             +<<create>>Arme(nom : String, nbDes : Integer, nbFaces : Integer, portee : Integer)
             +<<create>>Arme(nom : String, nbDes : Integer, nbFaces : Integer, type : TypeCaC)
@@ -293,6 +287,7 @@ package equipement
             +getDegats() : String
             +quelleStat() : Integer
         }
+        Arme *-> "1\n type"TypeCaC
     }
 }
 
@@ -327,5 +322,4 @@ package partie
             +{static} main(args: String[*])
         }
     Main *-> "1\n -m_progression" Partie : est lancée \t\t >
-
 @enduml
