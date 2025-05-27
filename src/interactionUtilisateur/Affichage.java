@@ -78,14 +78,16 @@ public class Affichage {
         for (int[] pos : obstacle) {
             int x = pos[0];
             int y = pos[1];
-            grille[x][y] = "[ ]";
+            if (y >= 0 && y < lignes && x >= 0 && x < colonnes)
+                grille[y][x] = "[ ]";
         }
 
         // Équipements : *
         for (Map.Entry<Equipement, int[]> entry : positionEquipement.entrySet()) {
             int x = entry.getValue()[0];
             int y = entry.getValue()[1];
-            grille[x][y] = " * ";
+            if (y >= 0 && y < lignes && x >= 0 && x < colonnes)
+                grille[y][x] = " * ";
         }
 
         // Entités : initiales pour Personnage, symbole pour Monstre
@@ -98,12 +100,14 @@ public class Affichage {
 
             if (entite instanceof Personnage) {
                 String nom = ((Personnage) entite).getInitiale(); // Ex: "Alt"
-                symbole = " " + nom.charAt(0) + " ";
+                if (nom.length() >= 1)
+                    symbole = " " + nom.charAt(0) + " ";
             } else if (entite instanceof Monstre) {
                 symbole = " " + ((Monstre) entite).getSymbole() + " ";
             }
 
-            grille[x][y] = symbole;
+            if (y >= 0 && y < lignes && x >= 0 && x < colonnes)
+                grille[y][x] = symbole;
         }
 
         // Construction de l'affichage

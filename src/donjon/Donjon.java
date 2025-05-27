@@ -286,21 +286,17 @@ public class Donjon {
         boolean existe = false;
 
         //Verification avec les obstacles
-        for(int i = 0; i<m_obstacles.size(); i++){
-            existe = (m_obstacles.get(i)[0] == aVerifier[0] && m_obstacles.get(i)[1] == aVerifier[1]) ? true : false;
-        }
-
+        existe = m_obstacles.contains(aVerifier);
 
         //Verification avec les entitées (monstres et personnages)
         for(int[] positionEntitee : m_positionEntitee.values()){
-            existe = (positionEntitee[0] == aVerifier[0] && positionEntitee[1] == aVerifier[1]) ? true : false;
+            existe = positionEntitee[0] == aVerifier[0] && positionEntitee[1] == aVerifier[1];
         }
 
         //Verification avec les équipements
         for(int[] positionEquip : m_positionEquip.values()){
-            existe = (positionEquip[0] == aVerifier[0] && positionEquip[1] == aVerifier[1]) ? true : false;
+            existe = positionEquip[0] == aVerifier[0] && positionEquip[1] == aVerifier[1];
         }
-
 
         return existe;
     }
