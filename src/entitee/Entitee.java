@@ -43,14 +43,7 @@ public abstract class Entitee {
     }
     public boolean seDeplacer(int distance)
     {
-        if(distance > m_stats[3])
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return distance > m_stats[3];
     }
     public void attaquer(Entitee ennemie)
     {
@@ -59,28 +52,6 @@ public abstract class Entitee {
         {
             ennemie.sePrendreDegats(m_arme.infligerDegats());
         }
-    }
-    public Entitee choisirCible(ArrayList<Entitee> list)
-    {
-        boolean f = false;
-        int choix;
-        while (f) {
-            Affichage.afficheListeEntitee(list);
-            choix = Scanner.demandeInt() - 1;
-            if(choix > list.size())
-            {
-                Affichage.affiche("Index invalide, veillez sélectionnez un index valide");
-            }
-            else if(choix < 0)
-            {
-                return null;
-            }
-            else
-            {
-                return list.get(choix);
-            }
-        }
-        return null;
     }
     public int getPorteeArme()
     {
