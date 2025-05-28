@@ -97,14 +97,16 @@ public class Affichage {
             int x = entry.getValue()[0];
             int y = entry.getValue()[1];
 
-            String symbole = " ? ";
+            String symbole;
 
             if (entite instanceof Personnage) {
-                String nom = ((Personnage) entite).getInitiale(); // Ex: "Alt"
-                if (nom.length() >= 1)
-                    symbole = " " + nom.charAt(0) + " ";
+                String nom = ((Personnage) entite).getInitiale(); // ex : "Alt"
+                symbole = centerText(nom, 3);
             } else if (entite instanceof Monstre) {
-                symbole = " " + ((Monstre) entite).getSymbole() + " ";
+                String s = ((Monstre) entite).getSymbole(); // ex : "X^"
+                symbole = centerText(s, 3);
+            } else {
+                symbole = " ? ";
             }
 
             if (y >= 0 && y < lignes && x >= 0 && x < colonnes)
@@ -116,7 +118,8 @@ public class Affichage {
 
         // En-tête colonnes (A B C ...)
         sb.append("     ");
-        for (char col = 'A'; col < 'A' + colonnes; col++) {
+        for (int j = 0; j < colonnes; j++) {
+            char col = (char) ('A' + j);
             sb.append(" ").append(col).append(" ");
         }
         sb.append("\n");
@@ -144,6 +147,15 @@ public class Affichage {
 
         // Affichage final
         affiche(sb.toString());
+    }
+
+    // Fonction utilitaire : centre une chaîne sur N caractères
+    private static String centerText(String text, int width) {
+        if (text.length() >= width) return text.substring(0, width);
+        int padding = width - text.length();
+        int padStart = padding / 2;
+        int padEnd = padding - padStart;
+        return " ".repeat(padStart) + text + " ".repeat(padEnd);
     }
     public static void afficheAction(Entitee e, int numAction, boolean objetARecup)
     {
