@@ -21,9 +21,9 @@ public class ListeMonstres{
 
     private static ArrayList<Monstre> m_listeMonstres = new ArrayList<>() {{
 
-        add(new Monstre(1, "Gobelin", new int[] {25,15,14,0,0},
+        add(new Monstre(1, "Gobelin", new int[] {25,15,14,1,0},
                 new Equipement[]{new Arme("Bâton", 1, 4, 1), new Armure("Peau", 7, Poids.LEGERE)}));
-        add(new Monstre(2, "Gobelin", new int[] {25,9,17,0,0},
+        add(new Monstre(2, "Gobelin", new int[] {25,9,17,1,0},
                 new Equipement[]{new Arme("Bâton", 1, 4, 1), new Armure("Peau", 7, Poids.LEGERE)}));
         add(new Monstre(1, "Troll", new int[] {21,17,0,13,0},
                 new Equipement[]{new Arme("Catapulte", 1, 4, 6), new Armure("Peau", 7, Poids.LEGERE)}));

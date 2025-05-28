@@ -65,7 +65,7 @@ public class Donjon {
             boolean placementPossible;
             do {
                 int[] positionObstacle = {randomValue(0, tailleTabl[0]), randomValue(0, tailleTabl[1])};
-                placementPossible =  !d.existeAEmplacement(positionObstacle);
+                placementPossible = !d.existeAEmplacement(positionObstacle, obstaclesDonjon, null, null);
                 if(placementPossible){
                     obstaclesDonjon.add(positionObstacle);
                 }
@@ -77,7 +77,7 @@ public class Donjon {
             boolean placementPossible;
             do {
                 int[] positionMonstre = {randomValue(0, tailleTabl[0]), randomValue(0, tailleTabl[1])};
-                placementPossible =  !d.existeAEmplacement(positionMonstre);
+                placementPossible = !d.existeAEmplacement(positionMonstre, obstaclesDonjon, positionEntitee, null);
                 if(placementPossible){
                     positionEntitee.put(ListeMonstres.utiliserMonstreAuto(i), positionMonstre);
                 }
@@ -88,7 +88,7 @@ public class Donjon {
             boolean placementPossible;
             do {
                 int[] positionPerso = {randomValue(0, tailleTabl[0]), randomValue(0, tailleTabl[1])};
-                placementPossible =  !d.existeAEmplacement(positionPerso);
+                placementPossible = !d.existeAEmplacement(positionPerso, obstaclesDonjon, positionEntitee, null);
                 if(placementPossible){
                     positionEntitee.put(personnage, positionPerso);
                 }
@@ -100,7 +100,7 @@ public class Donjon {
             boolean placementPossible;
             do {
                 int[] positionEquipement = {randomValue(0, tailleTabl[0]), randomValue(0, tailleTabl[1])};
-                placementPossible =  !d.existeAEmplacement(positionEquipement);
+                placementPossible = !d.existeAEmplacement(positionEquipement, obstaclesDonjon, positionEntitee, positionEquip);
                 if(placementPossible){
                     positionEquip.put(ListeEquipements.utiliserEquipAuto(i), positionEquipement);
                 }
@@ -273,7 +273,7 @@ public class Donjon {
                 }while(!emplacementEquip.contains(";"));
                 posEquip[0] = Integer.parseInt(coordonnees[0]);
                 posEquip[1] = Integer.parseInt(coordonnees[1]);
-                placementPossible = !d.existeAEmplacement(posEquip, obstaclesDonjon, positionEntitee, null);
+                placementPossible = !d.existeAEmplacement(posEquip, obstaclesDonjon, positionEntitee, positionEquip);
                 if(placementPossible){
                     positionEquip.put(ListeEquipements.utiliserEquipement(numEquip), posEquip);
                 }

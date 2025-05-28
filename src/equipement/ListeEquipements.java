@@ -20,21 +20,17 @@ public class ListeEquipements {
 
 
     private static ArrayList<Equipement> m_listeEquipements = new ArrayList<>(){{
-        add(new Arme("ArmeDistance1", 2, 4, 5));
-        add(new Arme("ArmeCourante1", 2, 4, TypeCaC.COURANTE));
-        add(new Arme("ArmeGuerre1", 2, 4, TypeCaC.GUERRE));
-        add(new Armure("ArmureLegere1", 9, Poids.LEGERE));
-        add(new Armure("ArmureLourde1", 9, Poids.LOURDE));
-        add(new Arme("ArmeDistance2", 2, 4, 5));
-        add(new Arme("ArmeCourante2", 2, 4, TypeCaC.COURANTE));
-        add(new Arme("ArmeGuerre2", 2, 4, TypeCaC.GUERRE));
-        add(new Armure("ArmureLegere2", 9, Poids.LEGERE));
-        add(new Armure("ArmureLourde2", 9, Poids.LOURDE));
-        add(new Arme("ArmeDistance3", 2, 4, 5));
-        add(new Arme("ArmeCourante3", 2, 4, TypeCaC.COURANTE));
-        add(new Arme("ArmeGuerre3", 2, 4, TypeCaC.GUERRE));
-        add(new Armure("ArmureLegere3", 9, Poids.LEGERE));
-        add(new Armure("ArmureLourde3", 9, Poids.LOURDE));
+        add(new Armure("Armure d'écailles", 9, Poids.LEGERE));
+        add(new Armure("Demi-plate", 10, Poids.LEGERE));
+        add(new Armure("Cotte de mailles", 11, Poids.LOURDE));
+        add(new Armure("Harnois", 12, Poids.LOURDE));
+        add(new Arme("Bâton", 1, 6, TypeCaC.COURANTE));
+        add(new Arme("Masse d'armes", 1, 6, TypeCaC.COURANTE));
+        add(new Arme("Epée longue", 1,  8, TypeCaC.GUERRE));
+        add(new Arme("Rapière", 1,  8, TypeCaC.GUERRE));
+        add(new Arme("Arbalète légère", 1, 8, 16));
+        add(new Arme("Fronde", 1, 4, 6));
+        add(new Arme("Arc court", 1, 6, 16));
     }};
 
     private static ArrayList<Equipement> m_listeEquipementsUtilises = new ArrayList<>() {{}};
