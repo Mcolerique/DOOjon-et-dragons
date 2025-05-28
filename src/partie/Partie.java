@@ -86,7 +86,8 @@ public class Partie {
         boolean objetARecup;
         String choix;
         boolean finAction;
-        for(int i=0; i<3; i++)
+        int i = 0;
+        while(i<3 && e.estVivant())
         {
             finAction = false;
             while (!finAction)
@@ -108,6 +109,7 @@ public class Partie {
                     finAction = tourMJ(choix.split("[ ]"));
                 }
             }
+            i++;
         }
     }
     public boolean tour(Entitee e, String[] choix, boolean objetARecup)
@@ -129,13 +131,18 @@ public class Partie {
                     Affichage.affiche("Attaque impossible, sélectionnez un emplacement valide");
                     return false;
                 }
-                Entitee ennemie = m_donjon.getEntiteeAPos(pos);
-                if (ennemie == null)
+                Entitee ennemi = m_donjon.getEntiteeAPos(pos);
+                if (ennemi == null)
                 {
                     Affichage.affiche("Attaque impossible, séléctionnez une entité valide");
                     return false;
                 }
-                e.attaquer(ennemie);
+                else if(e.getType() == ennemi.getType())
+                {
+                    Affichage.affiche("Friendly fire off, selectionner un ennemi valide");
+                    return false;
+                }
+                e.attaquer(ennemi);
                 return true;
             case "mj ":
                 Affichage.affiche(choix[1]);
