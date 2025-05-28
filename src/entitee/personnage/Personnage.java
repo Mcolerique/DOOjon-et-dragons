@@ -94,7 +94,6 @@ public class Personnage extends Entitee{
                 {
                     m_stats[i] -= m_armure.getModifStat()[i];
                 }
-                Affichage.affiche("je suis equiper");
                 break;
             default:
                 Affichage.affiche("erreur");

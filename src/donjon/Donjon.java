@@ -460,7 +460,7 @@ public class Donjon {
 
     public Equipement getEquipAPos(int[] position){
         for(Equipement equip : m_positionEquip.keySet()){
-            if(m_positionEntitee.get(equip)[0] == position[0] && m_positionEntitee.get(equip)[1] == position[1]){
+            if(m_positionEquip.get(equip)[0] == position[0] && m_positionEquip.get(equip)[1] == position[1]){
                 return equip;
             }
         }
