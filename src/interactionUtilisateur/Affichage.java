@@ -7,6 +7,7 @@ import entitee.TypeEntitee;
 import entitee.personnage.Personnage;
 import equipement.Equipement;
 import equipement.arme.Arme;
+import equipement.armure.Armure;
 
 import java.util.*;
 
@@ -177,13 +178,18 @@ public class Affichage {
         sb.append("  Vie : ").append(e.getPvActuelle()).append("/").append(e.getPv()).append("\n");
 
         // Armure
-        String armure = e.getNomArmure();
-        sb.append("  Armure: ").append(armure != null ? armure : "aucune").append("\n");
+        Armure armure = e.getArmure();
+        if (armure != null) {
+            sb.append("  Arme: ").append(armure.getNom());
+
+        } else {
+            sb.append("  Armure: aucune\n");
+        }
 
         // Arme
         Arme arme = e.getArme();
         if (arme != null) {
-            sb.append("  Arme: ").append(arme.getNom())
+            sb.append("  Arme: ").append(arme.getNom() != null ? arme.getNom() : "inconnue")
                     .append(" (dégât: ").append(arme.getDegats())
                     .append(", portée: ").append(arme.getPortee()).append(")\n");
         } else {
@@ -195,7 +201,8 @@ public class Affichage {
         if (inventaire != null && !inventaire.isEmpty()) {
             sb.append("  Inventaire:");
             for (int i = 0; i < inventaire.size(); i++) {
-                sb.append(" [").append(i + 1).append("] ").append(inventaire.get(i).getNom());
+                Equipement equip = inventaire.get(i);
+                sb.append(" [").append(i + 1).append("] ").append(equip != null ? equip.getNom() : "inconnu");
             }
             sb.append("\n");
         } else {
@@ -213,7 +220,7 @@ public class Affichage {
         int actionsRestantes = 3 - numAction;
         sb.append(e.getNom()).append(", il vous reste ").append(actionsRestantes)
                 .append(actionsRestantes == 1 ? " action" : " actions")
-                .append(", que souhaitez vous faire ?\n");
+                .append(", que souhaitez-vous faire ?\n");
 
         // Menu d’actions
         sb.append("  - laisser le maître du jeu commenter l'action précédente (mj <texte>)\n");
@@ -221,8 +228,7 @@ public class Affichage {
         sb.append("  - attaquer (att <Case>)\n");
         sb.append("  - se déplacer (dep <Case>)\n");
         sb.append("  - s'équiper (equ <numero equipement>)\n");
-        if(objetARecup)
-        {
+        if (objetARecup) {
             sb.append("  - ramasser objet (ram)\n");
         }
 
@@ -274,10 +280,10 @@ public class Affichage {
     }
     public static void afficheActionMJ()
     {
-        affiche(" que souhaitez vous faire ?\n");
-        affiche("  - attaquer une entitée (att <Case>)\n");
-        affiche("  - deplacer une Entitée (dep <CaseEntitée> <CaseDestination>)\n");
-        affiche("  - ajouter un obstacle (obs <Case>)\n");
+        affiche(" que souhaitez vous faire ?");
+        affiche("  - attaquer une entitée (att <Case>)");
+        affiche("  - deplacer une Entitée (dep <CaseEntitée> <CaseDestination>)");
+        affiche("  - ajouter un obstacle (obs <Case>)");
     }
     public static void afficheListeEntitee(ArrayList<Entitee> list){
         String txt = "0.Rien sélectionner   ";
@@ -298,7 +304,7 @@ public class Affichage {
     }
     public static void selectionTableau(Object[] tab)
     {
-        String txt = "0.Rien sélectionner   ";
+        String txt = "";
         for (int j = 0; j<tab.length;j++)
         {
             txt += j+1+"."+tab[j].toString() + "   ";

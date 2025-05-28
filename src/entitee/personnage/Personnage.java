@@ -100,39 +100,70 @@ public class Personnage extends Entitee{
                 break;
         }
     }
-    public void choisirArme()
-    {
-        int choix;
-        ArrayList<Integer> index = new ArrayList<Integer>();
+    public void choisirArme() {
+        ArrayList<Integer> index = new ArrayList<>();
         ArrayList<Equipement> arme = new ArrayList<>();
-        for(int i = 0; i < m_inventaire.size(); i++)
-        {
-            if(m_inventaire.get(i).getType() == TypeEquipement.ARME)
-            {
+        for (int i = 0; i < m_inventaire.size(); i++) {
+            if (m_inventaire.get(i).getType() == TypeEquipement.ARME) {
                 arme.add(m_inventaire.get(i));
                 index.add(i);
             }
         }
+
+        if (arme.isEmpty()) {
+            Affichage.affiche("Aucune arme disponible dans l'inventaire.");
+            return;
+        }
+
         Affichage.listeEquipement(arme);
-        choix = Scanner.demandeInt()-1;
-        equiper(index.get(choix));
-    }
-    public void choisirArmure()
-    {
-        int choix;
-        ArrayList<Integer> index = new ArrayList<Integer>();
-        ArrayList<Equipement> armure = new ArrayList<>();
-        for(int i = 0; i < m_inventaire.size(); i++)
-        {
-            if(m_inventaire.get(i).getType() == TypeEquipement.ARMURE)
+
+        try {
+            int choix = Scanner.demandeInt() - 1;
+            if (choix == -1)
             {
+                return;
+            }
+            else if (choix < -1 || choix >= index.size()) {
+                Affichage.affiche("Choix invalide. Aucun équipement sélectionné.");
+                return;
+            }
+            equiper(index.get(choix));
+        } catch (Exception e) {
+            Affichage.affiche("Erreur de saisie. Veuillez entrer un entier valide.");
+        }
+    }
+
+    public void choisirArmure() {
+        ArrayList<Integer> index = new ArrayList<>();
+        ArrayList<Equipement> armure = new ArrayList<>();
+        for (int i = 0; i < m_inventaire.size(); i++) {
+            if (m_inventaire.get(i).getType() == TypeEquipement.ARMURE) {
                 armure.add(m_inventaire.get(i));
                 index.add(i);
             }
         }
+
+        if (armure.isEmpty()) {
+            Affichage.affiche("Aucune armure disponible dans l'inventaire.");
+            return;
+        }
+
         Affichage.listeEquipement(armure);
-        choix = Scanner.demandeInt()-1;
-        equiper(index.get(choix));
+
+        try {
+            int choix = Scanner.demandeInt() - 1;
+            if (choix == -1)
+            {
+                return;
+            }
+            else if (choix < -1 || choix >= index.size()) {
+                Affichage.affiche("Choix invalide. Aucun équipement sélectionné.");
+                return;
+            }
+            equiper(index.get(choix));
+        } catch (Exception e) {
+            Affichage.affiche("Erreur de saisie. Veuillez entrer un entier valide.");
+        }
     }
     public void ramasserObjet(Equipement objet)
     {
@@ -144,21 +175,42 @@ public class Personnage extends Entitee{
     }
     public static Personnage creePersonnage()
     {
-        int choix;
         Race[] raceDispo = {new Humain(), new Halfelin(), new Elfe(), new Nain()};
         Classe[] classeDispo = {new Guerrier(), new Magicien(), new Clerc(), new Roublard()};
 
         Affichage.affiche("Nom du personnage : ");
         String nom = Scanner.demandeString();
-        Affichage.selectionTableau(raceDispo);
-        choix = Scanner.demandeInt() -1 ;
-        Race r = raceDispo[choix];
-        Affichage.selectionTableau(classeDispo);
-        choix = Scanner.demandeInt() -1 ;
-        Classe c  = classeDispo[choix];
+
+        Race r = null;
+        Classe c = null;
+
+        try {
+            Affichage.selectionTableau(raceDispo);
+            int choixRace = Scanner.demandeInt() - 1;
+            if (choixRace < 0 || choixRace >= raceDispo.length) {
+                Affichage.affiche("Choix de race invalide. Race par défaut (Humain) sélectionnée.");
+                r = new Humain();
+            } else {
+                r = raceDispo[choixRace];
+            }
+
+            Affichage.selectionTableau(classeDispo);
+            int choixClasse = Scanner.demandeInt() - 1;
+            if (choixClasse < 0 || choixClasse >= classeDispo.length) {
+                Affichage.affiche("Choix de classe invalide. Classe par défaut (Guerrier) sélectionnée.");
+                c = new Guerrier();
+            } else {
+                c = classeDispo[choixClasse];
+            }
+
+        } catch (Exception e) {
+            Affichage.affiche("Erreur de saisie. Personnage par défaut (Humain / Guerrier) utilisé.");
+            r = new Humain();
+            c = new Guerrier();
+        }
+
         return new Personnage(nom, r, c);
     }
-
     public ArrayList<Equipement> getInventaire() {
         return m_inventaire;
     }

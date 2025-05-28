@@ -93,6 +93,7 @@ public abstract class Entitee {
     {
         return m_arme;
     }
+    public Armure getArmure(){ return m_armure; }
     public TypeEntitee getType()
     {
         return m_type;
