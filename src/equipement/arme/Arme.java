@@ -1,6 +1,7 @@
 package equipement.arme;
 import des.Des;
 import equipement.Equipement;
+import equipement.TypeEquipement;
 
 public class Arme extends Equipement {
     private int m_nbDesDeg;
@@ -14,6 +15,7 @@ public class Arme extends Equipement {
         m_degats = 1;
         m_portee = 1;
         m_type = TypeCaC.COURANTE;
+        m_typeEquipement = TypeEquipement.ARME;
     }
 
     public Arme(String nom, int nbDes, int nbFaces, int portee){
@@ -22,6 +24,7 @@ public class Arme extends Equipement {
         m_degats = nbFaces;
         m_portee = portee;
         m_type = null;
+        m_typeEquipement = TypeEquipement.ARME;
     }
 
     public Arme(String nom, int nbDes, int nbFaces, TypeCaC type){
@@ -30,7 +33,8 @@ public class Arme extends Equipement {
         m_degats = nbFaces;
         m_portee = 1;
         m_type = type;
-        if(type == TypeCaC.GUERRE){
+        m_typeEquipement = TypeEquipement.ARME;
+        if(m_type == TypeCaC.GUERRE){
             m_modifStat[3] = -2;
             m_modifStat[1] = 4;
         }

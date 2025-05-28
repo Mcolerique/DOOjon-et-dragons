@@ -2,9 +2,11 @@ package entitee.personnage;
 
 import des.Des;
 import entitee.Entitee;
+import entitee.TypeEntitee;
 import entitee.personnage.classe.*;
 import entitee.personnage.race.*;
 import equipement.Equipement;
+import equipement.TypeEquipement;
 import equipement.arme.Arme;
 import equipement.armure.Armure;
 import interactionUtilisateur.Affichage;
@@ -24,6 +26,7 @@ public class Personnage extends Entitee{
         m_nom = "Saral Porcattache";
         m_race = new Halfelin();
         m_classe = new Guerrier();
+        m_type = TypeEntitee.PERSONNAGE;
         setPerso();
     }
     public Personnage(String nom, Race r, Classe c)
@@ -31,6 +34,7 @@ public class Personnage extends Entitee{
         m_nom = nom;
         m_race = r;
         m_classe = c;
+        m_type = TypeEntitee.PERSONNAGE;
         setPerso();
     }
     public void setPerso()
@@ -54,51 +58,57 @@ public class Personnage extends Entitee{
     }
     public void equiper(int e)
     {
-        if( m_inventaire.get(e).getClass() == Arme.class)
+        TypeEquipement t = m_inventaire.get(e).getType();
+        switch (t)
         {
-            Arme aEquiper = (Arme) m_inventaire.get(e);
-            if(m_equipement[1] != null)
-            {
+            case ARME :
+                Arme armeAEquiper = (Arme) m_inventaire.get(e);
+                if(m_arme != null)
+                {
+                    for (int i = 0; i<5; i++)
+                    {
+                        m_stats[i] += m_arme.getModifStat()[i];
+                    }
+                    m_inventaire.add(m_arme);
+                }
+                m_arme = armeAEquiper;
+                m_inventaire.remove(armeAEquiper);
                 for (int i = 0; i<5; i++)
                 {
-                    m_stats[i] += m_equipement[1].getModifStat()[i];
+                    m_stats[i] -= m_arme.getModifStat()[i];
                 }
-                m_inventaire.add(m_equipement[1]);
-            }
-            m_equipement[1] = aEquiper;
-            m_inventaire.remove(aEquiper);
-            for (int i = 0; i<5; i++)
-            {
-                m_stats[i] -= m_equipement[1].getModifStat()[i];
-            }
-        }
-        else
-        {
-            Armure aEquiper = (Armure) m_inventaire.get(e);
-            if(m_equipement[0] != null)
-            {
+                break;
+            case ARMURE:
+                Armure aEquiper = (Armure) m_inventaire.get(e);
+                if(m_armure!= null)
+                {
+                    for (int i = 0; i<5; i++)
+                    {
+                        m_stats[i] += m_armure.getModifStat()[i];
+                    }
+                    m_inventaire.add(m_armure);
+                }
+                m_armure = aEquiper;
+                m_inventaire.remove(aEquiper);
                 for (int i = 0; i<5; i++)
                 {
-                    m_stats[i] += m_equipement[1].getModifStat()[i];
+                    m_stats[i] -= m_armure.getModifStat()[i];
                 }
-                m_inventaire.add(m_equipement[1]);
-            }
-            m_equipement[0] = aEquiper;
-            m_inventaire.remove(aEquiper);
-            for (int i = 0; i<5; i++)
-            {
-                m_stats[i] -= m_equipement[0].getModifStat()[i];
-            }
+                Affichage.affiche("je suis equiper");
+                break;
+            default:
+                Affichage.affiche("erreur");
+                break;
         }
     }
-    public void equiperArme()
+    public void choisirArme()
     {
         int choix;
         ArrayList<Integer> index = new ArrayList<Integer>();
         ArrayList<Equipement> arme = new ArrayList<>();
         for(int i = 0; i < m_inventaire.size(); i++)
         {
-            if(m_inventaire.get(i).getClass() == Arme.class)
+            if(m_inventaire.get(i).getType() == TypeEquipement.ARME)
             {
                 arme.add(m_inventaire.get(i));
                 index.add(i);
@@ -108,14 +118,14 @@ public class Personnage extends Entitee{
         choix = Scanner.demandeInt()-1;
         equiper(index.get(choix));
     }
-    public void equiperArmure()
+    public void choisirArmure()
     {
         int choix;
         ArrayList<Integer> index = new ArrayList<Integer>();
         ArrayList<Equipement> armure = new ArrayList<>();
         for(int i = 0; i < m_inventaire.size(); i++)
         {
-            if(m_inventaire.get(i).getClass() == Armure.class)
+            if(m_inventaire.get(i).getType() == TypeEquipement.ARMURE)
             {
                 armure.add(m_inventaire.get(i));
                 index.add(i);

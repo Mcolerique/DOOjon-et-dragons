@@ -3,6 +3,7 @@ package interactionUtilisateur;
 import donjon.Donjon;
 import entitee.Entitee;
 import entitee.Monstre;
+import entitee.TypeEntitee;
 import entitee.personnage.Personnage;
 import equipement.Equipement;
 import equipement.arme.Arme;
@@ -146,7 +147,7 @@ public class Affichage {
     }
     public static void afficheAction(Entitee e, int numAction, boolean objetARecup)
     {
-        if (e.getClass() == Personnage.class)
+        if (e.getType() == TypeEntitee.PERSONNAGE)
         {
             afficheActionPerso((Personnage) e, numAction, objetARecup);
         }

@@ -3,6 +3,7 @@ package partie;
 import des.Des;
 import donjon.Donjon;
 import entitee.Entitee;
+import entitee.TypeEntitee;
 import entitee.personnage.Personnage;
 import equipement.Equipement;
 import interactionUtilisateur.Affichage;
@@ -58,7 +59,7 @@ public class Partie {
                     }
                     else
                     {
-                        if(e.getClass() == Personnage.class)
+                        if(e.getType() == TypeEntitee.PERSONNAGE)
                         {
                             defaite(e);
                             defaite = true;
@@ -122,14 +123,20 @@ public class Partie {
                     Affichage.affiche("Déplacement impossible, sélectionnez un emplacement valide");
                     return false;
                 }
-                pos[0] = ((a + x) % 26)-1;
+                pos[0] = ((a + x) % 26);
                 pos[1] = Integer.parseInt(choix[1].substring(1))-1;
                 if (!verifEntierValide(pos[1]) || !attaquePossible(e, pos)) {
                     Affichage.affiche("Attaque impossible, sélectionnez un emplacement valide");
                     return false;
                 }
-                e.attaquer(m_donjon.getEntiteeAPos(pos));
-                break;
+                Entitee ennemie = m_donjon.getEntiteeAPos(pos);
+                if (ennemie == null)
+                {
+                    Affichage.affiche("Attaque impossible, séléctionnez une entité valide");
+                    return false;
+                }
+                e.attaquer(ennemie);
+                return true;
             case "mj ":
                 Affichage.affiche(choix[1]);
                 return false;
@@ -140,7 +147,7 @@ public class Partie {
                     Affichage.affiche("Déplacement impossible, sélectionnez un emplacement valide");
                     return false;
                 }
-                pos[0] = ((a + x) % 26)-1;
+                pos[0] = ((a + x) % 26);
                 pos[1] = Integer.parseInt(choix[1].substring(1))-1;
                 if(!verifEntierValide(pos[1]) || !deplacementPossible(e, pos))
                 {
@@ -150,7 +157,7 @@ public class Partie {
                 m_donjon.deplacerEntitee(e, pos);
                 return true;
             default:
-                if(e.getClass() == Personnage.class)
+                if(e.getType() == TypeEntitee.PERSONNAGE)
                 {
                     Personnage p = (Personnage) e;
                     return tourPerso(p, choix, objetARecup);
@@ -160,7 +167,6 @@ public class Partie {
                     return false;
                 }
         }
-        return false;
     }
     public boolean tourPerso(Personnage p, String[] choix, boolean objetARecup)
     {
@@ -170,7 +176,7 @@ public class Partie {
                 Affichage.affiche(choix[1]);
                 return false;
             case "equ":
-                int ie = Integer.parseInt(choix[1]);
+                int ie = Integer.parseInt(choix[1]) -1;
                 if(ie >= p.getTailleInventaire())
                 {
                     Affichage.affiche("Equipement sélectionné invalide");
@@ -207,7 +213,7 @@ public class Partie {
                     Affichage.affiche("Déplacement impossible, sélectionnez un emplacement valide");
                     return false;
                 }
-                pos[0] = ((a + x) % 26)-1;
+                pos[0] = ((a + x) % 26);
                 pos[1] = Integer.parseInt(choix[1].substring(1))-1;
                 if (!verifEntierValide(pos[1])) {
                     Affichage.affiche("Attaque impossible, sélectionnez un emplacement valide");
@@ -215,7 +221,7 @@ public class Partie {
                 }
 
                 e = m_donjon.getEntiteeAPos(pos);
-                if (e != null) {
+                if (e == null) {
                     Affichage.affiche("Attaque impossible, séléctionnez une entité valide");
                     return false;
                 }
@@ -228,7 +234,7 @@ public class Partie {
                     Affichage.affiche("Déplacement impossible, sélectionnez un emplacement valide");
                     return false;
                 }
-                pos[0] = ((a + x) % 26)-1;
+                pos[0] = ((a + x) % 26);
                 pos[1] = Integer.parseInt(choix[1].substring(1))-1;
                 if(!verifEntierValide(pos[1]))
                 {
@@ -242,7 +248,7 @@ public class Partie {
                     Affichage.affiche("Déplacement impossible, sélectionnez un emplacement valide");
                     return false;
                 }
-                pos[0] = ((a + x) % 26)-1;
+                pos[0] = ((a + x) % 26);
                 pos[1] = Integer.parseInt(choix[1].substring(1))-1;
                 if(!verifEntierValide(pos[1]) || !deplacementPossible(e, pos))
                 {
@@ -258,7 +264,7 @@ public class Partie {
                     Affichage.affiche("Déplacement impossible, sélectionnez un emplacement valide");
                     return false;
                 }
-                pos[0] = ((a + x) % 26)-1;
+                pos[0] = ((a + x) % 26);
                 pos[1] = Integer.parseInt(choix[1].substring(1))-1;
                 if(!verifEntierValide(pos[1]))
                 {
@@ -303,8 +309,8 @@ public class Partie {
     {
         for(int i = 0; i < m_perso.size(); i++)
         {
-            m_perso.get(i).equiperArmure();
-            m_perso.get(i).equiperArme();
+            m_perso.get(i).choisirArmure();
+            m_perso.get(i).choisirArme();
         }
     }
     public void defaite(Entitee e){
