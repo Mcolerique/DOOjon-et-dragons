@@ -215,7 +215,7 @@ public class Donjon {
         for(Personnage personnage : personnages) {
             boolean placementPossible = false;
             do {
-                Affichage.affiche(personnages.get(compteur).getNom() + " : Où voulez-vous le placer ? (Format x;y)x\n");
+                Affichage.affiche("Joueur : " + personnages.get(compteur).getNom() + " : Où voulez-vous le placer ? (Format x;y)\n");
                 String emplacementPerso;
                 int[] positionPerso = {0,0};
                 String[] coordonnees = {"",""};
@@ -335,7 +335,7 @@ public class Donjon {
     public boolean existeAEmplacement(int[] aVerifier){
         boolean existe = false;
 
-        //Verification avec les obstacles
+        /*//Verification avec les obstacles
         //existe = m_obstacles.contains(aVerifier);
         for(int i = 0; i < m_obstacles.size() ;i++){
             existe = m_obstacles.get(i).equals(aVerifier);
@@ -344,11 +344,15 @@ public class Donjon {
         //Verification avec les entitées (monstres et personnages)
         for(int[] positionEntitee : m_positionEntitee.values()){
             existe = positionEntitee[0] == aVerifier[0] && positionEntitee[1] == aVerifier[1];
-        }
+        }*/
+
+        existe = verifAEmplacement(aVerifier);
+        if(existe){return existe;}
 
         //Verification avec les équipements
         for(int[] positionEquip : m_positionEquip.values()){
             existe = positionEquip[0] == aVerifier[0] && positionEquip[1] == aVerifier[1];
+            if(existe){return existe;}
         }
 
         return existe;
@@ -364,12 +368,14 @@ public class Donjon {
         //existe = m_obstacles.contains(aVerifier);
         for(int i = 0; i < obstacles.size() ;i++){
             existe = obstacles.get(i)[0] == aVerifier[0] && obstacles.get(i)[1] == aVerifier[1];
+            if(existe){return existe;}
         }
 
         //Verification avec les entitées (monstres et personnages)
         if(posEntitee != null) {
             for (int[] positionEntitee : posEntitee.values()) {
                 existe = positionEntitee[0] == aVerifier[0] && positionEntitee[1] == aVerifier[1];
+                if(existe){return existe;}
             }
         }
 
@@ -377,6 +383,7 @@ public class Donjon {
         if(posEquip != null) {
             for (int[] positionEquip : posEquip.values()) {
                 existe = positionEquip[0] == aVerifier[0] && positionEquip[1] == aVerifier[1];
+                if(existe){return existe;}
             }
         }
         return existe;
@@ -388,12 +395,14 @@ public class Donjon {
         //Verification avec les obstacles
         for(int i = 0; i<m_obstacles.size(); i++){
             existe = (m_obstacles.get(i)[0] == aVerifier[0] && m_obstacles.get(i)[1] == aVerifier[1]) ? true : false;
+            if(existe){return existe;}
         }
 
 
         //Verification avec les entitées (monstres et personnages)
         for(int[] positionEntitee : m_positionEntitee.values()){
             existe = (positionEntitee[0] == aVerifier[0] && positionEntitee[1] == aVerifier[1]) ? true : false;
+            if(existe){return existe;}
         }
 
         return existe;
