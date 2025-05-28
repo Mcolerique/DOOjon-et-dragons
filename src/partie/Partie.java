@@ -40,7 +40,7 @@ public class Partie {
     {
         int numTour = 1;
         boolean defaite = false;
-        while (m_numDonjon < 3 && !defaite) {
+        while (m_numDonjon < 3) {
             m_donjon = Donjon.creerDonjon(m_perso);
             equiperPerso();
             ArrayList<Entitee> ordreEntite = m_donjon.lancerInitiative();
