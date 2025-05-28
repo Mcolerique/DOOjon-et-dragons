@@ -54,7 +54,7 @@ public class Donjon {
 
 
 
-    private static Donjon donjonAuto(ArrayList<Personnage> personnages, int numDonjon) {
+    private static Donjon donjonAuto(ArrayList<Personnage> personnages) {
 
         int[] tailleTabl = new int[] {randomValue(15, 25), randomValue(15,25)};
         Donjon d=new Donjon(tailleTabl);
@@ -114,7 +114,7 @@ public class Donjon {
 
     }
 
-    private static Donjon donjonManuel(ArrayList<Personnage> personnages, int numDonjon) {
+    private static Donjon donjonManuel(ArrayList<Personnage> personnages) {
 
         int[] tailleTabl = new int[2];
         Donjon d = new Donjon(tailleTabl);
@@ -151,7 +151,7 @@ public class Donjon {
                 String[] coordonnees = {"",""};
                 do {
                     emplacementObstacle = Scanner.demandeString();
-                    coordonnees = emplacementObstacle.split("[;]");
+                    coordonnees = emplacementObstacle.split(";");
                     if(!emplacementObstacle.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
                 }while(!emplacementObstacle.contains(";"));
                 positionObstacle[0] = Integer.parseInt(coordonnees[0]);
@@ -195,7 +195,7 @@ public class Donjon {
                 String[] coordonnees = {"",""};
                 do {
                     emplacementMonstre = Scanner.demandeString();
-                    coordonnees = emplacementMonstre.split("[;]");
+                    coordonnees = emplacementMonstre.split(";");
                     if(!emplacementMonstre.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
                 }while(!emplacementMonstre.contains(";"));
                 positionMonstre[0] = Integer.parseInt(coordonnees[0]);
@@ -221,7 +221,7 @@ public class Donjon {
                 String[] coordonnees = {"",""};
                 do {
                     emplacementPerso = Scanner.demandeString();
-                    coordonnees = emplacementPerso.split("[;]");
+                    coordonnees = emplacementPerso.split(";");
                     if(!emplacementPerso.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
                 }while(!emplacementPerso.contains(";"));
                 positionPerso[0] = Integer.parseInt(coordonnees[0]);
@@ -268,7 +268,7 @@ public class Donjon {
                 String[] coordonnees = {"",""};
                 do {
                     emplacementEquip = Scanner.demandeString();
-                    coordonnees = emplacementEquip.split("[;]");
+                    coordonnees = emplacementEquip.split(";");
                     if(!emplacementEquip.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
                 }while(!emplacementEquip.contains(";"));
                 posEquip[0] = Integer.parseInt(coordonnees[0]);
@@ -290,7 +290,7 @@ public class Donjon {
 
     }
 
-    public static Donjon creerDonjon(ArrayList<Personnage> personnages, int numDonjon){
+    public static Donjon creerDonjon(ArrayList<Personnage> personnages){
         int reponseCreation = -1;
         do {
             Affichage.affiche("Voulez-vous créer un donjon ou en utiliser un généré par défaut ?\n0: Par moi-même \t 1: Par défaut");
@@ -300,11 +300,11 @@ public class Donjon {
 
         if(reponseCreation == 0){
 
-            return donjonManuel(personnages, numDonjon);
+            return donjonManuel(personnages);
         }
 
         else{
-            return donjonAuto(personnages, numDonjon);
+            return donjonAuto(personnages);
         }
     }
 
@@ -394,14 +394,14 @@ public class Donjon {
 
         //Verification avec les obstacles
         for(int i = 0; i<m_obstacles.size(); i++){
-            existe = (m_obstacles.get(i)[0] == aVerifier[0] && m_obstacles.get(i)[1] == aVerifier[1]) ? true : false;
+            existe = m_obstacles.get(i)[0] == aVerifier[0] && m_obstacles.get(i)[1] == aVerifier[1];
             if(existe){return existe;}
         }
 
 
         //Verification avec les entitées (monstres et personnages)
         for(int[] positionEntitee : m_positionEntitee.values()){
-            existe = (positionEntitee[0] == aVerifier[0] && positionEntitee[1] == aVerifier[1]) ? true : false;
+            existe = positionEntitee[0] == aVerifier[0] && positionEntitee[1] == aVerifier[1];
             if(existe){return existe;}
         }
 
@@ -470,6 +470,7 @@ public class Donjon {
     public void supprEquip(Equipement equip){
         m_positionEquip.remove(equip);
     }
+    public void supprEntite(Entitee e){m_positionEntitee.remove(e);}
 
 
     public ArrayList<Entitee> lancerInitiative(){
@@ -489,7 +490,7 @@ public class Donjon {
 
         for(int i = 0 ; i <= entitees.size()-2 ; i++){
             for(int j = i+1 ; j <= entitees.size()-1 ; j++){
-                if(initiativeEntitees.get(i).intValue() < initiativeEntitees.get(j).intValue()){
+                if(initiativeEntitees.get(i) < initiativeEntitees.get(j)){
 
                     Entitee entiteeTemp = entitees.get(j);
                     Integer initiativeTemp = initiativeEntitees.get(j);

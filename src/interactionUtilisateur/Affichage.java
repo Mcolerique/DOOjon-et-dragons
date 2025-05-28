@@ -117,7 +117,7 @@ public class Affichage {
         StringBuilder sb = new StringBuilder();
 
         // En-tête colonnes (A B C ...)
-        sb.append("     ");
+        sb.append("    ");
         for (int j = 0; j < colonnes; j++) {
             char col = (char) ('A' + j);
             sb.append(" ").append(col).append(" ");

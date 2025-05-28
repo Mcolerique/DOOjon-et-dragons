@@ -42,12 +42,12 @@ public class Partie {
         Entitee e;
         int numTour = 1;
         boolean defaite = false;
-        for (int i = 0; i < 3 ; i++)
+        while (m_numDonjon < 3 && !defaite)
         {
-            m_donjon = Donjon.creerDonjon(m_perso, m_numDonjon);
+            m_donjon = Donjon.creerDonjon(m_perso);
             equiperPerso();
             ordreEntite = m_donjon.lancerInitiative();
-            while (!m_donjon.estVaincu() || !defaite)
+            while (!m_donjon.estVaincu() && !defaite)
             {
                 for (int j = 0; j<ordreEntite.size(); j++)
                 {
@@ -57,27 +57,29 @@ public class Partie {
                     {
                         nouveauTour(e);
                     }
-                    else
+                    // Liste des morts à supprimer
+                    ArrayList<Entitee> morts = new ArrayList<>();
+
+                    for (Entitee ent : ordreEntite)
                     {
-                        if(e.getType() == TypeEntitee.PERSONNAGE)
+                        if (!ent.estVivant())
                         {
-                            defaite(e);
-                            defaite = true;
-                            break;
-                        }
-                        else
-                        {
-                            ordreEntite.remove(e);
+                            m_donjon.supprEntite(ent);
+                            if (ent.getType() == TypeEntitee.PERSONNAGE) {
+                                defaite(ent); // Affichage de défaite
+                                defaite = true;
+                                break;
+                            }
+                            morts.add(ent);
                         }
                     }
+                    ordreEntite.removeAll(morts);
+                    if (defaite) break;
                 }
                 numTour ++;
             }
-            if(defaite)
-            {
-                break;
-            }
-            Affichage.victoireDonjon(i+1);
+            if(defaite) break;
+            Affichage.victoireDonjon(m_numDonjon+1);
             m_numDonjon ++;
         }
     }
@@ -96,7 +98,7 @@ public class Partie {
                 Affichage.afficherDonjon(m_donjon);
                 Affichage.afficheAction(e, i, objetARecup);
                 choix = Scanner.demandeString();
-                finAction = tour(e, choix.split("[ ]"), objetARecup);
+                finAction = tour(e, choix.split(" "), objetARecup);
             }
             Affichage.affiche("mj voulez vous faire une action ? y/n");
             choix = Scanner.demandeString();
@@ -106,7 +108,7 @@ public class Partie {
                 while (!finAction) {
                     Affichage.afficheActionMJ();
                     choix = Scanner.demandeString();
-                    finAction = tourMJ(choix.split("[ ]"));
+                    finAction = tourMJ(choix.split(" "));
                 }
             }
             i++;
@@ -296,7 +298,7 @@ public class Partie {
     {
         int[] posEntitee = m_donjon.getPosEntitee(entitee);
         int distance = (int)Math.sqrt(Math.pow(pos[0] - posEntitee[0], 2) + Math.pow(pos[1] - posEntitee[1], 2));
-        return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.seDeplacer(abs(distance)) && !m_donjon.existeAEmplacement(pos);
+        return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.seDeplacer(abs(distance)) && !m_donjon.verifAEmplacement(pos);
     }
     public boolean attaquePossible(Entitee entitee, int[] pos)
     {
@@ -314,10 +316,9 @@ public class Partie {
     }
     public void equiperPerso()
     {
-        for(int i = 0; i < m_perso.size(); i++)
-        {
-            m_perso.get(i).choisirArmure();
-            m_perso.get(i).choisirArme();
+        for (Personnage personnage : m_perso) {
+            personnage.choisirArmure();
+            personnage.choisirArme();
         }
     }
     public void defaite(Entitee e){
@@ -341,8 +342,5 @@ public class Partie {
         txt = somme+txt.substring(0, txt.length()-1)+")";
         e.sePrendreDegats(somme);
         Affichage.affiche("vous avez infliger " + txt +" degats");
-    }
-    public int getNumDonjon() {
-        return m_numDonjon;
     }
 }
