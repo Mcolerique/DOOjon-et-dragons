@@ -253,7 +253,7 @@ public class Affichage {
                 .append(", que souhaitez vous faire ?\n");
 
         // Menu d’actions
-        sb.append("  - commenter action précédente (com <texte>)\n");
+        sb.append("  - laisser le maître du jeu commenter l'action précédente (mj <texte>)\n");
         sb.append("  - attaquer (att <Case>)\n");
         sb.append("  - se déplacer (dep <Case>)\n");
 
