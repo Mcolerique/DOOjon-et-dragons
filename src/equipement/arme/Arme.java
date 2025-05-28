@@ -4,10 +4,10 @@ import equipement.Equipement;
 import equipement.TypeEquipement;
 
 public class Arme extends Equipement {
-    private int m_nbDesDeg;
-    private int m_degats;
-    private int m_portee;
-    private TypeCaC m_type;
+    private final int m_nbDesDeg;
+    private final int m_degats;
+    private final int m_portee;
+    private final TypeCaC m_type;
 
     public Arme() {
         super("nomArme");

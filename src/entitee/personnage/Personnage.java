@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Personnage extends Entitee{
-    private String m_nom;
+    private final String m_nom;
     private final Race m_race;
     private final Classe m_classe;
     private ArrayList<Equipement> m_inventaire;
@@ -42,9 +42,9 @@ public class Personnage extends Entitee{
         m_stats[0] = m_classe.getPV();
         for(int i=1; i<5; i++)
         {
-            for (int j = 0; i<4; i++)
+            for (int j = 0; j<4; j++)
             {
-                m_stats[i] = Des.lancerDes(4);
+                m_stats[i] += Des.lancerDes(4);
             }
             m_stats[i]+=3;
         }
@@ -181,8 +181,8 @@ public class Personnage extends Entitee{
         Affichage.affiche("Nom du personnage : ");
         String nom = Scanner.demandeString();
 
-        Race r = null;
-        Classe c = null;
+        Race r;
+        Classe c;
 
         try {
             Affichage.selectionTableau(raceDispo);

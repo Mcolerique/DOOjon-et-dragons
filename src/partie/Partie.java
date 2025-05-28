@@ -46,7 +46,7 @@ public class Partie {
             ArrayList<Entitee> ordreEntite = m_donjon.lancerInitiative();
             while (!m_donjon.estVaincu() && !defaite) {
                 for (int j = 0; j < ordreEntite.size(); j++) {
-                    Affichage.afficheTour(ordreEntite, j, m_donjon, m_numDonjon + 1, numTour);
+                    Affichage.afficheTour(ordreEntite, j, m_numDonjon + 1, numTour);
                     Entitee e = ordreEntite.get(j);
                     if (e.estVivant()) {
                         executerTour(e);

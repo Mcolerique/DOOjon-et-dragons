@@ -1,13 +1,8 @@
 package entitee;
 
-import interactionUtilisateur.Affichage;
-import interactionUtilisateur.Scanner;
-import equipement.Equipement;
 import equipement.arme.Arme;
 import equipement.armure.Armure;
 import des.Des;
-
-import java.util.ArrayList;
 
 public abstract class Entitee {
     protected int[] m_stats = new int[5];
@@ -24,11 +19,6 @@ public abstract class Entitee {
         m_pvActuelle =m_stats[0] ;
     }
     public Entitee (int[] s)
-    {
-        m_stats = s;
-        m_pvActuelle = m_stats[0];
-    }
-    public Entitee(int[] s, Equipement[] e)
     {
         m_stats = s;
         m_pvActuelle = m_stats[0];

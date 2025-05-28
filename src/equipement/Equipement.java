@@ -1,7 +1,7 @@
 package equipement;
 
 public abstract class Equipement {
-    private String m_nom;
+    private final String m_nom;
     protected int[] m_modifStat = new int[5];
     protected TypeEquipement m_typeEquipement;
 

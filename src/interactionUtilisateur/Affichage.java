@@ -16,7 +16,7 @@ public class Affichage {
     {
         System.out.println(texte);
     }
-    public static void afficheTour(ArrayList<Entitee> e, int i, Donjon d, int numDonjon, int numTour)
+    public static void afficheTour(ArrayList<Entitee> e, int i, int numDonjon, int numTour)
     {
         StringBuilder sb = new StringBuilder();
         String separator = "*".repeat(80);

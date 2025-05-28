@@ -5,8 +5,8 @@ import equipement.arme.Arme;
 import equipement.armure.Armure;
 
 public class Monstre extends Entitee{
-    private String m_espece;
-    private int m_numMonstre;
+    private final String m_espece;
+    private final int m_numMonstre;
     public Monstre()
     {
         super();
@@ -17,7 +17,7 @@ public class Monstre extends Entitee{
 
     public Monstre(int numMonstre, String espece, int[] stats, Equipement[] attaqueEtArmure)
     {
-        super(stats, attaqueEtArmure);
+        super(stats);
         m_numMonstre = numMonstre;
         m_espece = espece;
         m_arme = (Arme)attaqueEtArmure[0];
