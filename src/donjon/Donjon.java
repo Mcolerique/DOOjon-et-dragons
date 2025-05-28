@@ -514,7 +514,7 @@ public class Donjon {
     }
     public boolean ajouterObstacle(int[] position)
     {
-        if(!verifAEmplacement(position))
+        if(!existeAEmplacement(position))
         {
             m_obstacles.add(position);
             return true;

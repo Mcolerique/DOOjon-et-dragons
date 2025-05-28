@@ -99,10 +99,10 @@ public class Affichage {
 
             String symbole;
 
-            if (entite instanceof Personnage) {
+            if (entite.getType() == TypeEntitee.PERSONNAGE) {
                 String nom = ((Personnage) entite).getInitiale(); // ex : "Alt"
                 symbole = centerText(nom, 3);
-            } else if (entite instanceof Monstre) {
+            } else if (entite.getType() == TypeEntitee.MONSTRE) {
                 String s = ((Monstre) entite).getSymbole(); // ex : "X^"
                 symbole = centerText(s, 3);
             } else {

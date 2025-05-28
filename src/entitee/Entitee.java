@@ -43,7 +43,7 @@ public abstract class Entitee {
     }
     public boolean seDeplacer(int distance)
     {
-        return distance > m_stats[3];
+        return distance < m_stats[3];
     }
     public void attaquer(Entitee ennemie)
     {
