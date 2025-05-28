@@ -42,7 +42,7 @@ public class ListeEquipements {
 
     public static void afficherEquipDispo(){
         for(int i = 0; i < m_listeEquipements.size(); i++){
-            System.out.println("\t Monstre n°" + i + " : " + m_listeEquipements.get(i).getNom() + "\n");
+            System.out.println("\t Equipement n°" + i + " : " + m_listeEquipements.get(i).getNom() + "\n");
         }
         System.out.println("\n\n");
     }
@@ -54,7 +54,7 @@ public class ListeEquipements {
         System.out.println("\n\n");
     }
 
-    public static boolean addEquipement (Equipement equipement){
+    public static boolean ajtEquipement (Equipement equipement){
         int difficulte;
         boolean aPuEtreCree;
 
@@ -76,19 +76,35 @@ public class ListeEquipements {
         m_listeEquipements.remove(equip);
     }
 
-    public static void utiliserEquipement(){
-        afficherEquipDispo();
+    public static Equipement utiliserEquipement(int equip){
+        /*afficherEquipDispo();
         System.out.println("Quel équipement voulez-vous utiliser ?");
         int numEquip = Scanner.demandeInt();
         deDispoADejaUtilise(numEquip);
         System.out.println("Equipements utilisés : \n\n");
+        afficherEquipUtilis();*/
+
+
+        Equipement returnEquip = m_listeEquipements.get(equip);
+        deDispoADejaUtilise(equip);
+        System.out.println("Equipement ajouté. \nEquipements placés : \n");
         afficherEquipUtilis();
+        return returnEquip;
+
     }
 
     public static Equipement utiliserEquipAuto(int equip){
         Equipement equipementAReturn = m_listeEquipements.get(equip);
         deDispoADejaUtilise(equip);
         return equipementAReturn;
+    }
+
+    public static int nbEquipDispo(){
+        return m_listeEquipements.size();
+    }
+
+    public static String getNomEquip(int equip){
+        return m_listeEquipements.get(equip).getNom();
     }
 
 }
