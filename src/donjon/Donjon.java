@@ -326,8 +326,6 @@ public class Donjon {
 
     public Entitee getEntiteeAPos(int[] position){
         for(Entitee entitee : m_positionEntitee.keySet()){
-            System.out.print(entitee.getNom() + "\n");
-            System.out.println("x" + m_positionEntitee.get(entitee)[0] + " y" + m_positionEntitee.get(entitee)[1] + "\n");
             if(m_positionEntitee.get(entitee)[0] == position[0] && m_positionEntitee.get(entitee)[1] == position[1]){
                 return entitee;
             }
@@ -412,7 +410,7 @@ public class Donjon {
     }
     public boolean ajouterObstacle(int[] position)
     {
-        if(verifAEmplacement(position))
+        if(!verifAEmplacement(position))
         {
             m_obstacles.add(position);
             return true;

@@ -1,5 +1,6 @@
 package equipement.armure;
 import equipement.Equipement;
+import equipement.TypeEquipement;
 import equipement.arme.TypeCaC;
 
 public class Armure extends Equipement {
@@ -10,6 +11,7 @@ public class Armure extends Equipement {
         super("nomArmure");
         m_cA = 1;
         m_poids = Poids.LEGERE;
+        m_typeEquipement = TypeEquipement.ARMURE;
     }
 
     public Armure(String nom, int cA, Poids poids) {
@@ -19,6 +21,7 @@ public class Armure extends Equipement {
         if(poids == Poids.LOURDE){
             m_modifStat[3] = -4;
         }
+        m_typeEquipement = TypeEquipement.ARMURE;
     }
     public int getCA() {
         return m_cA;

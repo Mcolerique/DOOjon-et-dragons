@@ -11,8 +11,10 @@ import java.util.ArrayList;
 
 public abstract class Entitee {
     protected int[] m_stats = new int[5];
-    protected Equipement[] m_equipement = new Equipement[2];
+    protected Arme m_arme;
+    protected Armure m_armure;
     protected int m_pvActuelle;
+    protected TypeEntitee m_type;
     public Entitee()
     {
         for (int i = 0; i<5; i++)
@@ -29,20 +31,11 @@ public abstract class Entitee {
     public Entitee(int[] s, Equipement[] e)
     {
         m_stats = s;
-        m_equipement = e;
         m_pvActuelle = m_stats[0];
     }
     public boolean seFaireAttaquer(int jetAttaque)
     {
-        Armure a = (Armure) m_equipement[0];
-        if(jetAttaque >= a.getCA())
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return m_armure.getCA() <= jetAttaque;
     }
     public void sePrendreDegats(int degats)
     {
@@ -61,11 +54,10 @@ public abstract class Entitee {
     }
     public void attaquer(Entitee ennemie)
     {
-        Arme a = (Arme) m_equipement[1];
-        int jetAttaque = Des.lancerDes(20) + this.m_stats[a.quelleStat()];
+        int jetAttaque = Des.lancerDes(20) + this.m_stats[m_arme.quelleStat()];
         if(ennemie.seFaireAttaquer(jetAttaque))
         {
-            ennemie.sePrendreDegats(a.infligerDegats());
+            ennemie.sePrendreDegats(m_arme.infligerDegats());
         }
     }
     public Entitee choisirCible(ArrayList<Entitee> list)
@@ -92,8 +84,7 @@ public abstract class Entitee {
     }
     public int getPorteeArme()
     {
-        Arme a = (Arme) m_equipement[1];
-        return a.getPortee();
+        return m_arme.getPortee();
     }
     public boolean estVivant()
     {
@@ -125,11 +116,15 @@ public abstract class Entitee {
     }
     public String getNomArmure()
     {
-        return m_equipement[0].getNom();
+        return m_armure.getNom();
     }
     public Arme getArme()
     {
-        return (Arme)m_equipement[1];
+        return m_arme;
+    }
+    public TypeEntitee getType()
+    {
+        return m_type;
     }
     public abstract String getNom();
     public abstract String getDescription();
