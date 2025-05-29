@@ -5,6 +5,7 @@ import entitee.Entitee;
 import entitee.TypeEntitee;
 import entitee.personnage.classe.*;
 import entitee.personnage.race.*;
+import entitee.personnage.sort.Sort;
 import equipement.Equipement;
 import equipement.TypeEquipement;
 import equipement.arme.Arme;
@@ -19,6 +20,7 @@ public class Personnage extends Entitee{
     private final String m_nom;
     private final Race m_race;
     private final Classe m_classe;
+    private ArrayList<Sort> m_sort;
     private ArrayList<Equipement> m_inventaire;
     public Personnage()
     {
@@ -54,6 +56,7 @@ public class Personnage extends Entitee{
         }
         m_inventaire = new ArrayList<>();
         m_inventaire.addAll(Arrays.asList(m_classe.getEquipement()));
+        m_sort.addAll(Arrays.asList(m_classe.getSort()));
         m_pvActuelle = m_stats[0];
     }
     public void equiper(int e)
@@ -215,6 +218,10 @@ public class Personnage extends Entitee{
         return m_inventaire;
     }
     public Equipement getInventaire(int i) { return  m_inventaire.get(i); }
+    public ArrayList<Sort> getSort(){
+        return m_sort;
+    }
+    public Sort getSort(int i){ return m_sort.get(i); }
     public String getNom()
     {
         return m_nom;
