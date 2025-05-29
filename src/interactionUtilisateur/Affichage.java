@@ -3,9 +3,12 @@ package interactionUtilisateur;
 import donjon.Donjon;
 import entitee.Entitee;
 import entitee.Monstre;
+import entitee.TypeEntitee;
 import entitee.personnage.Personnage;
+import entitee.personnage.sort.Sort;
 import equipement.Equipement;
 import equipement.arme.Arme;
+import equipement.armure.Armure;
 
 import java.util.*;
 
@@ -14,7 +17,7 @@ public class Affichage {
     {
         System.out.println(texte);
     }
-    public static void afficheTour(ArrayList<Entitee> e, int i, Donjon d, int numDonjon, int numTour)
+    public static void afficheTour(ArrayList<Entitee> e, int i, int numDonjon, int numTour)
     {
         StringBuilder sb = new StringBuilder();
         String separator = "*".repeat(80);
@@ -59,7 +62,7 @@ public class Affichage {
         // Affichage final
         affiche(sb.toString());
     }
-    public void afficherDonjon(Donjon d) {
+    public static void afficherDonjon(Donjon d) {
         int lignes = d.getLongueur();
         int colonnes = d.getLargeur();
         String[][] grille = new String[lignes][colonnes];
@@ -78,14 +81,16 @@ public class Affichage {
         for (int[] pos : obstacle) {
             int x = pos[0];
             int y = pos[1];
-            grille[x][y] = "[ ]";
+            if (y >= 0 && y < lignes && x >= 0 && x < colonnes)
+                grille[y][x] = "[ ]";
         }
 
         // Équipements : *
         for (Map.Entry<Equipement, int[]> entry : positionEquipement.entrySet()) {
             int x = entry.getValue()[0];
             int y = entry.getValue()[1];
-            grille[x][y] = " * ";
+            if (y >= 0 && y < lignes && x >= 0 && x < colonnes)
+                grille[y][x] = " * ";
         }
 
         // Entités : initiales pour Personnage, symbole pour Monstre
@@ -94,24 +99,29 @@ public class Affichage {
             int x = entry.getValue()[0];
             int y = entry.getValue()[1];
 
-            String symbole = " ? ";
+            String symbole;
 
-            if (entite instanceof Personnage) {
-                String nom = ((Personnage) entite).getInitiale(); // Ex: "Alt"
-                symbole = " " + nom.charAt(0) + " ";
-            } else if (entite instanceof Monstre) {
-                symbole = " " + ((Monstre) entite).getSymbole() + " ";
+            if (entite.getType() == TypeEntitee.PERSONNAGE) {
+                String nom = ((Personnage) entite).getInitiale(); // ex : "Alt"
+                symbole = centerText(nom, 3);
+            } else if (entite.getType() == TypeEntitee.MONSTRE) {
+                String s = ((Monstre) entite).getSymbole(); // ex : "X^"
+                symbole = centerText(s, 3);
+            } else {
+                symbole = " ? ";
             }
 
-            grille[x][y] = symbole;
+            if (y >= 0 && y < lignes && x >= 0 && x < colonnes)
+                grille[y][x] = symbole;
         }
 
         // Construction de l'affichage
         StringBuilder sb = new StringBuilder();
 
         // En-tête colonnes (A B C ...)
-        sb.append("     ");
-        for (char col = 'A'; col < 'A' + colonnes; col++) {
+        sb.append("    ");
+        for (int j = 0; j < colonnes; j++) {
+            char col = (char) ('A' + j);
             sb.append(" ").append(col).append(" ");
         }
         sb.append("\n");
@@ -140,9 +150,18 @@ public class Affichage {
         // Affichage final
         affiche(sb.toString());
     }
+
+    // Fonction utilitaire : centre une chaîne sur N caractères
+    private static String centerText(String text, int width) {
+        if (text.length() >= width) return text.substring(0, width);
+        int padding = width - text.length();
+        int padStart = padding / 2;
+        int padEnd = padding - padStart;
+        return " ".repeat(padStart) + text + " ".repeat(padEnd);
+    }
     public static void afficheAction(Entitee e, int numAction, boolean objetARecup)
     {
-        if (e.getClass() == Personnage.class)
+        if (e.getType() == TypeEntitee.PERSONNAGE)
         {
             afficheActionPerso((Personnage) e, numAction, objetARecup);
         }
@@ -160,15 +179,20 @@ public class Affichage {
         sb.append("  Vie : ").append(e.getPvActuelle()).append("/").append(e.getPv()).append("\n");
 
         // Armure
-        String armure = e.getNomArmure();
-        sb.append("  Armure: ").append(armure != null ? armure : "aucune").append("\n");
+        Armure armure = e.getArmure();
+        if (armure != null) {
+            sb.append("  Arme: ").append(armure.getNom());
+
+        } else {
+            sb.append("  Armure: aucune\n");
+        }
 
         // Arme
         Arme arme = e.getArme();
         if (arme != null) {
-            sb.append("  Arme: ").append(arme.getNom())
-                    .append(" (degat: ").append(arme.getDegats())
-                    .append(", portee: ").append(arme.getPortee()).append(")\n");
+            sb.append("  Arme: ").append(arme.getNom() != null ? arme.getNom() : "inconnue")
+                    .append(" (dégât: ").append(arme.getDegats())
+                    .append(", portée: ").append(arme.getPortee()).append(")\n");
         } else {
             sb.append("  Arme: aucune\n");
         }
@@ -178,11 +202,23 @@ public class Affichage {
         if (inventaire != null && !inventaire.isEmpty()) {
             sb.append("  Inventaire:");
             for (int i = 0; i < inventaire.size(); i++) {
-                sb.append(" [").append(i + 1).append("] ").append(inventaire.get(i).getNom());
+                Equipement equip = inventaire.get(i);
+                sb.append(" [").append(i + 1).append("] ").append(equip != null ? equip.getNom() : "inconnu");
             }
             sb.append("\n");
         } else {
             sb.append("  Inventaire: vide\n");
+        }
+        ArrayList<Sort> sort = e.getSort();
+        if (sort != null && !sort.isEmpty()) {
+            sb.append("  Sort:");
+            for (int i = 0; i < sort.size(); i++) {
+                Sort equip = sort.get(i);
+                sb.append(" [").append(i + 1).append("] ").append(equip != null ? equip.getNom() : "inconnu");
+            }
+            sb.append("\n");
+        } else {
+            sb.append("  Sort: aucun\n");
         }
 
         // Caractéristiques
@@ -194,9 +230,9 @@ public class Affichage {
 
         // Actions restantes
         int actionsRestantes = 3 - numAction;
-        sb.append(e.getNom()).append(" il vous reste ").append(actionsRestantes)
+        sb.append(e.getNom()).append(", il vous reste ").append(actionsRestantes)
                 .append(actionsRestantes == 1 ? " action" : " actions")
-                .append(" que souhaitez vous faire ?\n");
+                .append(", que souhaitez-vous faire ?\n");
 
         // Menu d’actions
         sb.append("  - laisser le maître du jeu commenter l'action précédente (mj <texte>)\n");
@@ -204,8 +240,10 @@ public class Affichage {
         sb.append("  - attaquer (att <Case>)\n");
         sb.append("  - se déplacer (dep <Case>)\n");
         sb.append("  - s'équiper (equ <numero equipement>)\n");
-        if(objetARecup)
-        {
+        if(sort != null && !sort.isEmpty()) {
+            sb.append("  - lancer sort (sor <numero sort>)\n");
+        }
+        if (objetARecup) {
             sb.append("  - ramasser objet (ram)\n");
         }
 
@@ -228,8 +266,8 @@ public class Affichage {
         Arme arme = e.getArme();
         if (arme != null) {
             sb.append("  Arme: ").append(arme.getNom())
-                    .append(" (degat: ").append(arme.getDegats())
-                    .append(", portee: ").append(arme.getPortee()).append(")\n");
+                    .append(" (dégâts: ").append(arme.getDegats())
+                    .append(", portée: ").append(arme.getPortee()).append(")\n");
         } else {
             sb.append("  Arme: aucune\n");
         }
@@ -243,12 +281,12 @@ public class Affichage {
 
         // Actions restantes
         int actionsRestantes = 3 - numAction;
-        sb.append(e.getNom()).append(" il vous reste ").append(actionsRestantes)
+        sb.append(e.getNom()).append(", il vous reste ").append(actionsRestantes)
                 .append(actionsRestantes == 1 ? " action" : " actions")
-                .append(" que souhaitez vous faire ?\n");
+                .append(", que souhaitez vous faire ?\n");
 
         // Menu d’actions
-        sb.append("  - commenter action précédente (com <texte>)\n");
+        sb.append("  - laisser le maître du jeu commenter l'action précédente (mj <texte>)\n");
         sb.append("  - attaquer (att <Case>)\n");
         sb.append("  - se déplacer (dep <Case>)\n");
 
@@ -257,10 +295,10 @@ public class Affichage {
     }
     public static void afficheActionMJ()
     {
-        affiche(" que souhaitez vous faire ?\n");
-        affiche("  - attaquer une entitée (att <Case>)\n");
-        affiche("  - deplacer une Entitée (dep <CaseEntitée> <CaseDestination>)\n");
-        affiche("  - ajouter un obstacle (obs <Case>)\n");
+        affiche(" que souhaitez vous faire ?");
+        affiche("  - attaquer une entitée (att <Case>)");
+        affiche("  - deplacer une Entitée (dep <CaseEntitée> <CaseDestination>)");
+        affiche("  - ajouter un obstacle (obs <Case>)");
     }
     public static void afficheListeEntitee(ArrayList<Entitee> list){
         String txt = "0.Rien sélectionner   ";
@@ -281,7 +319,7 @@ public class Affichage {
     }
     public static void selectionTableau(Object[] tab)
     {
-        String txt = "0.Rien sélectionner   ";
+        String txt = "";
         for (int j = 0; j<tab.length;j++)
         {
             txt += j+1+"."+tab[j].toString() + "   ";
@@ -294,6 +332,6 @@ public class Affichage {
     }
     public static void victoireDonjon(int numDonjon)
     {
-        affiche("Félicitation, vous avez triompher du "+numDonjon+" donjon");
+        affiche("Félicitation, vous avez triomphé du "+numDonjon+" donjon");
     }
 }

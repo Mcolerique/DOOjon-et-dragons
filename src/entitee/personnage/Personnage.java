@@ -2,9 +2,12 @@ package entitee.personnage;
 
 import des.Des;
 import entitee.Entitee;
+import entitee.TypeEntitee;
 import entitee.personnage.classe.*;
 import entitee.personnage.race.*;
+import entitee.personnage.sort.Sort;
 import equipement.Equipement;
+import equipement.TypeEquipement;
 import equipement.arme.Arme;
 import equipement.armure.Armure;
 import interactionUtilisateur.Affichage;
@@ -14,9 +17,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Personnage extends Entitee{
-    private String m_nom;
+    private final String m_nom;
     private final Race m_race;
     private final Classe m_classe;
+    private ArrayList<Sort> m_sort;
     private ArrayList<Equipement> m_inventaire;
     public Personnage()
     {
@@ -24,6 +28,7 @@ public class Personnage extends Entitee{
         m_nom = "Saral Porcattache";
         m_race = new Halfelin();
         m_classe = new Guerrier();
+        m_type = TypeEntitee.PERSONNAGE;
         setPerso();
     }
     public Personnage(String nom, Race r, Classe c)
@@ -31,6 +36,7 @@ public class Personnage extends Entitee{
         m_nom = nom;
         m_race = r;
         m_classe = c;
+        m_type = TypeEntitee.PERSONNAGE;
         setPerso();
     }
     public void setPerso()
@@ -38,10 +44,11 @@ public class Personnage extends Entitee{
         m_stats[0] = m_classe.getPV();
         for(int i=1; i<5; i++)
         {
-            for (int j = 0; i<4; i++)
+            for (int j = 0; j<4; j++)
             {
-                m_stats[i] = Des.lancerDes(4);
+                m_stats[i] += Des.lancerDes(4);
             }
+            m_stats[i]+=3;
         }
         for(int i =0; i<5; i++)
         {
@@ -49,79 +56,118 @@ public class Personnage extends Entitee{
         }
         m_inventaire = new ArrayList<>();
         m_inventaire.addAll(Arrays.asList(m_classe.getEquipement()));
+        m_sort = new ArrayList<>();
+        m_sort.addAll(Arrays.asList(m_classe.getSort()));
+        m_pvActuelle = m_stats[0];
     }
     public void equiper(int e)
     {
-        if( m_inventaire.get(e).getClass() == Arme.class)
+        TypeEquipement t = m_inventaire.get(e).getType();
+        switch (t)
         {
-            Arme aEquiper = (Arme) m_inventaire.get(e);
-            if(m_equipement[1] != null)
-            {
+            case ARME :
+                Arme armeAEquiper = (Arme) m_inventaire.get(e);
+                if(m_arme != null)
+                {
+                    for (int i = 0; i<5; i++)
+                    {
+                        m_stats[i] += m_arme.getModifStat()[i];
+                    }
+                    m_inventaire.add(m_arme);
+                }
+                m_arme = armeAEquiper;
+                m_inventaire.remove(armeAEquiper);
                 for (int i = 0; i<5; i++)
                 {
-                    m_stats[i] += m_equipement[1].getModifStat()[i];
+                    m_stats[i] -= m_arme.getModifStat()[i];
                 }
-                m_inventaire.add(m_equipement[1]);
-            }
-            m_equipement[1] = aEquiper;
-            m_inventaire.remove(aEquiper);
-            for (int i = 0; i<5; i++)
-            {
-                m_stats[i] -= m_equipement[1].getModifStat()[i];
-            }
-        }
-        else
-        {
-            Armure aEquiper = (Armure) m_inventaire.get(e);
-            if(m_equipement[0] != null)
-            {
+                break;
+            case ARMURE:
+                Armure aEquiper = (Armure) m_inventaire.get(e);
+                if(m_armure!= null)
+                {
+                    for (int i = 0; i<5; i++)
+                    {
+                        m_stats[i] += m_armure.getModifStat()[i];
+                    }
+                    m_inventaire.add(m_armure);
+                }
+                m_armure = aEquiper;
+                m_inventaire.remove(aEquiper);
                 for (int i = 0; i<5; i++)
                 {
-                    m_stats[i] += m_equipement[1].getModifStat()[i];
+                    m_stats[i] -= m_armure.getModifStat()[i];
                 }
-                m_inventaire.add(m_equipement[1]);
-            }
-            m_equipement[0] = aEquiper;
-            m_inventaire.remove(aEquiper);
-            for (int i = 0; i<5; i++)
-            {
-                m_stats[i] -= m_equipement[0].getModifStat()[i];
-            }
+                break;
+            default:
+                Affichage.affiche("erreur");
+                break;
         }
     }
-    public void equiperArme()
-    {
-        int choix;
-        ArrayList<Integer> index = new ArrayList<Integer>();
+    public void choisirArme() {
+        ArrayList<Integer> index = new ArrayList<>();
         ArrayList<Equipement> arme = new ArrayList<>();
-        for(int i = 0; i < m_inventaire.size(); i++)
-        {
-            if(m_inventaire.get(i).getClass() == Arme.class)
-            {
+        for (int i = 0; i < m_inventaire.size(); i++) {
+            if (m_inventaire.get(i).getType() == TypeEquipement.ARME) {
                 arme.add(m_inventaire.get(i));
                 index.add(i);
             }
         }
+
+        if (arme.isEmpty()) {
+            Affichage.affiche("Aucune arme disponible dans l'inventaire.");
+            return;
+        }
+
         Affichage.listeEquipement(arme);
-        choix = Scanner.demandeInt();
-        equiper(index.get(choix));
-    }
-    public void equiperArmure()
-    {
-        int choix;
-        ArrayList<Integer> index = new ArrayList<Integer>();
-        ArrayList<Equipement> armure = new ArrayList<>();
-        for(int i = 0; i < m_inventaire.size(); i++)
-        {
-            if(m_inventaire.get(i).getClass() == Armure.class)
+
+        try {
+            int choix = Scanner.demandeInt() - 1;
+            if (choix == -1)
             {
+                return;
+            }
+            else if (choix < -1 || choix >= index.size()) {
+                Affichage.affiche("Choix invalide. Aucun équipement sélectionné.");
+                return;
+            }
+            equiper(index.get(choix));
+        } catch (Exception e) {
+            Affichage.affiche("Erreur de saisie. Veuillez entrer un entier valide.");
+        }
+    }
+
+    public void choisirArmure() {
+        ArrayList<Integer> index = new ArrayList<>();
+        ArrayList<Equipement> armure = new ArrayList<>();
+        for (int i = 0; i < m_inventaire.size(); i++) {
+            if (m_inventaire.get(i).getType() == TypeEquipement.ARMURE) {
                 armure.add(m_inventaire.get(i));
                 index.add(i);
             }
         }
+
+        if (armure.isEmpty()) {
+            Affichage.affiche("Aucune armure disponible dans l'inventaire.");
+            return;
+        }
+
         Affichage.listeEquipement(armure);
-        choix = Scanner.demandeInt();
-        equiper(index.get(choix));
+
+        try {
+            int choix = Scanner.demandeInt() - 1;
+            if (choix == -1)
+            {
+                return;
+            }
+            else if (choix < -1 || choix >= index.size()) {
+                Affichage.affiche("Choix invalide. Aucun équipement sélectionné.");
+                return;
+            }
+            equiper(index.get(choix));
+        } catch (Exception e) {
+            Affichage.affiche("Erreur de saisie. Veuillez entrer un entier valide.");
+        }
     }
     public void ramasserObjet(Equipement objet)
     {
@@ -133,24 +179,51 @@ public class Personnage extends Entitee{
     }
     public static Personnage creePersonnage()
     {
-        int choix;
         Race[] raceDispo = {new Humain(), new Halfelin(), new Elfe(), new Nain()};
         Classe[] classeDispo = {new Guerrier(), new Magicien(), new Clerc(), new Roublard()};
 
         Affichage.affiche("Nom du personnage : ");
         String nom = Scanner.demandeString();
-        Affichage.selectionTableau(raceDispo);
-        choix = Scanner.demandeInt() -1 ;
-        Race r = raceDispo[choix];
-        Affichage.selectionTableau(classeDispo);
-        choix = Scanner.demandeInt() -1 ;
-        Classe c  = classeDispo[choix];
+
+        Race r;
+        Classe c;
+
+        try {
+            Affichage.selectionTableau(raceDispo);
+            int choixRace = Scanner.demandeInt() - 1;
+            if (choixRace < 0 || choixRace >= raceDispo.length) {
+                Affichage.affiche("Choix de race invalide. Race par défaut (Humain) sélectionnée.");
+                r = new Humain();
+            } else {
+                r = raceDispo[choixRace];
+            }
+
+            Affichage.selectionTableau(classeDispo);
+            int choixClasse = Scanner.demandeInt() - 1;
+            if (choixClasse < 0 || choixClasse >= classeDispo.length) {
+                Affichage.affiche("Choix de classe invalide. Classe par défaut (Guerrier) sélectionnée.");
+                c = new Guerrier();
+            } else {
+                c = classeDispo[choixClasse];
+            }
+
+        } catch (Exception e) {
+            Affichage.affiche("Erreur de saisie. Personnage par défaut (Humain / Guerrier) utilisé.");
+            r = new Humain();
+            c = new Guerrier();
+        }
+
         return new Personnage(nom, r, c);
     }
-
     public ArrayList<Equipement> getInventaire() {
         return m_inventaire;
     }
+    public Equipement getInventaire(int i) { return  m_inventaire.get(i); }
+    public ArrayList<Sort> getSort(){
+        return m_sort;
+    }
+    public Sort getSort(int i){ return m_sort.get(i); }
+    public int getTailleSort(){ return m_sort.size(); }
     public String getNom()
     {
         return m_nom;
@@ -161,6 +234,12 @@ public class Personnage extends Entitee{
     }
     public String getInitiale()
     {
-        return m_nom.substring(0,3);
+        if(m_nom.length() < 3) return m_nom;
+
+        else return m_nom.substring(0,3);
+    }
+    @Override
+    public String toString(){
+        return m_nom;
     }
 }

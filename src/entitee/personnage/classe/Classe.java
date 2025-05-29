@@ -1,8 +1,10 @@
 package entitee.personnage.classe;
 
+import entitee.personnage.sort.Sort;
 import equipement.Equipement;
 
 public abstract class Classe {
     public abstract int getPV();
     public abstract Equipement[] getEquipement();
+    public abstract Sort[] getSort();
 }

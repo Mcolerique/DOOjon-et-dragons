@@ -1,5 +1,6 @@
 package entitee.personnage.classe;
 
+import entitee.personnage.sort.Sort;
 import equipement.Equipement;
 import equipement.arme.Arme;
 import equipement.arme.TypeCaC;
@@ -20,5 +21,14 @@ public class Guerrier extends Classe{
     @Override
     public Equipement[] getEquipement() {
         return m_equipementBase;
+    }
+
+    @Override
+    public String toString() {
+        return "Guerrier";
+    }
+    @Override
+    public Sort[] getSort() {
+        return null;
     }
 }

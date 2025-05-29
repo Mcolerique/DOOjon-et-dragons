@@ -32,4 +32,9 @@ public class Elfe extends Race{
     public int getInitiative() {
         return m_stats[4];
     }
+
+    @Override
+    public String toString() {
+        return "Elfe";
+    }
 }

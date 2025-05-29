@@ -32,4 +32,9 @@ public class Humain extends Race{
     public int getInitiative() {
         return m_stats[4];
     }
+
+    @Override
+    public String toString() {
+        return "Humain";
+    }
 }

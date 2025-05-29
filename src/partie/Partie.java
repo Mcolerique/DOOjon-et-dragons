@@ -3,12 +3,16 @@ package partie;
 import des.Des;
 import donjon.Donjon;
 import entitee.Entitee;
+import entitee.TypeEntitee;
 import entitee.personnage.Personnage;
+import entitee.personnage.sort.Sort;
 import equipement.Equipement;
 import interactionUtilisateur.Affichage;
 import interactionUtilisateur.Scanner;
 
 import java.util.ArrayList;
+
+import static java.lang.Math.abs;
 
 public class Partie {
     private Donjon m_donjon;
@@ -25,7 +29,7 @@ public class Partie {
     {
         ArrayList<Personnage> perso = new ArrayList<>();
         int choix;
-        Affichage.affiche("Combien de personnage joueur voulez vous crée ?");
+        Affichage.affiche("Combien de personnages joueurs voulez vous créer ?");
         choix = Scanner.demandeInt();
         for(int i = 0; i<choix; i++)
         {
@@ -35,244 +39,255 @@ public class Partie {
     }
     public void lancerPartie()
     {
-        ArrayList<Entitee> ordreEntite;
-        Entitee e;
         int numTour = 1;
         boolean defaite = false;
-        for (int i = 0; i < 3 ; i++)
-        {
-            m_donjon = Donjon.creerDonjon(m_perso, m_numDonjon);
+        while (m_numDonjon < 3) {
+            m_donjon = Donjon.creerDonjon(m_perso);
             equiperPerso();
-            ordreEntite = m_donjon.lancerInitiative();
-            while (!m_donjon.estVaincu() || !defaite)
-            {
-                for (int j = 0; j<ordreEntite.size(); j++)
-                {
-                    Affichage.afficheTour(ordreEntite, j,m_donjon, m_numDonjon+1, numTour);
-                    e = ordreEntite.get(j);
-                    if(e.estVivant())
-                    {
-                        nouveauTour(e);
+            ArrayList<Entitee> ordreEntite = m_donjon.lancerInitiative();
+            while (!m_donjon.estVaincu() && !defaite) {
+                for (int j = 0; j < ordreEntite.size(); j++) {
+                    Affichage.afficheTour(ordreEntite, j, m_numDonjon + 1, numTour);
+                    Entitee e = ordreEntite.get(j);
+                    if (e.estVivant()) {
+                        executerTour(e);
                     }
-                    else
-                    {
-                        if(e.getClass() == Personnage.class)
-                        {
-                            defaite(e);
-                            defaite = true;
-                            break;
-                        }
-                        else
-                        {
-                            ordreEntite.remove(e);
+
+                    ArrayList<Entitee> morts = new ArrayList<>();
+                    for (Entitee ent : new ArrayList<>(ordreEntite)) {
+                        if (!ent.estVivant()) {
+                            m_donjon.supprEntite(ent);
+                            if (ent.getType() == TypeEntitee.PERSONNAGE) {
+                                defaite(ent);
+                                defaite = true;
+                                break;
+                            }
+                            morts.add(ent);
                         }
                     }
+                    ordreEntite.removeAll(morts);
+                    if (defaite) break;
                 }
-                numTour ++;
+                numTour++;
             }
-            if(defaite)
-            {
-                break;
-            }
-            Affichage.victoireDonjon(i+1);
-            m_numDonjon ++;
+            if (defaite) break;
+            Affichage.victoireDonjon(m_numDonjon + 1);
+            m_numDonjon++;
         }
     }
-    public void nouveauTour(Entitee e)
+    public void executerTour(Entitee e)
     {
-        boolean objetARecup;
         String choix;
+        boolean objetARecup;
         boolean finAction;
-        for(int i=0; i<3; i++)
-        {
+        int i = 0;
+        while (i < 3 && e.estVivant()) {
             finAction = false;
-            while (!finAction)
-            {
+            while (!finAction) {
                 objetARecup = m_donjon.equipAPos(m_donjon.getPosEntitee(e));
+                Affichage.afficherDonjon(m_donjon);
                 Affichage.afficheAction(e, i, objetARecup);
-                choix = Scanner.demandeString();
-                finAction = tour(e, choix, objetARecup);
+                try {
+                    choix = Scanner.demandeString();
+                    if (choix.isEmpty()) continue;
+                    finAction = traiterTour(e, choix.split(" "), objetARecup);
+                } catch (Exception ex) {
+                    Affichage.affiche("Erreur de saisie. Réessayez.");
+                }
             }
             Affichage.affiche("mj voulez vous faire une action ? y/n");
-            choix = Scanner.demandeString();
-            finAction = false;
-            if(choix == "y")
-            {
-                while (!finAction) {
-                    Affichage.afficheActionMJ();
-                    choix = Scanner.demandeString();
-                    finAction = tourMJ(choix);
+            try {
+                choix = Scanner.demandeString();
+                finAction = false;
+                if (choix.equals("y")) {
+                    while (!finAction) {
+                        Affichage.afficheActionMJ();
+                        try {
+                            choix = Scanner.demandeString();
+                            finAction = actionMJ(choix.split(" "));
+                        } catch (Exception ex) {
+                            Affichage.affiche("Erreur de saisie MJ. Réessayez.");
+                        }
+                    }
                 }
+            } catch (Exception ex) {
+                Affichage.affiche("Erreur de saisie. Tour MJ ignoré.");
             }
+            i++;
         }
     }
-    public boolean tour(Entitee e, String choix, boolean objetARecup)
+    public boolean traiterTour(Entitee e, String[] choix, boolean objetARecup)
     {
-        char a = 'A';
-        char x;
-        int[] pos = new int[2];
-        switch (choix.substring(0,3)) {
-            case "att":
-                x = choix.toUpperCase().charAt(4);
-                pos[0] = (a + x) % 26;
-                pos[1] = Integer.parseInt(choix.substring(5));
-                if (!attaquePossible(e, pos)) {
-                    Affichage.affiche("Attaque impossible, séléctionnez un emplacement valide");
-                    return false;
-                }
-                e.attaquer(m_donjon.getEntiteeAPos(pos));
-                break;
-            case "mj ":
-                Affichage.affiche(choix.substring(4));
-                return false;
-            case "dep":
-                x = choix.toUpperCase().charAt(4);
-                if(!verifCharValide(x))
-                {
-                    Affichage.affiche("Déplacement impossible, séléctionnez un emplacement valide");
-                    return false;
-                }
-                pos[0] = (a + x) % 26;
-                pos[1] = Integer.parseInt(choix.substring(5));
-                if(!verifEntierValide(pos[1]) || !deplacementPossible(e, pos))
-                {
-                    Affichage.affiche("Déplacement impossible, séléctionnez un emplacement valide");
-                    return false;
-                }
-                m_donjon.deplacerEntitee(e, pos);
-                return true;
-            default:
-                if(e.getClass() == Personnage.class)
-                {
-                    Personnage p = (Personnage) e;
-                    return tourPerso(p, choix, objetARecup);
-                }
-                else {
-                    Affichage.affiche("Sélectionner une action valide");
-                    return false;
-                }
+        if (choix.length < 2) {
+            Affichage.affiche("Commande incomplète.");
+            return false;
         }
-        return false;
-    }
-    public boolean tourPerso(Personnage p, String choix, boolean objetARecup)
-    {
-        switch (choix.substring(0,3))
-        {
-            case "com":
-                Affichage.affiche(choix.substring(4));
-                return false;
-            case "equ":
-                int ie = Integer.parseInt(choix.substring(4));
-                if(ie >= p.getTailleInventaire())
-                {
-                    Affichage.affiche("Equipement sélectionnez invalide");
-                    return false;
-                }
-                p.equiper(ie);
-                return true;
-            default:
-                if(objetARecup && choix.substring(0, 3).equals("ram"))
-                {
-                    Equipement equipRam = m_donjon.getEquipAPos(m_donjon.getPosEntitee(p));
-                    p.ramasserObjet(equipRam);
-                    m_donjon.supprEquip(equipRam);
+        int[] pos = extrairePosition(choix[1]);
+        try {
+            switch (choix[0]) {
+                case "att":
+                    if (pos == null) {
+                        Affichage.affiche("Emplacement non valide.");
+                        return false;
+                    } else if (!attaquePossible(e, pos)) {
+                        Affichage.affiche("Attaque impossible, sélectionnez un emplacement à portée");
+                        return false;
+                    }
+                    Entitee ennemi = m_donjon.getEntiteeAPos(pos);
+                    if (ennemi == null) {
+                        Affichage.affiche("Attaque impossible, sélectionnez une entité valide");
+                        return false;
+                    } else if (e.getType() == ennemi.getType()) {
+                        Affichage.affiche("Friendly fire off, sélectionnez un ennemi valide");
+                        return false;
+                    }
+                    e.attaquer(ennemi);
                     return true;
-                }
-                Affichage.affiche("Sélectionner une action valide");
-                return false;
+                case "mj ":
+                    Affichage.affiche(choix[1]);
+                    return false;
+                case "dep":
+                    if (pos == null) {
+                        Affichage.affiche("Emplacement non valide.");
+                        return false;
+                    } else if (!deplacementPossible(e, pos)) {
+                        Affichage.affiche("Déplacement impossible, sélectionnez un emplacement à portée");
+                        return false;
+                    }
+                    m_donjon.deplacerEntitee(e, pos);
+                    return true;
+                default:
+                    if (e.getType() == TypeEntitee.PERSONNAGE) {
+                        return tourPerso((Personnage) e, choix, objetARecup);
+                    } else {
+                        Affichage.affiche("Sélectionnez une action valide");
+                        return false;
+                    }
+            }
+        } catch (Exception ex) {
+            Affichage.affiche("Erreur lors du traitement de l'action. Réessayez.");
+            return false;
         }
     }
-    public boolean tourMJ(String choix)
+    public boolean tourPerso(Personnage p, String[] choix, boolean objetARecup)
     {
-        char a = 'A';
-        char x;
-        int[] pos = new int[2];
+        try {
+            switch (choix[0]) {
+                case "com":
+                    Affichage.affiche(choix[1]);
+                    return false;
+                case "equ":
+                    int ie = Integer.parseInt(choix[1]) - 1;
+                    if (ie > p.getTailleInventaire()) {
+                        Affichage.affiche("Équipement sélectionné invalide");
+                        return false;
+                    }
+                    p.equiper(ie);
+                    return true;
+                case "ram":
+                    if (objetARecup) {
+                        Equipement equipRam = m_donjon.getEquipAPos(m_donjon.getPosEntitee(p));
+                        p.ramasserObjet(equipRam);
+                        m_donjon.supprEquip(equipRam);
+                        return true;
+                    }
+                    Affichage.affiche("Aucun objet à ramasser à cette position");
+                    return false;
+                case "sor":
+                    int is = Integer.parseInt(choix[1]) - 1;
+                    if (is > p.getTailleSort()) {
+                        Affichage.affiche("Sort sélectionné invalide");
+                        return false;
+                    }
+                    return utiliserSort(p.getSort(is));
+                default:
+                    Affichage.affiche("Sélectionnez une action valide");
+                    return false;
+            }
+        } catch (Exception ex) {
+            Affichage.affiche("Erreur dans le tour du personnage. Réessayez.");
+            return false;
+        }
+    }
+    public boolean actionMJ(String[] choix)
+    {
+        if (choix.length < 2) {
+            Affichage.affiche("Commande MJ incomplète");
+            return false;
+        }
+        int[] pos = extrairePosition(choix[1]);
+
         Entitee e;
-        switch (choix.substring(0,3)) {
+        switch (choix[0]) {
             case "att":
-                x = choix.toUpperCase().charAt(4);
-                pos[0] = (a + x) % 26;
-                pos[1] = Integer.parseInt(choix.substring(5));
-                e = m_donjon.getEntiteeAPos(pos);
-                if (e != null) {
+                if (pos == null )
+                {
+                    Affichage.affiche("Emplacement non valide.");
+                    return false;
+                }
+                    e = m_donjon.getEntiteeAPos(pos);
+                if (e == null) {
                     Affichage.affiche("Attaque impossible, séléctionnez une entité valide");
                     return false;
                 }
                 attaqueEntitee(e);
                 return true;
             case "dep":
-                x = choix.toUpperCase().charAt(4);
-                if(!verifCharValide(x))
-                {
-                    Affichage.affiche("Déplacement impossible, séléctionnez un emplacement valide");
+                if (choix.length < 3) {
+                    Affichage.affiche("Commande déplacement MJ incomplète");
                     return false;
                 }
-                pos[0] = (a + x) % 26;
-                pos[1] = Integer.parseInt(choix.substring(5));
-                if(!verifEntierValide(pos[1]))
+                else if (pos == null )
                 {
-                    Affichage.affiche("Déplacement impossible, séléctionnez un emplacement valide");
+                    Affichage.affiche("Emplacement départ non valide.");
                     return false;
                 }
                 e = m_donjon.getEntiteeAPos(pos);
-                x = choix.toUpperCase().charAt(7);
-                if(!verifCharValide(x))
-                {
-                    Affichage.affiche("Déplacement impossible, séléctionnez un emplacement valide");
+                if (e == null) {
+                    Affichage.affiche("Déplacement impossible, séléctionnez une entité");
                     return false;
                 }
-                pos[0] = (a + x) % 26;
-                pos[1] = Integer.parseInt(choix.substring(5));
-                if(!verifEntierValide(pos[1]))
-                {
-                    Affichage.affiche("Déplacement impossible, séléctionnez un emplacement valide");
+                int[] newPos = extrairePosition(choix[2]);
+                if (newPos == null ) {
+                    Affichage.affiche("Emplacement d'arriver non valide.");
                     return false;
                 }
-                m_donjon.deplacerEntitee(e, pos);
+                m_donjon.deplacerEntitee(e, newPos);
                 return true;
             case "obs":
-                x = choix.toUpperCase().charAt(4);
-                if(!verifCharValide(x))
-                {
-                    Affichage.affiche("Séléctionnez un emplacement valide");
-                    return false;
-                }
-                pos[0] = (a + x) % 26;
-                pos[1] = Integer.parseInt(choix.substring(5));
-                if(!verifEntierValide(pos[1]))
-                {
-                    Affichage.affiche("Séléctionnez un emplacement valide");
-                    return false;
-                }
-                if (!m_donjon.ajouterObstacle(pos))
-                {
-                    Affichage.affiche("Séléctionnez un emplacement valide");
-                    return false;
-                }
-                else
-                {
-                    return  true;
-                }
+                return m_donjon.ajouterObstacle(pos);
             default:
                 Affichage.affiche("Sélectionner une action valide");
                 return false;
+        }
+    }
+    public int[] extrairePosition(String s) {
+        try {
+            if (s.length() < 2) return null;
+            char col = s.toUpperCase().charAt(0);
+            if (!verifCharValide(col)) return null;
+            int row = Integer.parseInt(s.substring(1)) - 1;
+            if (!verifEntierValide(row)) return null;
+            return new int[]{col - 'A', row};
+        } catch (Exception e) {
+            return null;
         }
     }
     public boolean deplacementPossible(Entitee entitee, int[] pos)
     {
         int[] posEntitee = m_donjon.getPosEntitee(entitee);
         int distance = (int)Math.sqrt(Math.pow(pos[0] - posEntitee[0], 2) + Math.pow(pos[1] - posEntitee[1], 2));
-        return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.seDeplacer(distance) && m_donjon.existeAEmplacement(pos);
+        return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.seDeplacer(abs(distance)) && !m_donjon.verifAEmplacement(pos);
     }
     public boolean attaquePossible(Entitee entitee, int[] pos)
     {
         int[] posEntitee = m_donjon.getPosEntitee(entitee);
         int distance = (int)Math.sqrt(Math.pow(pos[0] - posEntitee[0], 2) + Math.pow(pos[1] - posEntitee[1], 2));
-        return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.getPorteeArme()<distance;
+        return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.getPorteeArme()>=distance;
     }
     public boolean verifEntierValide(int e)
     {
-        return e <= m_donjon.getLargeur() && e > 0;
+        return e < m_donjon.getLargeur() && e >= 0;
     }
     public boolean verifCharValide(char c)
     {
@@ -280,10 +295,9 @@ public class Partie {
     }
     public void equiperPerso()
     {
-        for(int i = 0; i < m_perso.size(); i++)
-        {
-            m_perso.get(i).equiperArmure();
-            m_perso.get(i).equiperArme();
+        for (Personnage personnage : m_perso) {
+            personnage.choisirArmure();
+            personnage.choisirArme();
         }
     }
     public void defaite(Entitee e){
@@ -291,24 +305,59 @@ public class Partie {
     }
     public static void attaqueEntitee(Entitee e)
     {
-        int nbDes, degats, resultDes;
-        int somme = 0;
-        String txt = "(";
-        Affichage.affiche("Combien de dès voulez vous lancer ?");
-        nbDes = Scanner.demandeInt();
-        Affichage.affiche("Combien de faces ont les dès ?");
-        degats = Scanner.demandeInt();
-        for (int i = 0; i<nbDes; i++)
-        {
-            resultDes = Des.lancerDes(degats);
-            somme += resultDes;
-            txt += resultDes+"+";
+        try {
+            int nbDes, degats, resultDes;
+            int somme = 0;
+            String txt = "(";
+
+            Affichage.affiche("Combien de dès voulez-vous lancer ?");
+            nbDes = Scanner.demandeInt();
+
+            Affichage.affiche("Combien de faces ont les dès ?");
+            degats = Scanner.demandeInt();
+
+            if (nbDes <= 0 || degats <= 0) {
+                Affichage.affiche("Le nombre de dés et de faces doit être supérieur à 0.");
+                return;
+            }
+
+            for (int i = 0; i < nbDes; i++) {
+                resultDes = Des.lancerDes(degats);
+                somme += resultDes;
+                txt += resultDes + "+";
+            }
+
+            txt = somme + txt.substring(0, txt.length() - 1) + ")";
+            e.sePrendreDegats(somme);
+            Affichage.affiche("Vous avez infligé " + txt + " dégâts");
+
+        } catch (Exception ex) {
+            Affichage.affiche("Erreur de saisie : veuillez entrer un entier valide.");
         }
-        txt = somme+txt.substring(0, txt.length()-1)+")";
-        e.sePrendreDegats(somme);
-        Affichage.affiche("vous avez infliger " + txt +" degats");
     }
-    public int getNumDonjon() {
-        return m_numDonjon;
+    public boolean utiliserSort(Sort s)
+    {
+        ArrayList<Entitee> listEntite;
+        String nom = s.getNom();
+        switch (nom)
+        {
+            case "Guérison":
+                listEntite = m_donjon.getListePersonnage();
+                return s.utiliserSort(listEntite);
+            case "Boogie Woogie":
+                listEntite = m_donjon.getListeEntite();
+                if (s.utiliserSort(listEntite))
+                {
+                    m_donjon.echangePosEntite(listEntite.get(0), listEntite.get(1));
+                    return true;
+                }
+                return false;
+            case "Arme magique":
+                listEntite = m_donjon.getListeEntite();
+                return s.utiliserSort(listEntite);
+            default:
+                Affichage.affiche("erreur");
+        }
+        return false;
     }
 }
