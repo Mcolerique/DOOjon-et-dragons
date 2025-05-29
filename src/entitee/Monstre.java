@@ -36,8 +36,9 @@ public class Monstre extends Entitee{
     {
         return m_espece;
     }
-    public  String getDescription()
+    public String getDescription()
     {
         return ""+m_numMonstre;
     }
+    public String toString() {return m_espece+" n°"+m_numMonstre;}
 }

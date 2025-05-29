@@ -22,7 +22,7 @@ public class Guerison extends Sort{
 
             Affichage.affiche("Sélectionnez l'entité à soigner :");
             Affichage.afficheListeEntitee(listEntite);
-            int choix = Scanner.demandeInt();
+            int choix = Scanner.demandeInt()-1;
 
             if (choix < 0 || choix >= listEntite.size()) {
                 Affichage.affiche("Erreur : sélection invalide.");

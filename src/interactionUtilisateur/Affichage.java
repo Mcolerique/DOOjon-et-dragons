@@ -5,6 +5,7 @@ import entitee.Entitee;
 import entitee.Monstre;
 import entitee.TypeEntitee;
 import entitee.personnage.Personnage;
+import entitee.personnage.sort.Sort;
 import equipement.Equipement;
 import equipement.arme.Arme;
 import equipement.armure.Armure;
@@ -208,6 +209,17 @@ public class Affichage {
         } else {
             sb.append("  Inventaire: vide\n");
         }
+        ArrayList<Sort> sort = e.getSort();
+        if (sort != null && !sort.isEmpty()) {
+            sb.append("  Sort:");
+            for (int i = 0; i < sort.size(); i++) {
+                Sort equip = sort.get(i);
+                sb.append(" [").append(i + 1).append("] ").append(equip != null ? equip.getNom() : "inconnu");
+            }
+            sb.append("\n");
+        } else {
+            sb.append("  Sort: aucun\n");
+        }
 
         // Caractéristiques
         sb.append("  Force: ").append(e.getForce()).append("\n");
@@ -228,6 +240,9 @@ public class Affichage {
         sb.append("  - attaquer (att <Case>)\n");
         sb.append("  - se déplacer (dep <Case>)\n");
         sb.append("  - s'équiper (equ <numero equipement>)\n");
+        if(sort != null && !sort.isEmpty()) {
+            sb.append("  - lancer sort (sor <numero sort>)\n");
+        }
         if (objetARecup) {
             sb.append("  - ramasser objet (ram)\n");
         }

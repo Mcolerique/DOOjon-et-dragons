@@ -29,7 +29,7 @@ public class ArmeMagique extends Sort{
 
             Affichage.affiche("Sélectionnez l'arme à améliorer :");
             Affichage.listeEquipement(armes);
-            int choix = Scanner.demandeInt();
+            int choix = Scanner.demandeInt() -1;
 
             if (choix < 0 || choix >= armes.size()) {
                 Affichage.affiche("Erreur : choix invalide.");
