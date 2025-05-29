@@ -222,6 +222,7 @@ public class Personnage extends Entitee{
         return m_sort;
     }
     public Sort getSort(int i){ return m_sort.get(i); }
+    public int getTailleSort(){ return m_sort.size(); }
     public String getNom()
     {
         return m_nom;

@@ -12,10 +12,10 @@ public class BoogieWoogie extends Sort{
     }
 
     @Override
-    public void utiliserSort(ArrayList<Entitee> listEntite) {
+    public boolean utiliserSort(ArrayList<Entitee> listEntite) {
         if (listEntite.size() < 2) {
             Affichage.affiche("Pas assez d'entités pour utiliser ce sort.");
-            return;
+            return false;
         }
 
         try {
@@ -25,7 +25,7 @@ public class BoogieWoogie extends Sort{
             String[] choix = Scanner.demandeString().split(";");
             if (choix.length != 2) {
                 Affichage.affiche("Erreur : vous devez sélectionner exactement deux entités séparées par ';'.");
-                return;
+                return false;
             }
 
             int idx1 = Integer.parseInt(choix[0].trim()) - 1;
@@ -33,7 +33,7 @@ public class BoogieWoogie extends Sort{
 
             if (idx1 < 0 || idx1 >= listEntite.size() || idx2 < 0 || idx2 >= listEntite.size()) {
                 Affichage.affiche("Erreur : index(s) invalide(s).");
-                return;
+                return false;
             }
 
             Entitee e1 = listEntite.get(idx1);
@@ -45,11 +45,12 @@ public class BoogieWoogie extends Sort{
             listEntite.add(e2);
 
             Affichage.affiche(e1.getNom() + " et " + e2.getNom() + " échangent leur position.");
-
+            return true;
         } catch (NumberFormatException e) {
             Affichage.affiche("Erreur : entrée non valide, veuillez entrer deux entiers séparés par ';'.");
         } catch (Exception e) {
             Affichage.affiche("Une erreur s'est produite lors de l'utilisation du sort : " + e.getMessage());
         }
+        return false;
     }
 }

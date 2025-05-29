@@ -534,4 +534,28 @@ public class Donjon {
             return false;
         }
     }
+    public void echangePosEntite(Entitee e1, Entitee e2)
+    {
+        int[] pos1 = m_positionEntitee.get(e1);
+        int[] pos2 = m_positionEntitee.get(e2);
+
+        deplacerEntitee(e1, pos2);
+        deplacerEntitee(e2, pos1);
+    }
+    public ArrayList<Entitee> getListeEntite()
+    {
+        return new ArrayList<>(m_positionEntitee.keySet());
+    }
+    public ArrayList<Entitee> getListePersonnage()
+    {
+        ArrayList<Entitee> p = new ArrayList<>();
+        for (Entitee e : m_positionEntitee.keySet())
+        {
+            if (e.getType() == TypeEntitee.PERSONNAGE)
+            {
+                p.add(e);
+            }
+        }
+        return p;
+    }
 }

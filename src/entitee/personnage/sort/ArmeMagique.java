@@ -18,12 +18,44 @@ public class ArmeMagique extends Sort{
     }
 
     @Override
-    public void utiliserSort(ArrayList<Entitee> listEntite) {
-        ArrayList<Equipement> armes = remplirListeArme(listEntite);
-        Affichage.affiche("Selectionnez l'arme à amélioré :");
-        Affichage.listeEquipement(armes);
-        int choix = Scanner.demandeInt();
-        ((Arme)armes.get(choix)).boostArme(1);
+    public boolean utiliserSort(ArrayList<Entitee> listEntite) {
+        try {
+            ArrayList<Equipement> armes = remplirListeArme(listEntite);
+
+            if (armes.isEmpty()) {
+                Affichage.affiche("Aucune arme disponible à améliorer.");
+                return false;
+            }
+
+            Affichage.affiche("Sélectionnez l'arme à améliorer :");
+            Affichage.listeEquipement(armes);
+            int choix = Scanner.demandeInt();
+
+            if (choix < 0 || choix >= armes.size()) {
+                Affichage.affiche("Erreur : choix invalide.");
+                return false;
+            }
+
+            Equipement equipement = armes.get(choix);
+            if (equipement.getType() == TypeEquipement.ARME) {
+                ((Arme) equipement).boostArme(1);
+                Affichage.affiche(equipement.getNom() + " a été améliorée !");
+            } else {
+                Affichage.affiche("Erreur : l'équipement sélectionné n'est pas une arme.");
+                return false;
+            }
+
+            return true;
+
+        } catch (NumberFormatException e) {
+            Affichage.affiche("Erreur : entrée non valide, veuillez saisir un nombre.");
+        } catch (IndexOutOfBoundsException e) {
+            Affichage.affiche("Erreur : sélection en dehors des limites.");
+        } catch (Exception e) {
+            Affichage.affiche("Une erreur s'est produite : " + e.getMessage());
+        }
+
+        return false;
     }
     public ArrayList<Equipement> remplirListeArme(ArrayList<Entitee> list)
     {

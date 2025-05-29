@@ -5,6 +5,7 @@ import donjon.Donjon;
 import entitee.Entitee;
 import entitee.TypeEntitee;
 import entitee.personnage.Personnage;
+import entitee.personnage.sort.Sort;
 import equipement.Equipement;
 import interactionUtilisateur.Affichage;
 import interactionUtilisateur.Scanner;
@@ -192,6 +193,13 @@ public class Partie {
                     }
                     Affichage.affiche("Aucun objet à ramasser à cette position");
                     return false;
+                case "sor":
+                    int is = Integer.parseInt(choix[1]) - 1;
+                    if (is > p.getTailleSort()) {
+                        Affichage.affiche("Sort sélectionné invalide");
+                        return false;
+                    }
+                    return utiliserSort(p.getSort(is));
                 default:
                     Affichage.affiche("Sélectionnez une action valide");
                     return false;
@@ -326,5 +334,30 @@ public class Partie {
         } catch (Exception ex) {
             Affichage.affiche("Erreur de saisie : veuillez entrer un entier valide.");
         }
+    }
+    public boolean utiliserSort(Sort s)
+    {
+        ArrayList<Entitee> listEntite;
+        String nom = s.getNom();
+        switch (nom)
+        {
+            case "Guérison":
+                listEntite = m_donjon.getListePersonnage();
+                return s.utiliserSort(listEntite);
+            case "Boogie Woogie":
+                listEntite = m_donjon.getListeEntite();
+                if (s.utiliserSort(listEntite))
+                {
+                    m_donjon.echangePosEntite(listEntite.get(0), listEntite.get(1));
+                    return true;
+                }
+                return false;
+            case "Arme magique":
+                listEntite = m_donjon.getListeEntite();
+                return s.utiliserSort(listEntite);
+            default:
+                Affichage.affiche("erreur");
+        }
+        return false;
     }
 }
