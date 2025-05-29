@@ -56,8 +56,12 @@ public class Personnage extends Entitee{
         }
         m_inventaire = new ArrayList<>();
         m_inventaire.addAll(Arrays.asList(m_classe.getEquipement()));
-        m_sort = new ArrayList<>();
-        m_sort.addAll(Arrays.asList(m_classe.getSort()));
+        if(m_classe.getSort() != null)
+        {
+            m_sort = new ArrayList<>();
+            m_sort.addAll(Arrays.asList(m_classe.getSort()));
+        }
+        else{m_sort = null;}
         m_pvActuelle = m_stats[0];
     }
     public void equiper(int e)
