@@ -31,6 +31,7 @@ public class ListeEquipements {
         add(new Arme("Arbalète légère", 1, 8, 16));
         add(new Arme("Fronde", 1, 4, 6));
         add(new Arme("Arc court", 1, 6, 16));
+        add(new Arme("Epée à deux mains", 2, 6, TypeCaC.GUERRE));
     }};
 
     private static ArrayList<Equipement> m_listeEquipementsUtilises = new ArrayList<>() {{}};
