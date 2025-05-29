@@ -7,6 +7,8 @@ public class Arme extends Equipement {
     private final int m_nbDesDeg;
     private final int m_degats;
     private final int m_portee;
+    private int m_bonusDegats;
+    private int m_bonusAttaque;
     private final TypeCaC m_type;
 
     public Arme() {
@@ -14,6 +16,8 @@ public class Arme extends Equipement {
         m_nbDesDeg = 1;
         m_degats = 1;
         m_portee = 1;
+        m_bonusAttaque = 1;
+        m_bonusDegats = 1;
         m_type = TypeCaC.COURANTE;
         m_typeEquipement = TypeEquipement.ARME;
     }
@@ -23,6 +27,8 @@ public class Arme extends Equipement {
         m_nbDesDeg = nbDes;
         m_degats = nbFaces;
         m_portee = portee;
+        m_bonusAttaque = 1;
+        m_bonusDegats = 1;
         m_type = null;
         m_typeEquipement = TypeEquipement.ARME;
     }
@@ -32,6 +38,8 @@ public class Arme extends Equipement {
         m_nbDesDeg = nbDes;
         m_degats = nbFaces;
         m_portee = 1;
+        m_bonusAttaque = 1;
+        m_bonusDegats = 1;
         m_type = type;
         m_typeEquipement = TypeEquipement.ARME;
         if(m_type == TypeCaC.GUERRE){
@@ -50,7 +58,12 @@ public class Arme extends Equipement {
         for(int i = 0; i<m_nbDesDeg;i++){
             degats += Des.lancerDes(m_degats);
         }
-        return degats;
+        return degats+m_bonusDegats;
+    }
+    public void boostArme(int bonus)
+    {
+        m_bonusAttaque += bonus;
+        m_bonusDegats += bonus;
     }
     public String getDegats()
     {
@@ -60,5 +73,9 @@ public class Arme extends Equipement {
         return this.m_portee>1 ? 2 : 1;
         //Si portée sup à 1 donc arme à distance alors la statistique qui importe
         //c'est la dextérité, si c'est CàC alors ce serait force
+    }
+    public int getBonusAttaque()
+    {
+        return m_bonusAttaque;
     }
 }

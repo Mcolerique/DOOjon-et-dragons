@@ -37,7 +37,7 @@ public abstract class Entitee {
     }
     public void attaquer(Entitee ennemie)
     {
-        int jetAttaque = Des.lancerDes(20) + this.m_stats[m_arme.quelleStat()];
+        int jetAttaque = Des.lancerDes(20) + this.m_stats[m_arme.quelleStat()] + m_arme.getBonusAttaque();
         if(ennemie.seFaireAttaquer(jetAttaque))
         {
             ennemie.sePrendreDegats(m_arme.infligerDegats());
@@ -54,6 +54,13 @@ public abstract class Entitee {
     public int lancerInitiative()
     {
         return Des.lancerDes(20) + m_stats[4];
+    }
+    public void soin(int soin){
+        m_pvActuelle += soin;
+        if(m_pvActuelle > m_stats[0])
+        {
+            m_pvActuelle = m_stats[0];
+        }
     }
     public int getForce()
     {

@@ -214,6 +214,7 @@ public class Personnage extends Entitee{
     public ArrayList<Equipement> getInventaire() {
         return m_inventaire;
     }
+    public Equipement getInventaire(int i) { return  m_inventaire.get(i); }
     public String getNom()
     {
         return m_nom;
@@ -228,7 +229,6 @@ public class Personnage extends Entitee{
 
         else return m_nom.substring(0,3);
     }
-
     @Override
     public String toString(){
         return m_nom;
