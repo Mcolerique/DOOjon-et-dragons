@@ -11,12 +11,14 @@ package interactionUtilisateur
         +{static}affiche(texte : String)
         +{static}afficheTour(e : Entitee[*], i : Integer, d : Donjon, numDonjon : Integer, numTour : Integer)
         +{static}afficherDonjon(d : Donjon)
+        +{static}centerText(text : String, width : Integer) : String
         +{static}afficheAction(e : Entitee, numAction : Integer, objetARecup : Boolean)
         +{static}afficheActionPerso(e : Personnage, numAction : Integer, objetARecup : Boolean)
         +{static}afficheActionMonstre(e : Monstre, numAction : Integer)
-        +{static}afficheListeEntitee(list Entitee[*])
-        +{static}listeEquipement(list Equipement[*])
-        +{static}selectionTableau(tab Object[])
+        +{static}afficheActionMJ()
+        +{static}afficheListeEntitee(list : Entitee[*])
+        +{static}listeEquipement(list : Equipement[*])
+        +{static}selectionTableau(tab : Object[])
         +{static}defaite(e : Entitee)
         +{static}victoireDonjon(numDonjon : Integer)
 
@@ -126,6 +128,8 @@ package entitee
             +getNom() : String
             +getDescription() : String
             +getInitiale() : String
+            +getNom() : String
+            +getDescription() : String
         }
         Personnage .> Affichage : "<<call>>"
         Personnage .> Scanner : "<<call>>"
@@ -150,21 +154,45 @@ package entitee
             {
                 -{static}stats : Integer[5]
                 +<<create>>Nain()
+                getStats() : Integer[5]
+                +getPv() : Integer
+                +getForce() : Integer
+                +getDex() : Integer
+                +getVitesse() : Integer
+                +getInitiative() : Integer
             }
             class  Humain extends Race
             {
                 -{static}stats : Integer[5]
                 +<<create>>Humain()
+                getStats() : Integer[5]
+                +getPv() : Integer
+                +getForce() : Integer
+                +getDex() : Integer
+                +getVitesse() : Integer
+                +getInitiative() : Integer
             }
             class  Elfe extends Race
             {
                 -{static}stats : Integer[5]
                 +<<create>>Elfe()
+                getStats() : Integer[5]
+                +getPv() : Integer
+                +getForce() : Integer
+                +getDex() : Integer
+                +getVitesse() : Integer
+                +getInitiative() : Integer
             }
             class  Halfelin extends Race
             {
                 -{static}stats : Integer[5]
                 +<<create>>Halfelin()
+                getStats() : Integer[5]
+                +getPv() : Integer
+                +getForce() : Integer
+                +getDex() : Integer
+                +getVitesse() : Integer
+                +getInitiative() : Integer
             }
         }
         Package classe
@@ -179,21 +207,33 @@ package entitee
             {
                 -{static} pv : Integer
                 +<<create>>Clerc()
+                +getPv() : Integer
+                +getEquipement() : Equipement[]
+                +getSort() : Sort[]
             }
             class Guerrier extends Classe
             {
                 -{static} pv : Integer
                 +<<create>>Guerrier()
+                +getPv() : Integer
+                +getEquipement() : Equipement[]
+                +getSort() : Sort[]
             }
             class Magicien extends Classe
             {
                 -{static} pv : Integer
                 +<<create>>Magicien()
+                +getPv() : Integer
+                +getEquipement() : Equipement[]
+                +getSort() : Sort[]
             }
             class Roublard extends Classe
             {
                 -{static} pv : Integer
                 +<<create>>Roublard()
+                +getPv() : Integer
+                +getEquipement() : Equipement[]
+                +getSort() : Sort[]
             }
             Roublard *--> "2\n {static}equipementBase" .equipement.arme.Arme
             Magicien *--> "2\n {static}equipementBase" .equipement.arme.Arme
@@ -241,6 +281,8 @@ package entitee
         +getNom() : String
         +getDescription() : String
         +toString() : String
+        +getNom() : String
+        +getDescription() : String
     }
 
     class ListeMonstres
