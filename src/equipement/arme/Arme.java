@@ -51,8 +51,6 @@ public class Arme extends Equipement {
     public int getPortee(){
         return m_portee;
     }
-
-
     public int infligerDegats() {
         int degats = 0;
         for(int i = 0; i<m_nbDesDeg;i++){

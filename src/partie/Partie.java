@@ -144,7 +144,7 @@ public class Partie {
                     e.attaquer(ennemi);
                     return true;
                 case "mj ":
-                    Affichage.affiche(choix[1]);
+                    Affichage.affiche(concatString(choix));
                     return false;
                 case "dep":
                     if (pos == null) {
@@ -174,7 +174,7 @@ public class Partie {
         try {
             switch (choix[0]) {
                 case "com":
-                    Affichage.affiche(choix[1]);
+                    Affichage.affiche(concatString(choix));
                     return false;
                 case "equ":
                     int ie = Integer.parseInt(choix[1]) - 1;
@@ -359,5 +359,14 @@ public class Partie {
                 Affichage.affiche("erreur");
         }
         return false;
+    }
+    String concatString(String[] tab)
+    {
+        String txt = "";
+        for(int i = 0; i<tab.length; i++)
+        {
+            txt += tab[i]+" ";
+        }
+        return txt;
     }
 }
