@@ -135,7 +135,8 @@ package entitee
         Personnage .> Scanner : "<<call>>"
         Personnage o-down-> "1\n race" race.Race: est un >
         Personnage o-down-> "1\n classe" classe.Classe: est un >
-        Entitee *-right--> "2\n equipement" .equipement.Equipement: a equiper >
+        Entitee *-right--> "1\n arme" .equipement.arme.Arme: a equiper >
+        Entitee *-right--> "1\n armure" .equipement.armure.Armure: a equiper >
         Personnage *-right--> "*\n inventaire" equipement.Equipement: possède >
         Personnage *---> "*\n sort" sort.Sort: maitrise >
         Entitee *-> "1\n type" TypeEntitee
@@ -336,7 +337,7 @@ package equipement
     ListeEquipements .> Affichage : "<<call>>"
     ListeEquipements ..> Scanner : "<<call>>"
 
-    package Armure
+    package armure
     {
         Enum Poids
         {
