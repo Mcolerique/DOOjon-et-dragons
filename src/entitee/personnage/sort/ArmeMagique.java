@@ -38,7 +38,7 @@ public class ArmeMagique extends Sort{
 
             Equipement equipement = armes.get(choix);
             if (equipement.getType() == TypeEquipement.ARME) {
-                ((Arme) equipement).boostArme(1);
+                equipement.boost(1);
                 Affichage.affiche(equipement.getNom() + " a été améliorée !");
             } else {
                 Affichage.affiche("Erreur : l'équipement sélectionné n'est pas une arme.");

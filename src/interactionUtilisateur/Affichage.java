@@ -246,6 +246,7 @@ public class Affichage {
         if (objetARecup) {
             sb.append("  - ramasser objet (ram)\n");
         }
+        sb.append("  - passer l'action (pas)\n");
 
         // Affichage final
         affiche(sb.toString());
@@ -289,6 +290,7 @@ public class Affichage {
         sb.append("  - laisser le maître du jeu commenter l'action précédente (mj <texte>)\n");
         sb.append("  - attaquer (att <Case>)\n");
         sb.append("  - se déplacer (dep <Case>)\n");
+        sb.append("  - passer l'action (pas)\n");
 
         // Affichage final
         affiche(sb.toString());

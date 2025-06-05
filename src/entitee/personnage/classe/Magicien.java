@@ -9,9 +9,10 @@ import equipement.arme.TypeCaC;
 public class Magicien extends Classe{
     private static final int m_pv = 12;
     private static final Sort[] m_sort = new Sort[] {new Guerison(), new BoogieWoogie(), new ArmeMagique()};
-    private static final Equipement[] m_equipementBase = new Equipement[] {new Arme("Bâton", 1, 6, TypeCaC.COURANTE), new Arme("Fronde", 1, 4, 6)};
+    private final Equipement[] m_equipementBase;
     public Magicien()
     {
+       m_equipementBase = new Equipement[] {new Arme("Bâton", 1, 6, TypeCaC.COURANTE), new Arme("Fronde", 1, 4, 6)};
     }
 
     @Override

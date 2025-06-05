@@ -3,6 +3,7 @@ package entitee;
 import equipement.arme.Arme;
 import equipement.armure.Armure;
 import des.Des;
+import interactionUtilisateur.Affichage;
 
 public abstract class Entitee {
     protected int[] m_stats = new int[5];
@@ -25,7 +26,10 @@ public abstract class Entitee {
     }
     public boolean seFaireAttaquer(int jetAttaque)
     {
-        return m_armure.getCA() <= jetAttaque;
+        if (m_armure != null){
+            return m_armure.getCA() <= jetAttaque;
+        }
+        return true;
     }
     public void sePrendreDegats(int degats)
     {
@@ -33,14 +37,20 @@ public abstract class Entitee {
     }
     public boolean seDeplacer(int distance)
     {
-        return distance < m_stats[3];
+        return distance <= m_stats[3];
     }
     public void attaquer(Entitee ennemie)
     {
         int jetAttaque = Des.lancerDes(20) + this.m_stats[m_arme.quelleStat()] + m_arme.getBonusAttaque();
+        Affichage.affiche("Vous avec fait un "+ jetAttaque+" a votre jet d'attaque");
         if(ennemie.seFaireAttaquer(jetAttaque))
         {
+            Affichage.affiche("Votre attaque touche");
             ennemie.sePrendreDegats(m_arme.infligerDegats());
+        }
+        else
+        {
+            Affichage.affiche("Votre attaque rate");
         }
     }
     public int getPorteeArme()

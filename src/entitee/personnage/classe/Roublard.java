@@ -9,9 +9,10 @@ import equipement.armure.Poids;
 
 public class Roublard extends Classe{
     private static final int m_pv = 16;
-    private static  final Equipement[] m_equipementBase = new Equipement[] {new Arme("Rapière", 1, 8, TypeCaC.GUERRE), new Arme("Arc court", 1, 6, 16)};
+    private static Equipement[] m_equipementBase;
     public Roublard()
     {
+        m_equipementBase = new Equipement[] {new Arme("Rapière", 1, 8, TypeCaC.GUERRE), new Arme("Arc court", 1, 6, 16)};
     }
 
     @Override

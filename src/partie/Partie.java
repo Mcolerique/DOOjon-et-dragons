@@ -118,11 +118,10 @@ public class Partie {
     }
     public boolean traiterTour(Entitee e, String[] choix, boolean objetARecup)
     {
-        if (choix.length < 2) {
-            Affichage.affiche("Commande incomplète.");
-            return false;
+        int[] pos = new int[2];
+        if(choix.length>1) {
+            pos = extrairePosition(choix[1]);
         }
-        int[] pos = extrairePosition(choix[1]);
         try {
             switch (choix[0]) {
                 case "att":
@@ -143,7 +142,7 @@ public class Partie {
                     }
                     e.attaquer(ennemi);
                     return true;
-                case "mj ":
+                case "mj":
                     Affichage.affiche(concatString(choix));
                     return false;
                 case "dep":
@@ -155,6 +154,8 @@ public class Partie {
                         return false;
                     }
                     m_donjon.deplacerEntitee(e, pos);
+                    return true;
+                case "pas":
                     return true;
                 default:
                     if (e.getType() == TypeEntitee.PERSONNAGE) {
@@ -277,6 +278,10 @@ public class Partie {
     {
         int[] posEntitee = m_donjon.getPosEntitee(entitee);
         int distance = (int)Math.sqrt(Math.pow(pos[0] - posEntitee[0], 2) + Math.pow(pos[1] - posEntitee[1], 2));
+        if(distance < 1)
+        {
+            distance = 1;
+        }
         return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.seDeplacer(abs(distance)) && !m_donjon.verifAEmplacement(pos);
     }
     public boolean attaquePossible(Entitee entitee, int[] pos)
