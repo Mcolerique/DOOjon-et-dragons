@@ -309,12 +309,20 @@ public class Partie {
             int nbDes, degats, resultDes;
             int somme = 0;
             String txt = "(";
+            String choix;
+            String[] split;
 
-            Affichage.affiche("Combien de dès voulez-vous lancer ?");
-            nbDes = Scanner.demandeInt();
+            Affichage.affiche("Entrez les dégâts que vous voulez faire (sous la forme <nbDes>d<nbFace>)");
+            choix = Scanner.demandeString();
+            split = choix.split("d");
 
-            Affichage.affiche("Combien de faces ont les dès ?");
-            degats = Scanner.demandeInt();
+            if (split.length != 2) {
+                Affichage.affiche("Format invalide. Utilisez le format <nbDes>d<nbFace>, par exemple 2d6.");
+                return;
+            }
+
+            nbDes = Integer.parseInt(split[0].trim());
+            degats = Integer.parseInt(split[1].trim());
 
             if (nbDes <= 0 || degats <= 0) {
                 Affichage.affiche("Le nombre de dés et de faces doit être supérieur à 0.");
@@ -331,8 +339,10 @@ public class Partie {
             e.sePrendreDegats(somme);
             Affichage.affiche("Vous avez infligé " + txt + " dégâts");
 
+        } catch (NumberFormatException nfe) {
+            Affichage.affiche("Erreur : veuillez entrer uniquement des nombres valides dans le format <nbDes>d<nbFace>.");
         } catch (Exception ex) {
-            Affichage.affiche("Erreur de saisie : veuillez entrer un entier valide.");
+            Affichage.affiche("Une erreur s'est produite : " + ex.getMessage());
         }
     }
     public boolean utiliserSort(Sort s)
