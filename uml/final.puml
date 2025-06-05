@@ -11,12 +11,14 @@ package interactionUtilisateur
         +{static}affiche(texte : String)
         +{static}afficheTour(e : Entitee[*], i : Integer, d : Donjon, numDonjon : Integer, numTour : Integer)
         +{static}afficherDonjon(d : Donjon)
+        +{static}centerText(text : String, width : Integer) : String
         +{static}afficheAction(e : Entitee, numAction : Integer, objetARecup : Boolean)
         +{static}afficheActionPerso(e : Personnage, numAction : Integer, objetARecup : Boolean)
         +{static}afficheActionMonstre(e : Monstre, numAction : Integer)
-        +{static}afficheListeEntitee(list Entitee[*])
-        +{static}listeEquipement(list Equipement[*])
-        +{static}selectionTableau(tab Object[])
+        +{static}afficheActionMJ()
+        +{static}afficheListeEntitee(list : Entitee[*])
+        +{static}listeEquipement(list : Equipement[*])
+        +{static}selectionTableau(tab : Object[])
         +{static}defaite(e : Entitee)
         +{static}victoireDonjon(numDonjon : Integer)
 
@@ -86,7 +88,6 @@ package entitee
         +sePrendreDegats(degats : Integer)
         +seDeplacer(distance : Integer) : Boolean
         +attaquer(ennemie : Entitee)
-        +choisirCible(cibles : ArrayList<Entitee>) : Entitee
         +getPorteeArme() : Integer
         +estVivant() : Boolean
         +lancerInitiative() : Integer
@@ -127,12 +128,15 @@ package entitee
             +getNom() : String
             +getDescription() : String
             +getInitiale() : String
+            +getNom() : String
+            +getDescription() : String
         }
         Personnage .> Affichage : "<<call>>"
         Personnage .> Scanner : "<<call>>"
         Personnage o-down-> "1\n race" race.Race: est un >
         Personnage o-down-> "1\n classe" classe.Classe: est un >
-        Entitee *-right--> "2\n equipement" .equipement.Equipement: a equiper >
+        Entitee *-right--> "1\n arme" .equipement.arme.Arme: a equiper >
+        Entitee *-right--> "1\n armure" .equipement.armure.Armure: a equiper >
         Personnage *-right--> "*\n inventaire" equipement.Equipement: possède >
         Personnage *---> "*\n sort" sort.Sort: maitrise >
         Entitee *-> "1\n type" TypeEntitee
@@ -151,21 +155,45 @@ package entitee
             {
                 -{static}stats : Integer[5]
                 +<<create>>Nain()
+                getStats() : Integer[5]
+                +getPv() : Integer
+                +getForce() : Integer
+                +getDex() : Integer
+                +getVitesse() : Integer
+                +getInitiative() : Integer
             }
             class  Humain extends Race
             {
                 -{static}stats : Integer[5]
                 +<<create>>Humain()
+                getStats() : Integer[5]
+                +getPv() : Integer
+                +getForce() : Integer
+                +getDex() : Integer
+                +getVitesse() : Integer
+                +getInitiative() : Integer
             }
             class  Elfe extends Race
             {
                 -{static}stats : Integer[5]
                 +<<create>>Elfe()
+                getStats() : Integer[5]
+                +getPv() : Integer
+                +getForce() : Integer
+                +getDex() : Integer
+                +getVitesse() : Integer
+                +getInitiative() : Integer
             }
             class  Halfelin extends Race
             {
                 -{static}stats : Integer[5]
                 +<<create>>Halfelin()
+                getStats() : Integer[5]
+                +getPv() : Integer
+                +getForce() : Integer
+                +getDex() : Integer
+                +getVitesse() : Integer
+                +getInitiative() : Integer
             }
         }
         Package classe
@@ -180,21 +208,33 @@ package entitee
             {
                 -{static} pv : Integer
                 +<<create>>Clerc()
+                +getPv() : Integer
+                +getEquipement() : Equipement[]
+                +getSort() : Sort[]
             }
             class Guerrier extends Classe
             {
                 -{static} pv : Integer
                 +<<create>>Guerrier()
+                +getPv() : Integer
+                +getEquipement() : Equipement[]
+                +getSort() : Sort[]
             }
             class Magicien extends Classe
             {
                 -{static} pv : Integer
                 +<<create>>Magicien()
+                +getPv() : Integer
+                +getEquipement() : Equipement[]
+                +getSort() : Sort[]
             }
             class Roublard extends Classe
             {
                 -{static} pv : Integer
                 +<<create>>Roublard()
+                +getPv() : Integer
+                +getEquipement() : Equipement[]
+                +getSort() : Sort[]
             }
             Roublard *--> "2\n {static}equipementBase" .equipement.arme.Arme
             Magicien *--> "2\n {static}equipementBase" .equipement.arme.Arme
@@ -239,6 +279,9 @@ package entitee
         +<<create>>Monstre(numMonstre : Integer, espece : String, stats : Integer[5], Equipement[2] attaqueEtArmure)
         +getAppellation() : String
         +getSymbole() : String
+        +getNom() : String
+        +getDescription() : String
+        +toString() : String
         +getNom() : String
         +getDescription() : String
     }
@@ -294,7 +337,7 @@ package equipement
     ListeEquipements .> Affichage : "<<call>>"
     ListeEquipements ..> Scanner : "<<call>>"
 
-    package Armure
+    package armure
     {
         Enum Poids
         {
@@ -341,21 +384,21 @@ package partie
 {
     class Partie
     {
-        -donjon : Donjon
         -perso : Personnage[*]
         -numDonjon : Integer
         +<<create>>Partie()
         +miseEnPlacePerso() : Personnage[*]
         +lancerPartie()
-        +tour(e : Entitee, choix : String, objetARecup : Boolean) : boolean
-        +tourPerso(p : Personnage, choix : String, objetARecup : Boolean) : boolean
+        +traiterTour(e : Entitee, choix : String[], objetARecup : Boolean) : boolean
+        +tourPerso(p : Personnage, choix : String[], objetARecup : Boolean) : boolean
         +deplacementPossible(entitee : Entitee, pos Integer[2]) : Boolean
         +attaquePossible(entitee : Entitee, position : Integer[2]) : Boolean
         +verifEntierValide(e : Integer) return Boolean
         +verifCharValide(c : String) : Boolean
         +equiperPerso()
         +defaite(e : Entitee)
-        +getNumDonjon() : Integer
+        +actionMJ(choix : String[]) : Boolean
+        +concatString(tab : String[]) : String
     }
 
     Partie .> Affichage : "<<call>>"

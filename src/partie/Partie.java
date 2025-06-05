@@ -118,11 +118,10 @@ public class Partie {
     }
     public boolean traiterTour(Entitee e, String[] choix, boolean objetARecup)
     {
-        if (choix.length < 2) {
-            Affichage.affiche("Commande incomplète.");
-            return false;
+        int[] pos = new int[2];
+        if(choix.length>1) {
+            pos = extrairePosition(choix[1]);
         }
-        int[] pos = extrairePosition(choix[1]);
         try {
             switch (choix[0]) {
                 case "att":
@@ -143,8 +142,8 @@ public class Partie {
                     }
                     e.attaquer(ennemi);
                     return true;
-                case "mj ":
-                    Affichage.affiche(choix[1]);
+                case "mj":
+                    Affichage.affiche(concatString(choix));
                     return false;
                 case "dep":
                     if (pos == null) {
@@ -155,6 +154,8 @@ public class Partie {
                         return false;
                     }
                     m_donjon.deplacerEntitee(e, pos);
+                    return true;
+                case "pas":
                     return true;
                 default:
                     if (e.getType() == TypeEntitee.PERSONNAGE) {
@@ -174,7 +175,7 @@ public class Partie {
         try {
             switch (choix[0]) {
                 case "com":
-                    Affichage.affiche(choix[1]);
+                    Affichage.affiche(concatString(choix));
                     return false;
                 case "equ":
                     int ie = Integer.parseInt(choix[1]) - 1;
@@ -277,6 +278,10 @@ public class Partie {
     {
         int[] posEntitee = m_donjon.getPosEntitee(entitee);
         int distance = (int)Math.sqrt(Math.pow(pos[0] - posEntitee[0], 2) + Math.pow(pos[1] - posEntitee[1], 2));
+        if(distance < 1)
+        {
+            distance = 1;
+        }
         return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.seDeplacer(abs(distance)) && !m_donjon.verifAEmplacement(pos);
     }
     public boolean attaquePossible(Entitee entitee, int[] pos)
@@ -309,12 +314,20 @@ public class Partie {
             int nbDes, degats, resultDes;
             int somme = 0;
             String txt = "(";
+            String choix;
+            String[] split;
 
-            Affichage.affiche("Combien de dès voulez-vous lancer ?");
-            nbDes = Scanner.demandeInt();
+            Affichage.affiche("Entrez les dégâts que vous voulez faire (sous la forme <nbDes>d<nbFace>)");
+            choix = Scanner.demandeString();
+            split = choix.split("d");
 
-            Affichage.affiche("Combien de faces ont les dès ?");
-            degats = Scanner.demandeInt();
+            if (split.length != 2) {
+                Affichage.affiche("Format invalide. Utilisez le format <nbDes>d<nbFace>, par exemple 2d6.");
+                return;
+            }
+
+            nbDes = Integer.parseInt(split[0].trim());
+            degats = Integer.parseInt(split[1].trim());
 
             if (nbDes <= 0 || degats <= 0) {
                 Affichage.affiche("Le nombre de dés et de faces doit être supérieur à 0.");
@@ -331,8 +344,10 @@ public class Partie {
             e.sePrendreDegats(somme);
             Affichage.affiche("Vous avez infligé " + txt + " dégâts");
 
+        } catch (NumberFormatException nfe) {
+            Affichage.affiche("Erreur : veuillez entrer uniquement des nombres valides dans le format <nbDes>d<nbFace>.");
         } catch (Exception ex) {
-            Affichage.affiche("Erreur de saisie : veuillez entrer un entier valide.");
+            Affichage.affiche("Une erreur s'est produite : " + ex.getMessage());
         }
     }
     public boolean utiliserSort(Sort s)
@@ -359,5 +374,14 @@ public class Partie {
                 Affichage.affiche("erreur");
         }
         return false;
+    }
+    String concatString(String[] tab)
+    {
+        String txt = "";
+        for(int i = 0; i<tab.length; i++)
+        {
+            txt += tab[i]+" ";
+        }
+        return txt;
     }
 }

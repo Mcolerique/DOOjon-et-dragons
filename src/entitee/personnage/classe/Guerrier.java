@@ -9,9 +9,10 @@ import equipement.armure.Poids;
 
 public class Guerrier extends Classe{
     private static final int m_pv = 20;
-    private static final Equipement[] m_equipementBase = new Equipement[] {new Armure("Cotte de mailles", 11, Poids.LOURDE), new Arme("Epée longue", 1, 8, TypeCaC.GUERRE), new Arme("Arbalète légère", 1, 8, 16)};
+    private final Equipement[] m_equipementBase;
     public Guerrier()
     {
+        m_equipementBase = new Equipement[] {new Armure("Cotte de mailles", 11, Poids.LOURDE), new Arme("Epée longue", 1, 8, TypeCaC.GUERRE), new Arme("Arbalète légère", 1, 8, 16)};
     }
 
     @Override

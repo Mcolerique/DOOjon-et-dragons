@@ -33,6 +33,7 @@ public abstract class Equipement {
     {
         return m_typeEquipement;
     }
+    public abstract void boost(int bonus);
     @Override
     public String toString() {
         return m_nom;

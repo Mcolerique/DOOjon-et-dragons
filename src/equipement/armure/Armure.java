@@ -25,4 +25,8 @@ public class Armure extends Equipement {
     public int getCA() {
         return m_cA;
     }
+    public void boost(int bonus)
+    {
+
+    }
 }

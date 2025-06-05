@@ -2,6 +2,7 @@ package equipement.arme;
 import des.Des;
 import equipement.Equipement;
 import equipement.TypeEquipement;
+import interactionUtilisateur.Affichage;
 
 public class Arme extends Equipement {
     private final int m_nbDesDeg;
@@ -12,7 +13,7 @@ public class Arme extends Equipement {
     private final TypeCaC m_type;
 
     public Arme() {
-        super("nomArme");
+        super("poing");
         m_nbDesDeg = 1;
         m_degats = 1;
         m_portee = 1;
@@ -27,8 +28,8 @@ public class Arme extends Equipement {
         m_nbDesDeg = nbDes;
         m_degats = nbFaces;
         m_portee = portee;
-        m_bonusAttaque = 1;
-        m_bonusDegats = 1;
+        m_bonusAttaque = 0;
+        m_bonusDegats = 0;
         m_type = null;
         m_typeEquipement = TypeEquipement.ARME;
     }
@@ -38,8 +39,8 @@ public class Arme extends Equipement {
         m_nbDesDeg = nbDes;
         m_degats = nbFaces;
         m_portee = 1;
-        m_bonusAttaque = 1;
-        m_bonusDegats = 1;
+        m_bonusAttaque = 0;
+        m_bonusDegats = 0;
         m_type = type;
         m_typeEquipement = TypeEquipement.ARME;
         if(m_type == TypeCaC.GUERRE){
@@ -51,16 +52,20 @@ public class Arme extends Equipement {
     public int getPortee(){
         return m_portee;
     }
-
-
     public int infligerDegats() {
         int degats = 0;
+        int degatsTotal = 0;
+        String txt = "(";
         for(int i = 0; i<m_nbDesDeg;i++){
-            degats += Des.lancerDes(m_degats);
+            degats = Des.lancerDes(m_degats);
+            degatsTotal += degats;
+            txt += degats+"+";
         }
+        txt = degatsTotal + txt + +m_bonusDegats + ")";
+        Affichage.affiche("Vous avez infliger "+txt+" dégâts");
         return degats+m_bonusDegats;
     }
-    public void boostArme(int bonus)
+    public void boost(int bonus)
     {
         m_bonusAttaque += bonus;
         m_bonusDegats += bonus;
