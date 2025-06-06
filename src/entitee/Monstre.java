@@ -46,10 +46,10 @@ public class Monstre extends Entitee{
         return ""+m_numMonstre;
     }
     public String toString() {return m_espece+" n°"+m_numMonstre;}
-    public ArrayList<Monstre> creerMonstres(){
+    public static ArrayList<Monstre> creerMonstres(){
         Affichage.affiche("Combien de monstres souhaitez vous créer ?");
         int nbrMonstres = Scanner.demandeInt();
-        if(nbrMonstres <= 0){Affichage.affiche("Arrêt de la création de monstre"); return null;} //faire que dans Donjon si return null ça fasse liste Monstre
+        if(nbrMonstres <= 0){Affichage.affiche("Arrêt de la création de monstre. Passage aux monstres par défaut."); return null;} //faire que dans Donjon si return null ça fasse liste Monstre
         ArrayList<Monstre> monstres = new ArrayList<>();
         for(int i = 0; i < nbrMonstres; i++){
             Affichage.affiche("Monstre n°"+(i+1));
@@ -61,7 +61,7 @@ public class Monstre extends Entitee{
     }
 
 
-    public Monstre creerMonstre(){
+    public static Monstre creerMonstre(){
         Monstre monstre = new Monstre();
         Affichage.affiche("Nom d'espèce de votre monstre");
         monstre.m_espece = Scanner.demandeString();
@@ -82,7 +82,7 @@ public class Monstre extends Entitee{
         return monstre;
     }
 
-    public Equipement[] creerAtqDefMonstre(String nomEspece){
+    public static Equipement[] creerAtqDefMonstre(String nomEspece){
         Equipement[] atqDefMonstre = new Equipement[2];
         int portee;
         do {
@@ -111,11 +111,27 @@ public class Monstre extends Entitee{
 
     }
 
-    public int compteNumMonstre(ArrayList<Monstre> listeMonstres, Monstre monstre){
+    public static int compteNumMonstre(ArrayList<Monstre> listeMonstres, Monstre monstre){
         int compteNumMonstre = -1;
         for(Monstre m : listeMonstres){
             if(m.m_espece == monstre.m_espece){compteNumMonstre++;}
         }
         return compteNumMonstre;
     }
+
+    public static void afficherMonstreDispo(ArrayList<Monstre> monstres){
+        for(int i = 0; i < monstres.size(); i++){
+            System.out.println("\t Monstre n°" + i + " : " + monstres.get(i).getAppellation() + "\n");
+        }
+        System.out.println("\n\n");
+    }
+    public static Monstre utiliserMonstre(int monstre, ArrayList<Monstre> monstres){
+        //System.out.println("Quel monstre voulez-vous placer ?");
+        //int numMonstre = Scanner.demandeInt();
+        Monstre returnMonstre = monstres.get(monstre);
+        monstres.remove(monstre);
+        System.out.println("Monstre ajouté.\n");
+        return returnMonstre;
+    }
+
 }

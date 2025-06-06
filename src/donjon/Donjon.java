@@ -145,16 +145,21 @@ public class Donjon {
         ArrayList<int[]> obstaclesDonjon = new ArrayList<>();
         obstaclesDonjon = poserObstaclesManuel(d, obstaclesDonjon);
         Hashtable<Entitee, int[]> positionEntitee = new Hashtable<>();
-
-
-        //faut
-
-        positionEntitee = poserMonstresManuel(d, positionEntitee, obstaclesDonjon);
+        Affichage.affiche("Souhaitez vous utiliser des monstres par défaut ou créer les vôtres ? \n0: Par défaut\t\t1: Créer les miens");
+        int choixMonstre = Scanner.demandeInt();
+        if(choixMonstre == 1){
+            ArrayList<Monstre> mesMonstres = Monstre.creerMonstres();
+            if(mesMonstres == null) positionEntitee = poserListeMonstresManuel(d, positionEntitee, obstaclesDonjon);
+            positionEntitee = poserMesMonstresManuel(d, positionEntitee, mesMonstres, obstaclesDonjon);
+        }
+        else{
+            if(choixMonstre != 0){Affichage.affiche("Choix invalide, monstres par défauts.");}
+            positionEntitee = poserListeMonstresManuel(d, positionEntitee, obstaclesDonjon);
+        }
         positionEntitee = poserPersonnagesManuel(d, positionEntitee, personnages, obstaclesDonjon);
         Hashtable<Equipement, int[]> positionEquip = new Hashtable<>();
         positionEquip = poserEquipementManuel(d, positionEquip, obstaclesDonjon, positionEntitee);
         d.setValeurDonjon(positionEntitee, positionEquip, obstaclesDonjon);
-
 
         return d;
     }
@@ -214,7 +219,43 @@ public class Donjon {
         return obstaclesDonjon;
     }
 
-    private static Hashtable<Entitee, int[]> poserMonstresManuel(Donjon d, Hashtable<Entitee, int[]> positionEntitee, ArrayList<int[]> obstaclesDonjon){
+    private static Hashtable<Entitee, int[]> poserMesMonstresManuel(Donjon d, Hashtable<Entitee, int[]> positionEntitee, ArrayList<Monstre> mesMonstres, ArrayList<int[]> obstaclesDonjon){
+        for(int i = 0; i < mesMonstres.size(); i++) {
+            Affichage.affiche("Monstres disponibles : \n\n");
+            Monstre.afficherMonstreDispo(mesMonstres);
+            boolean placementPossible;
+            int numMonstre = 0;
+            do{
+                Affichage.affiche("Quel monstre ? Entrez son numéro.");
+                numMonstre = Scanner.demandeInt();
+            }while(!(numMonstre < mesMonstres.size()));
+
+            do {
+                Affichage.affiche(mesMonstres.get(numMonstre).getAppellation() + ". Où voulez-vous le placer ? (Format x;y)\n");
+                String emplacementMonstre;
+                int[] positionMonstre = {0,0};
+                String[] coordonnees = {"",""};
+                do {
+                    emplacementMonstre = Scanner.demandeString();
+                    coordonnees = emplacementMonstre.split(";");
+                    if(!emplacementMonstre.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
+                    positionMonstre[0] = Integer.parseInt(coordonnees[0]);
+                    positionMonstre[1] = Integer.parseInt(coordonnees[1]);
+                    if((positionMonstre[0] >= d.m_tailleMap[0] || positionMonstre[0] < 0) || (positionMonstre[1] >= d.m_tailleMap[1] && positionMonstre[1] < 0))
+                        Affichage.affiche("Veuillez rester dans le périmètre de la carte.");
+                }while(!emplacementMonstre.contains(";") || (positionMonstre[0] >= d.m_tailleMap[0] || positionMonstre[0] < 0) || (positionMonstre[1] >= d.m_tailleMap[1] && positionMonstre[1] < 0));
+                placementPossible = !d.existeAEmplacement(positionMonstre, obstaclesDonjon, positionEntitee, null);
+                if(placementPossible){
+                    positionEntitee.put(Monstre.utiliserMonstre(numMonstre, mesMonstres), positionMonstre);
+                }
+                else{Affichage.affiche("Il y a déjà quelque chose à cet emplacement.");}
+            }while (!placementPossible);
+        }
+
+        return positionEntitee;
+    }
+
+    private static Hashtable<Entitee, int[]> poserListeMonstresManuel(Donjon d, Hashtable<Entitee, int[]> positionEntitee, ArrayList<int[]> obstaclesDonjon){
         Affichage.affiche("Il y a " + ListeMonstres.nbMonstresDispo() + " monstre(s) de disponible(s)\nCombien de monstres souhaitez-vous placer ?\n");
         int nbrMonstres;
         do{
