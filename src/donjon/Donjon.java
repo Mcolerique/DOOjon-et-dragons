@@ -56,15 +56,32 @@ public class Donjon {
 
     private static Donjon donjonAuto(ArrayList<Personnage> personnages) {
 
-        int[] tailleTabl = new int[] {randomValue(15, 25), randomValue(15,25)};
-        Donjon d=new Donjon(tailleTabl);
-
+        Donjon d = tailleDonjonAuto();
         int nombreDobstacles = randomValue(5, 10);
         ArrayList<int[]> obstaclesDonjon = new ArrayList<>();
-        for(int i = 0; i < nombreDobstacles; i++) {
+        obstaclesDonjon = poserObstaclesAuto(d, obstaclesDonjon, nombreDobstacles);
+        Hashtable<Entitee, int[]> positionEntitee = new Hashtable<>();
+        positionEntitee = poserMonstresAuto(d, positionEntitee, randomValue(2, 4), obstaclesDonjon);
+        positionEntitee = poserPersonnagesAuto(d, positionEntitee, personnages, obstaclesDonjon);
+        Hashtable<Equipement, int[]> positionEquip = new Hashtable<>();
+        positionEquip = poserEquipementAuto(d, positionEquip, obstaclesDonjon, positionEntitee);
+        d.setValeurDonjon(positionEntitee, positionEquip, obstaclesDonjon);
+
+
+        return d;
+    }
+
+    private static Donjon tailleDonjonAuto(){
+        int[] tailleTabl = new int[] {randomValue(15, 25), randomValue(15,25)};
+        Donjon d = new Donjon(tailleTabl);
+        return d;
+    }
+
+    private static ArrayList<int[]> poserObstaclesAuto(Donjon d, ArrayList<int[]> obstaclesDonjon, int nbrObstacles){
+        for(int i = 0; i < nbrObstacles; i++) {
             boolean placementPossible;
             do {
-                int[] positionObstacle = {randomValue(0, tailleTabl[0]), randomValue(0, tailleTabl[1])};
+                int[] positionObstacle = {randomValue(0, d.m_tailleMap[0]), randomValue(0, d.m_tailleMap[1])};
                 placementPossible = !d.existeAEmplacement(positionObstacle, obstaclesDonjon, null, null);
                 if(placementPossible){
                     obstaclesDonjon.add(positionObstacle);
@@ -72,34 +89,43 @@ public class Donjon {
             }while (!placementPossible);
         }
 
-        Hashtable<Entitee, int[]> positionEntitee = new Hashtable<>();
-        for(int i = 0; i < 3; i++) { //Par défaut, nous allons utiliser 3 monstres (le nombre de monstres créés par defaut)
+        return obstaclesDonjon;
+    }
+
+    private static Hashtable<Entitee, int[]> poserMonstresAuto(Donjon d, Hashtable<Entitee, int[]> positionEntitee, int nbrMonstres, ArrayList<int[]> obstaclesDonjon){
+        for(int i = 0; i < nbrMonstres; i++) { //Par défaut, nous allons utiliser 3 monstres (le nombre de monstres créés par defaut)
             boolean placementPossible;
             do {
-                int[] positionMonstre = {randomValue(0, tailleTabl[0]), randomValue(0, tailleTabl[1])};
+                int[] positionMonstre = {randomValue(0, d.m_tailleMap[0]), randomValue(0, d.m_tailleMap[1])};
                 placementPossible = !d.existeAEmplacement(positionMonstre, obstaclesDonjon, positionEntitee, null);
                 if(placementPossible){
-                    positionEntitee.put(ListeMonstres.utiliserMonstreAuto(i), positionMonstre);
+                    positionEntitee.put(ListeMonstres.utiliserMonstreAuto(randomValue(0, ListeMonstres.nbMonstresDispo())), positionMonstre);
                 }
             }while (!placementPossible);
         }
 
+        return positionEntitee;
+    }
+
+    private static Hashtable<Entitee, int[]> poserPersonnagesAuto(Donjon d, Hashtable<Entitee, int[]> positionEntitee, ArrayList<Personnage> personnages, ArrayList<int[]> obstaclesDonjon){
         for(Personnage personnage : personnages) {
             boolean placementPossible;
             do {
-                int[] positionPerso = {randomValue(0, tailleTabl[0]), randomValue(0, tailleTabl[1])};
+                int[] positionPerso = {randomValue(0, d.m_tailleMap[0]), randomValue(0, d.m_tailleMap[1])};
                 placementPossible = !d.existeAEmplacement(positionPerso, obstaclesDonjon, positionEntitee, null);
                 if(placementPossible){
                     positionEntitee.put(personnage, positionPerso);
                 }
             }while (!placementPossible);
         }
+        return positionEntitee;
+    }
 
-        Hashtable<Equipement, int[]> positionEquip = new Hashtable<>();
+    private static Hashtable<Equipement, int[]> poserEquipementAuto(Donjon d, Hashtable<Equipement, int[]> positionEquip, ArrayList<int[]> obstaclesDonjon, Hashtable<Entitee, int[]> positionEntitee){
         for(int i = 0; i < 5; i++) {
             boolean placementPossible;
             do {
-                int[] positionEquipement = {randomValue(0, tailleTabl[0]), randomValue(0, tailleTabl[1])};
+                int[] positionEquipement = {randomValue(0, d.m_tailleMap[0]), randomValue(0, d.m_tailleMap[1])};
                 placementPossible = !d.existeAEmplacement(positionEquipement, obstaclesDonjon, positionEntitee, positionEquip);
                 if(placementPossible){
                     positionEquip.put(ListeEquipements.utiliserEquipAuto(i), positionEquipement);
@@ -107,17 +133,35 @@ public class Donjon {
             }while (!placementPossible);
         }
 
-
-        d.setValeurDonjon(positionEntitee, positionEquip, obstaclesDonjon);
-
-        return d;
-
+        return positionEquip;
     }
+
+
 
     private static Donjon donjonManuel(ArrayList<Personnage> personnages) {
 
+        Donjon d = tailleDonjonManuel();
+        int nombreDobstacles = randomValue(5, 10);
+        ArrayList<int[]> obstaclesDonjon = new ArrayList<>();
+        obstaclesDonjon = poserObstaclesManuel(d, obstaclesDonjon);
+        Hashtable<Entitee, int[]> positionEntitee = new Hashtable<>();
+
+
+        //faut
+
+        positionEntitee = poserMonstresManuel(d, positionEntitee, obstaclesDonjon);
+        positionEntitee = poserPersonnagesManuel(d, positionEntitee, personnages, obstaclesDonjon);
+        Hashtable<Equipement, int[]> positionEquip = new Hashtable<>();
+        positionEquip = poserEquipementManuel(d, positionEquip, obstaclesDonjon, positionEntitee);
+        d.setValeurDonjon(positionEntitee, positionEquip, obstaclesDonjon);
+
+
+        return d;
+    }
+
+    private static Donjon tailleDonjonManuel(){
+
         int[] tailleTabl = new int[2];
-        Donjon d = new Donjon(tailleTabl);
         Affichage.affiche("Quelle taille de carte souhaitez-vous pour le donjon ? (Comprise entre 15 et 25)");
 
         do {
@@ -130,12 +174,13 @@ public class Donjon {
             tailleTabl[1] = Scanner.demandeInt();
         }while (tailleTabl[1] < 15 || tailleTabl[1] > 25);
 
+        Donjon d = new Donjon(tailleTabl);
 
-        //Limiter le nbr d'obstacles à placer à longueur*largeurCarte - (longueur-1)*(largeur-1)Carte
-        //Minimum (Carte 15*15) 29 ; Maximum (Carte 25*25) 49
+        return d;
+    }
 
-        int limiteObstacles = (tailleTabl[0] * tailleTabl[1] - (tailleTabl[0] - 1) * tailleTabl[1] - 1);
-        ArrayList<int[]> obstaclesDonjon = new ArrayList<>();
+    private static ArrayList<int[]> poserObstaclesManuel(Donjon d, ArrayList<int[]> obstaclesDonjon){
+        int limiteObstacles = (d.m_tailleMap[0] * d.m_tailleMap[1] - (d.m_tailleMap[0] - 1) * d.m_tailleMap[1] - 1);
         int nombreDobstacles;
         do {
             Affichage.affiche(("Combien d'obstacles voulez vous ? Maximum : " + limiteObstacles));
@@ -153,9 +198,11 @@ public class Donjon {
                     emplacementObstacle = Scanner.demandeString();
                     coordonnees = emplacementObstacle.split(";");
                     if(!emplacementObstacle.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
-                }while(!emplacementObstacle.contains(";"));
-                positionObstacle[0] = Integer.parseInt(coordonnees[0]);
-                positionObstacle[1] = Integer.parseInt(coordonnees[1]);
+                    positionObstacle[0] = Integer.parseInt(coordonnees[0]);
+                    positionObstacle[1] = Integer.parseInt(coordonnees[1]);
+                    if((positionObstacle[0] >= d.m_tailleMap[0] || positionObstacle[0] < 0) || (positionObstacle[1] >= d.m_tailleMap[1] && positionObstacle[1] < 0))
+                        Affichage.affiche("Veuillez rester dans le périmètre de la carte.");
+                }while(!emplacementObstacle.contains(";") || (positionObstacle[0] >= d.m_tailleMap[0] || positionObstacle[0] < 0) || (positionObstacle[1] >= d.m_tailleMap[1] && positionObstacle[1] < 0));
                 placementPossible = !d.existeAEmplacement(positionObstacle, obstaclesDonjon, null, null);
                 if(placementPossible){
                     obstaclesDonjon.add(positionObstacle);
@@ -164,29 +211,30 @@ public class Donjon {
             } while (!placementPossible);
         }
 
-        Hashtable<Entitee, int[]> positionEntitee = new Hashtable<>();
+        return obstaclesDonjon;
+    }
+
+    private static Hashtable<Entitee, int[]> poserMonstresManuel(Donjon d, Hashtable<Entitee, int[]> positionEntitee, ArrayList<int[]> obstaclesDonjon){
         Affichage.affiche("Il y a " + ListeMonstres.nbMonstresDispo() + " monstre(s) de disponible(s)\nCombien de monstres souhaitez-vous placer ?\n");
         int nbrMonstres;
         do{
             nbrMonstres = Scanner.demandeInt();
         }while(!(nbrMonstres <= ListeMonstres.nbMonstresDispo()));
-
         /*
-        * Quand on aura refactor faudra ajouter la possibilité au MJ s'il le veut de créer des monstres
-        * donc juste faire une fonction creerMonstre dans donjon et l'utiliser s'il dit oui.
-        * Une série de Scanners pour ensuite intégrer le monstre avec ListeMonstres.add()
-        */
-
+         * Quand on aura refactor faudra ajouter la possibilité au MJ s'il le veut de créer des monstres
+         * donc juste faire une fonction creerMonstre dans monstre et l'utiliser s'il dit oui.
+         * Une série de Scanners pour ensuite intégrer le monstre avec ListeMonstres.add()
+         */
         for(int i = 0; i < nbrMonstres; i++) {
             Affichage.affiche("Monstres disponibles : \n\n");
             ListeMonstres.afficherMonstreDispo();
             boolean placementPossible;
 
-                int numMonstre = 0;
-                do{
-                    Affichage.affiche("Quel monstre ? Entrez son numéro.");
-                    numMonstre = Scanner.demandeInt();
-                }while(!(numMonstre < ListeMonstres.nbMonstresDispo()));
+            int numMonstre = 0;
+            do{
+                Affichage.affiche("Quel monstre ? Entrez son numéro.");
+                numMonstre = Scanner.demandeInt();
+            }while(!(numMonstre < ListeMonstres.nbMonstresDispo()));
 
             do {
                 Affichage.affiche(ListeMonstres.getNomMonstre(numMonstre) + ". Où voulez-vous le placer ? (Format x;y)\n");
@@ -197,9 +245,11 @@ public class Donjon {
                     emplacementMonstre = Scanner.demandeString();
                     coordonnees = emplacementMonstre.split(";");
                     if(!emplacementMonstre.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
-                }while(!emplacementMonstre.contains(";"));
-                positionMonstre[0] = Integer.parseInt(coordonnees[0]);
-                positionMonstre[1] = Integer.parseInt(coordonnees[1]);
+                    positionMonstre[0] = Integer.parseInt(coordonnees[0]);
+                    positionMonstre[1] = Integer.parseInt(coordonnees[1]);
+                    if((positionMonstre[0] >= d.m_tailleMap[0] || positionMonstre[0] < 0) || (positionMonstre[1] >= d.m_tailleMap[1] && positionMonstre[1] < 0))
+                        Affichage.affiche("Veuillez rester dans le périmètre de la carte.");
+                }while(!emplacementMonstre.contains(";") || (positionMonstre[0] >= d.m_tailleMap[0] || positionMonstre[0] < 0) || (positionMonstre[1] >= d.m_tailleMap[1] && positionMonstre[1] < 0));
                 placementPossible = !d.existeAEmplacement(positionMonstre, obstaclesDonjon, positionEntitee, null);
                 if(placementPossible){
                     positionEntitee.put(ListeMonstres.utiliserMonstre(numMonstre), positionMonstre);
@@ -210,7 +260,10 @@ public class Donjon {
 
         }
 
+        return positionEntitee;
+    }
 
+    private static Hashtable<Entitee, int[]> poserPersonnagesManuel(Donjon d, Hashtable<Entitee, int[]> positionEntitee, ArrayList<Personnage> personnages, ArrayList<int[]> obstaclesDonjon){
         int compteur = 0;
         for(Personnage personnage : personnages) {
             boolean placementPossible = false;
@@ -223,32 +276,30 @@ public class Donjon {
                     emplacementPerso = Scanner.demandeString();
                     coordonnees = emplacementPerso.split(";");
                     if(!emplacementPerso.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
-                }while(!emplacementPerso.contains(";"));
-                positionPerso[0] = Integer.parseInt(coordonnees[0]);
-                positionPerso[1] = Integer.parseInt(coordonnees[1]);
+                    positionPerso[0] = Integer.parseInt(coordonnees[0]);
+                    positionPerso[1] = Integer.parseInt(coordonnees[1]);
+                    if((positionPerso[0] >= d.m_tailleMap[0] || positionPerso[0] < 0) || (positionPerso[1] >= d.m_tailleMap[1] && positionPerso[1] < 0))
+                        Affichage.affiche("Veuillez rester dans le périmètre de la carte.");
+                }while(!emplacementPerso.contains(";") || (positionPerso[0] >= d.m_tailleMap[0] || positionPerso[0] < 0) || (positionPerso[1] >= d.m_tailleMap[1] && positionPerso[1] < 0));
                 placementPossible =  !d.existeAEmplacement(positionPerso, obstaclesDonjon, positionEntitee, null);
                 if(placementPossible){
                     positionEntitee.put(personnage, positionPerso);
                     compteur++;
                 }
                 else{Affichage.affiche("Il y a déjà quelque chose à cet emplacement.");}
-                //compteur++;
             }while (!placementPossible);
         }
 
-        Hashtable<Equipement, int[]> positionEquip = new Hashtable<>();
+        return positionEntitee;
+    }
+
+    private static Hashtable<Equipement, int[]> poserEquipementManuel(Donjon d, Hashtable<Equipement, int[]> positionEquip, ArrayList<int[]> obstaclesDonjon, Hashtable<Entitee, int[]> positionEntitee){
         Affichage.affiche("Il y a " + ListeEquipements.nbEquipDispo() + " équipement(s) de disponible(s)\nCombien d'équipements souhaitez-vous placer ?\n");
         int nbrEquips;
         do{
             nbrEquips = Scanner.demandeInt();
         }while(!(nbrEquips <= ListeEquipements.nbEquipDispo()));
 
-        /*
-         * Quand on aura refactor faudra ajouter la possibilité au MJ s'il le veut de créer des monstres
-         * donc juste faire une fonction creerMonstre dans donjon et l'utiliser s'il dit oui.
-         * Une série de Scanners pour ensuite intégrer lequip avec ListeEquipements.add()  (Bon j'ai c/c le code de monstre mais ca revient
-         * au meme pour les equipements)
-         */
 
         for(int i = 0; i < nbrEquips; i++) {
             Affichage.affiche("Equipements disponibles : \n\n");
@@ -270,9 +321,11 @@ public class Donjon {
                     emplacementEquip = Scanner.demandeString();
                     coordonnees = emplacementEquip.split(";");
                     if(!emplacementEquip.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
-                }while(!emplacementEquip.contains(";"));
-                posEquip[0] = Integer.parseInt(coordonnees[0]);
-                posEquip[1] = Integer.parseInt(coordonnees[1]);
+                    posEquip[0] = Integer.parseInt(coordonnees[0]);
+                    posEquip[1] = Integer.parseInt(coordonnees[1]);
+                    if((posEquip[0] >= d.m_tailleMap[0] || posEquip[0] < 0) || (posEquip[1] >= d.m_tailleMap[1] && posEquip[1] < 0))
+                        Affichage.affiche("Veuillez rester dans le périmètre de la carte.");
+                }while(!emplacementEquip.contains(";") || (posEquip[0] >= d.m_tailleMap[0] || posEquip[0] < 0) || (posEquip[1] >= d.m_tailleMap[1] && posEquip[1] < 0));
                 placementPossible = !d.existeAEmplacement(posEquip, obstaclesDonjon, positionEntitee, positionEquip);
                 if(placementPossible){
                     positionEquip.put(ListeEquipements.utiliserEquipement(numEquip), posEquip);
@@ -283,12 +336,9 @@ public class Donjon {
 
         }
 
-
-        d.setValeurDonjon(positionEntitee, positionEquip, obstaclesDonjon);
-
-        return d;
-
+        return positionEquip;
     }
+
 
     public static Donjon creerDonjon(ArrayList<Personnage> personnages){
         int reponseCreation = -1;
