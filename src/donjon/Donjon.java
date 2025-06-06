@@ -80,13 +80,13 @@ public class Donjon {
     private static ArrayList<int[]> poserObstaclesAuto(Donjon d, ArrayList<int[]> obstaclesDonjon, int nbrObstacles){
         for(int i = 0; i < nbrObstacles; i++) {
             boolean placementPossible;
+            int[] positionObstacle = new int[2];
             do {
-                int[] positionObstacle = {randomValue(0, d.m_tailleMap[0]), randomValue(0, d.m_tailleMap[1])};
+                positionObstacle[0] = randomValue(0, d.m_tailleMap[0]);
+                positionObstacle[1] = randomValue(0, d.m_tailleMap[1]);
                 placementPossible = !d.existeAEmplacement(positionObstacle, obstaclesDonjon, null, null);
-                if(placementPossible){
-                    obstaclesDonjon.add(positionObstacle);
-                }
             }while (!placementPossible);
+            obstaclesDonjon.add(positionObstacle);
         }
 
         return obstaclesDonjon;
@@ -95,28 +95,28 @@ public class Donjon {
     private static Hashtable<Entitee, int[]> poserMonstresAuto(Donjon d, Hashtable<Entitee, int[]> positionEntitee, int nbrMonstres, ArrayList<int[]> obstaclesDonjon){
         for(int i = 0; i < nbrMonstres; i++) { //Par défaut, nous allons utiliser 3 monstres (le nombre de monstres créés par defaut)
             boolean placementPossible;
+            int[] positionMonstre = new int[2];
             do {
-                int[] positionMonstre = {randomValue(0, d.m_tailleMap[0]), randomValue(0, d.m_tailleMap[1])};
+                positionMonstre[0] = randomValue(0, d.m_tailleMap[0]);
+                positionMonstre[1] = randomValue(0, d.m_tailleMap[1]);
                 placementPossible = !d.existeAEmplacement(positionMonstre, obstaclesDonjon, positionEntitee, null);
-                if(placementPossible){
-                    positionEntitee.put(ListeMonstres.utiliserMonstreAuto(randomValue(0, ListeMonstres.nbMonstresDispo())), positionMonstre);
-                }
             }while (!placementPossible);
+            positionEntitee.put(ListeMonstres.utiliserMonstreAuto(randomValue(0, ListeMonstres.nbMonstresDispo())), positionMonstre);
         }
-
         return positionEntitee;
     }
 
     private static Hashtable<Entitee, int[]> poserPersonnagesAuto(Donjon d, Hashtable<Entitee, int[]> positionEntitee, ArrayList<Personnage> personnages, ArrayList<int[]> obstaclesDonjon){
         for(Personnage personnage : personnages) {
             boolean placementPossible;
+            int[] positionPerso = new int[2];
             do {
-                int[] positionPerso = {randomValue(0, d.m_tailleMap[0]), randomValue(0, d.m_tailleMap[1])};
+                positionPerso[0] = randomValue(0, d.m_tailleMap[0]);
+                positionPerso[1] = randomValue(0, d.m_tailleMap[1]);
                 placementPossible = !d.existeAEmplacement(positionPerso, obstaclesDonjon, positionEntitee, null);
-                if(placementPossible){
-                    positionEntitee.put(personnage, positionPerso);
-                }
+
             }while (!placementPossible);
+            positionEntitee.put(personnage, positionPerso);
         }
         return positionEntitee;
     }
@@ -124,15 +124,14 @@ public class Donjon {
     private static Hashtable<Equipement, int[]> poserEquipementAuto(Donjon d, Hashtable<Equipement, int[]> positionEquip, ArrayList<int[]> obstaclesDonjon, Hashtable<Entitee, int[]> positionEntitee){
         for(int i = 0; i < 5; i++) {
             boolean placementPossible;
+            int[] positionEquipement = new int[2];
             do {
-                int[] positionEquipement = {randomValue(0, d.m_tailleMap[0]), randomValue(0, d.m_tailleMap[1])};
+                positionEquipement[0] = randomValue(0, d.m_tailleMap[0]);
+                positionEquipement[1] = randomValue(0, d.m_tailleMap[1]);
                 placementPossible = !d.existeAEmplacement(positionEquipement, obstaclesDonjon, positionEntitee, positionEquip);
-                if(placementPossible){
-                    positionEquip.put(ListeEquipements.utiliserEquipAuto(i), positionEquipement);
-                }
             }while (!placementPossible);
+            positionEquip.put(ListeEquipements.utiliserEquipAuto(i), positionEquipement);
         }
-
         return positionEquip;
     }
 
