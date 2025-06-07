@@ -81,60 +81,49 @@ public class Donjon {
     }
 
     private static void poserObstaclesAuto(Donjon d, ArrayList<int[]> obstaclesDonjon, int nbrObstacles){
+        int[] positionObstacle = new int[2];
         for(int i = 0; i < nbrObstacles; i++) {
-            boolean placementPossible;
-            int[] positionObstacle = new int[2];
             do {
                 positionObstacle[0] = randomValue(0, d.m_tailleMap[0]);
                 positionObstacle[1] = randomValue(0, d.m_tailleMap[1]);
-                placementPossible = !d.existeAEmplacement(positionObstacle, obstaclesDonjon, null, null);
-            }while (!placementPossible);
+            }while (d.existeAEmplacement(positionObstacle, obstaclesDonjon, null, null));
             obstaclesDonjon.add(positionObstacle.clone());
         }
     }
 
     private static void poserMonstresAuto(Donjon d, Hashtable<Entitee, int[]> positionEntitee, int nbrMonstres, ArrayList<int[]> obstaclesDonjon){
+        int[] positionMonstre = new int[2];
         for(int i = 0; i < nbrMonstres; i++) { //Par défaut, nous allons utiliser 3 monstres (le nombre de monstres créés par defaut)
-            boolean placementPossible;
-            int[] positionMonstre = new int[2];
             do {
                 positionMonstre[0] = randomValue(0, d.m_tailleMap[0]);
                 positionMonstre[1] = randomValue(0, d.m_tailleMap[1]);
-                placementPossible = !d.existeAEmplacement(positionMonstre, obstaclesDonjon, positionEntitee, null);
-            }while (!placementPossible);
+            }while (d.existeAEmplacement(positionMonstre, obstaclesDonjon, positionEntitee, null));
             positionEntitee.put(ListeMonstres.utiliserMonstreAuto(randomValue(0, ListeMonstres.nbMonstresDispo())), positionMonstre.clone());
         }
     }
 
     private static void poserPersonnagesAuto(Donjon d, Hashtable<Entitee, int[]> positionEntitee, ArrayList<Personnage> personnages, ArrayList<int[]> obstaclesDonjon){
+        int[] positionPerso = new int[2];
         for(Personnage personnage : personnages) {
-            boolean placementPossible;
-            int[] positionPerso = new int[2];
             do {
                 positionPerso[0] = randomValue(0, d.m_tailleMap[0]);
                 positionPerso[1] = randomValue(0, d.m_tailleMap[1]);
-                placementPossible = !d.existeAEmplacement(positionPerso, obstaclesDonjon, positionEntitee, null);
 
-            }while (!placementPossible);
+            }while (d.existeAEmplacement(positionPerso, obstaclesDonjon, positionEntitee, null));
             positionEntitee.put(personnage, positionPerso.clone());
         }
     }
 
     private static void poserEquipementAuto(Donjon d, Hashtable<Equipement, int[]> positionEquip, ArrayList<int[]> obstaclesDonjon, Hashtable<Entitee, int[]> positionEntitee){
+        int[] positionEquipement = new int[2];
         for(int i = 0; i < 5; i++) {
-            boolean placementPossible;
-            int[] positionEquipement = new int[2];
             do {
                 positionEquipement[0] = randomValue(0, d.m_tailleMap[0]);
                 positionEquipement[1] = randomValue(0, d.m_tailleMap[1]);
-                placementPossible = !d.existeAEmplacement(positionEquipement, obstaclesDonjon, positionEntitee, positionEquip);
-            }while (!placementPossible);
+            }while (d.existeAEmplacement(positionEquipement, obstaclesDonjon, positionEntitee, positionEquip));
             positionEquip.put(ListeEquipements.utiliserEquipAuto(i), positionEquipement.clone());
         }
     }
-
-
-
     private static Donjon donjonManuel(ArrayList<Personnage> personnages) {
 
         Donjon d = tailleDonjonManuel();
@@ -192,7 +181,7 @@ public class Donjon {
                 Affichage.affiche(("Obstacle n°" + i + ". Où voulez-vous le placer ? (Format x;y)x\n"));
                 String emplacementObstacle;
                 int[] positionObstacle = {0,0};
-                String[] coordonnees = {"",""};
+                String[] coordonnees;
                 do {
                     emplacementObstacle = Scanner.demandeString();
                     coordonnees = emplacementObstacle.split(";");
@@ -226,7 +215,7 @@ public class Donjon {
                 Affichage.affiche(mesMonstres.get(numMonstre).getAppellation() + ". Où voulez-vous le placer ? (Format x;y)\n");
                 String emplacementMonstre;
                 int[] positionMonstre = {0,0};
-                String[] coordonnees = {"",""};
+                String[] coordonnees;
                 do {
                     emplacementMonstre = Scanner.demandeString();
                     coordonnees = emplacementMonstre.split(";");
@@ -271,7 +260,7 @@ public class Donjon {
                 Affichage.affiche(ListeMonstres.getNomMonstre(numMonstre) + ". Où voulez-vous le placer ? (Format x;y)\n");
                 String emplacementMonstre;
                 int[] positionMonstre = {0,0};
-                String[] coordonnees = {"",""};
+                String[] coordonnees;
                 do {
                     emplacementMonstre = Scanner.demandeString();
                     coordonnees = emplacementMonstre.split(";");
@@ -300,7 +289,7 @@ public class Donjon {
                 Affichage.affiche("Joueur : " + personnages.get(compteur).getNom() + " : Où voulez-vous le placer ? (Format x;y)\n");
                 String emplacementPerso;
                 int[] positionPerso = {0,0};
-                String[] coordonnees = {"",""};
+                String[] coordonnees;
                 do {
                     emplacementPerso = Scanner.demandeString();
                     coordonnees = emplacementPerso.split(";");
@@ -343,7 +332,7 @@ public class Donjon {
                 Affichage.affiche(ListeEquipements.getNomEquip(numEquip) + ". Où voulez-vous le placer ? (Format x;y)\n");
                 String emplacementEquip;
                 int[] posEquip = {0,0};
-                String[] coordonnees = {"",""};
+                String[] coordonnees;
                 do {
                     emplacementEquip = Scanner.demandeString();
                     coordonnees = emplacementEquip.split(";");
@@ -382,33 +371,12 @@ public class Donjon {
         }
     }
 
-    public ArrayList<Entitee> listeCible(Entitee attaquant)
-    {
-        int distanceX, distanceY;
-        int[] posEntitee;
-        int[] maPosition = m_positionEntitee.get(attaquant);
-        ArrayList<Entitee> listCible = new ArrayList<>();
-        Set<Entitee> setKey = m_positionEntitee.keySet();
-
-        for(Entitee i : setKey) {
-            posEntitee = m_positionEntitee.get(i);
-            distanceX = Math.abs(maPosition[0] - posEntitee[0]);
-            distanceY = Math.abs(maPosition[1] - posEntitee[1]);
-            if (distanceX <= attaquant.getPorteeArme() && distanceY <= attaquant.getPorteeArme()) {
-                listCible.add(i);
-            }
-        }
-        return listCible;
-    }
-
     public static int randomValue(int borneInf, int borneSup){
         Random random = new Random();
         return borneInf + random.nextInt(borneSup - borneInf);
     }
 
     public boolean existeAEmplacement(int[] aVerifier){
-        boolean existe = false;
-
         /*Verification avec les obstacles
         existe = m_obstacles.contains(aVerifier);
         for(int i = 0; i < m_obstacles.size() ;i++){
@@ -420,16 +388,13 @@ public class Donjon {
             existe = positionEntitee[0] == aVerifier[0] && positionEntitee[1] == aVerifier[1];
         }*/
 
-        existe = verifAEmplacement(aVerifier);
-        if(existe){return existe;}
+        if(verifAEmplacement(aVerifier)){return true;}
 
         //Verification avec les équipements
         for(int[] positionEquip : m_positionEquip.values()){
-            existe = positionEquip[0] == aVerifier[0] && positionEquip[1] == aVerifier[1];
-            if(existe){return existe;}
+            if(positionEquip[0] == aVerifier[0] && positionEquip[1] == aVerifier[1]) {return true;}
         }
-
-        return existe;
+        return false;
     }
 
     public boolean existeAEmplacement(int[] aVerifier, ArrayList<int[]> obstacles,
@@ -459,24 +424,17 @@ public class Donjon {
     }
 
     public boolean verifAEmplacement(int[] aVerifier){
-        boolean existe = false;
-
         //Verification avec les obstacles
         for (int[] mObstacle : m_obstacles) {
-            existe = mObstacle[0] == aVerifier[0] && mObstacle[1] == aVerifier[1];
-            if (existe) {
-                return existe;
-            }
+            if(mObstacle[0] == aVerifier[0] && mObstacle[1] == aVerifier[1]) {return true;}
         }
 
 
         //Verification avec les entitées (monstres et personnages)
         for(int[] positionEntitee : m_positionEntitee.values()){
-            existe = positionEntitee[0] == aVerifier[0] && positionEntitee[1] == aVerifier[1];
-            if(existe){return existe;}
+            if(positionEntitee[0] == aVerifier[0] && positionEntitee[1] == aVerifier[1]) {return true;}
         }
-
-        return existe;
+        return false;
     }
 
     public int getLongueur(){
