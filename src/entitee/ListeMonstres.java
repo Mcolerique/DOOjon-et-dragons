@@ -95,6 +95,13 @@ public class ListeMonstres{
         return m_listeMonstres;
     }
 
+    public static void retourEtatInitialMonstres(){
+        for(Monstre monstre : m_listeMonstresUtilises){
+            m_listeMonstres.add(monstre);
+        }
+        m_listeMonstresUtilises.clear();
+    }
+
 }
 
 

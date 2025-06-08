@@ -70,7 +70,8 @@ public class Donjon {
         Hashtable<Equipement, int[]> positionEquip = new Hashtable<>();
         poserEquipementAuto(d, positionEquip, obstaclesDonjon, positionEntitee);
         d.setValeurDonjon(positionEntitee, positionEquip, obstaclesDonjon);
-
+        ListeMonstres.retourEtatInitialMonstres();
+        ListeEquipements.retourEtatInitialEquipements();
 
         return d;
     }
@@ -145,6 +146,9 @@ public class Donjon {
         Hashtable<Equipement, int[]> positionEquip = new Hashtable<>();
         poserEquipementManuel(d, positionEquip, obstaclesDonjon, positionEntitee);
         d.setValeurDonjon(positionEntitee, positionEquip, obstaclesDonjon);
+        ListeMonstres.retourEtatInitialMonstres();
+        ListeEquipements.retourEtatInitialEquipements();
+
 
         return d;
     }

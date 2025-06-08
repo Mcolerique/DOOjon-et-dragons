@@ -80,5 +80,12 @@ public class ListeEquipements {
         return m_listeEquipements;
     }
 
+    public static void retourEtatInitialEquipements(){
+        for(Equipement equip : m_listeEquipementsUtilises){
+            m_listeEquipements.add(equip);
+        }
+        m_listeEquipementsUtilises.clear();
+    }
+
 }
 
