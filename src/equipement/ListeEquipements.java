@@ -29,23 +29,22 @@ public class ListeEquipements {
         add(new Arme("Epée à deux mains", 2,  6, TypeCaC.GUERRE));
     }};
 
-    private static ArrayList<Equipement> m_listeEquipementsUtilises = new ArrayList<>() {{}};
+    private static ArrayList<Equipement> m_listeEquipementsUtilises = new ArrayList<>() {};
 
     public static boolean ajtEquipement (Equipement equipement){
         int difficulte;
         boolean aPuEtreCree;
 
-        aPuEtreCree = (m_listeEquipements.contains(equipement)) ? false : true;
+        aPuEtreCree = !m_listeEquipements.contains(equipement);
         if (!aPuEtreCree) {
-            return aPuEtreCree;
+            return false;
         }
 
         m_listeEquipements.add(equipement);
-        aPuEtreCree = true;
         System.out.println(equipement.getNom() + "a pu être ajouté avec succès à la liste.");
 
 
-        return aPuEtreCree;
+        return true;
     }
 
     public static void deDispoADejaUtilise(int equip){

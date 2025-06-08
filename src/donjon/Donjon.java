@@ -193,7 +193,7 @@ public class Donjon {
                 }while(!emplacementObstacle.contains(";") || (positionObstacle[0] >= d.m_tailleMap[0] || positionObstacle[0] < 0) || (positionObstacle[1] >= d.m_tailleMap[1] && positionObstacle[1] < 0));
                 placementPossible = !d.existeAEmplacement(positionObstacle, obstaclesDonjon, null, null);
                 if(placementPossible){
-                    obstaclesDonjon.add(positionObstacle);
+                    obstaclesDonjon.add(positionObstacle.clone());
                 }
                 else{Affichage.affiche("Il y a déjà quelque chose à cet emplacement");}
             } while (!placementPossible);
@@ -227,7 +227,7 @@ public class Donjon {
                 }while(!emplacementMonstre.contains(";") || (positionMonstre[0] >= d.m_tailleMap[0] || positionMonstre[0] < 0) || (positionMonstre[1] >= d.m_tailleMap[1] && positionMonstre[1] < 0));
                 placementPossible = !d.existeAEmplacement(positionMonstre, obstaclesDonjon, positionEntitee, null);
                 if(placementPossible){
-                    positionEntitee.put(Monstre.utiliserMonstre(numMonstre, mesMonstres), positionMonstre);
+                    positionEntitee.put(Monstre.utiliserMonstre(numMonstre, mesMonstres), positionMonstre.clone());
                 }
                 else{Affichage.affiche("Il y a déjà quelque chose à cet emplacement.");}
             }while (!placementPossible);
@@ -268,7 +268,7 @@ public class Donjon {
                 }while(!emplacementMonstre.contains(";") || (positionMonstre[0] >= d.m_tailleMap[0] || positionMonstre[0] < 0) || (positionMonstre[1] >= d.m_tailleMap[1] && positionMonstre[1] < 0));
                 placementPossible = !d.existeAEmplacement(positionMonstre, obstaclesDonjon, positionEntitee, null);
                 if(placementPossible){
-                    positionEntitee.put(ListeMonstres.utiliserMonstre(numMonstre), positionMonstre);
+                    positionEntitee.put(ListeMonstres.utiliserMonstre(numMonstre), positionMonstre.clone());
                 }
                 else{Affichage.affiche("Il y a déjà quelque chose à cet emplacement.");}
 
@@ -297,7 +297,7 @@ public class Donjon {
                 }while(!emplacementPerso.contains(";") || (positionPerso[0] >= d.m_tailleMap[0] || positionPerso[0] < 0) || (positionPerso[1] >= d.m_tailleMap[1] && positionPerso[1] < 0));
                 placementPossible =  !d.existeAEmplacement(positionPerso, obstaclesDonjon, positionEntitee, null);
                 if(placementPossible){
-                    positionEntitee.put(personnage, positionPerso);
+                    positionEntitee.put(personnage, positionPerso.clone());
                     compteur++;
                 }
                 else{Affichage.affiche("Il y a déjà quelque chose à cet emplacement.");}
@@ -340,7 +340,7 @@ public class Donjon {
                 }while(!emplacementEquip.contains(";") || (posEquip[0] >= d.m_tailleMap[0] || posEquip[0] < 0) || (posEquip[1] >= d.m_tailleMap[1] && posEquip[1] < 0));
                 placementPossible = !d.existeAEmplacement(posEquip, obstaclesDonjon, positionEntitee, positionEquip);
                 if(placementPossible){
-                    positionEquip.put(ListeEquipements.utiliserEquipement(numEquip), posEquip);
+                    positionEquip.put(ListeEquipements.utiliserEquipement(numEquip), posEquip.clone());
                 }
                 else{Affichage.affiche("Il y a déjà quelque chose à cet emplacement.");}
 
@@ -485,7 +485,6 @@ public class Donjon {
         m_positionEquip.remove(equip);
     }
     public void supprEntite(Entitee e){m_positionEntitee.remove(e);}
-
 
     public ArrayList<Entitee> lancerInitiative(){
         ArrayList<Entitee> listeEntitee = new ArrayList<>();

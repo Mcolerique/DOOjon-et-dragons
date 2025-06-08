@@ -347,10 +347,10 @@ public class Affichage {
 
     public static void defaite(Entitee e)
     {
-        affiche("Vous avez perdu car "+e.toString()+" est mort");
+        affiche("\u001B[31mVous avez perdu car "+e.toString()+" est mort\u001B[0m");
     }
     public static void victoireDonjon(int numDonjon)
     {
-        affiche("Félicitation, vous avez triomphé du "+numDonjon+" donjon");
+        affiche("\u001B[32mFélicitation, vous avez triomphé du "+numDonjon+" donjon\u001B[0m");
     }
 }
