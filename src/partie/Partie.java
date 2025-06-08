@@ -126,18 +126,18 @@ public class Partie {
             switch (choix[0]) {
                 case "att":
                     if (pos == null) {
-                        Affichage.affiche("Emplacement non valide.");
+                        Affichage.affiche("\u001B[31m Emplacement non valide.\u001B[0m");
                         return false;
                     } else if (!attaquePossible(e, pos)) {
-                        Affichage.affiche("Attaque impossible, sélectionnez un emplacement à portée");
+                        Affichage.affiche("\u001B[31m Attaque impossible, sélectionnez un emplacement à portée\u001B[0m");
                         return false;
                     }
                     Entitee ennemi = m_donjon.getEntiteeAPos(pos);
                     if (ennemi == null) {
-                        Affichage.affiche("Attaque impossible, sélectionnez une entitée valide");
+                        Affichage.affiche("\u001B[31m Attaque impossible, sélectionnez une entitée valide\u001B[0m");
                         return false;
                     } else if (e.getType() == ennemi.getType()) {
-                        Affichage.affiche("Friendly fire is off, sélectionnez un ennemi valide");
+                        Affichage.affiche("\u001B[31m Friendly fire is off, sélectionnez un ennemi valide\u001B[0m");
                         return false;
                     }
                     e.attaquer(ennemi);
@@ -147,10 +147,10 @@ public class Partie {
                     return false;
                 case "dep":
                     if (pos == null) {
-                        Affichage.affiche("Emplacement non valide.");
+                        Affichage.affiche("\u001B[31m Emplacement non valide.\u001B[0m");
                         return false;
                     } else if (!deplacementPossible(e, pos)) {
-                        Affichage.affiche("Déplacement impossible, sélectionnez un emplacement à portée");
+                        Affichage.affiche("\u001B[31m Déplacement impossible, sélectionnez un emplacement à portée\u001B[0m");
                         return false;
                     }
                     m_donjon.deplacerEntitee(e, pos);
@@ -161,12 +161,12 @@ public class Partie {
                     if (e.getType() == TypeEntitee.PERSONNAGE) {
                         return tourPerso((Personnage) e, choix, objetARecup);
                     } else {
-                        Affichage.affiche("Sélectionnez une action valide");
+                        Affichage.affiche("\u001B[31m Sélectionnez une action valide\u001B[0m");
                         return false;
                     }
             }
         } catch (Exception ex) {
-            Affichage.affiche("Erreur lors du traitement de l'action. Réessayez.");
+            Affichage.affiche("\u001B[31m Erreur lors du traitement de l'action. Réessayez.\u001B[0m");
             return false;
         }
     }
@@ -180,7 +180,7 @@ public class Partie {
                 case "equ":
                     int ie = Integer.parseInt(choix[1]) - 1;
                     if (ie > p.getTailleInventaire()) {
-                        Affichage.affiche("Équipement sélectionné invalide");
+                        Affichage.affiche("\u001B[31m Équipement sélectionné invalide \u001B[0m");
                         return false;
                     }
                     p.equiper(ie);
@@ -192,28 +192,28 @@ public class Partie {
                         m_donjon.supprEquip(equipRam);
                         return true;
                     }
-                    Affichage.affiche("Aucun objet à ramasser à cette position");
+                    Affichage.affiche("\u001B[31m Aucun objet à ramasser à cette position \u001B[0m");
                     return false;
                 case "sor":
                     int is = Integer.parseInt(choix[1]) - 1;
                     if (is > p.getTailleSort()) {
-                        Affichage.affiche("Sort sélectionné invalide");
+                        Affichage.affiche("\u001B[31m Sort sélectionné invalide \u001B[0m");
                         return false;
                     }
                     return utiliserSort(p.getSort(is));
                 default:
-                    Affichage.affiche("Sélectionnez une action valide");
+                    Affichage.affiche("\u001B[31m Sélectionnez une action valide \u001B[0m");
                     return false;
             }
         } catch (Exception ex) {
-            Affichage.affiche("Erreur dans le tour du personnage. Réessayez.");
+            Affichage.affiche("\u001B[31m Erreur dans le tour du personnage. Réessayez. \u001B[0m");
             return false;
         }
     }
     public boolean actionMJ(String[] choix)
     {
         if (choix.length < 2) {
-            Affichage.affiche("Commande MJ incomplète");
+            Affichage.affiche("\u001B[31m Commande MJ incomplète \u001B[0m");
             return false;
         }
         int[] pos = extrairePosition(choix[1]);
@@ -223,34 +223,34 @@ public class Partie {
             case "att":
                 if (pos == null )
                 {
-                    Affichage.affiche("Emplacement non valide.");
+                    Affichage.affiche("\u001B[31m Emplacement non valide. \u001B[0m");
                     return false;
                 }
                     e = m_donjon.getEntiteeAPos(pos);
                 if (e == null) {
-                    Affichage.affiche("Attaque impossible, séléctionnez une entitée valide");
+                    Affichage.affiche("\u001B[31m Attaque impossible, séléctionnez une entitée valide \u001B[0m");
                     return false;
                 }
                 attaqueEntitee(e);
                 return true;
             case "dep":
                 if (choix.length < 3) {
-                    Affichage.affiche("Commande déplacement MJ incomplète");
+                    Affichage.affiche("\u001B[31m Commande déplacement MJ incomplète \u001B[0m");
                     return false;
                 }
                 else if (pos == null )
                 {
-                    Affichage.affiche("Emplacement départ non valide.");
+                    Affichage.affiche("\u001B[31m Emplacement départ non valide.\u001B[0m");
                     return false;
                 }
                 e = m_donjon.getEntiteeAPos(pos);
                 if (e == null) {
-                    Affichage.affiche("Déplacement impossible, séléctionnez une entitée");
+                    Affichage.affiche("\u001B[31m Déplacement impossible, séléctionnez une entitée\u001B[0m");
                     return false;
                 }
                 int[] newPos = extrairePosition(choix[2]);
                 if (newPos == null ) {
-                    Affichage.affiche("Emplacement d'arrivée non valide.");
+                    Affichage.affiche("\u001B[31m Emplacement d'arrivée non valide.\u001B[0m");
                     return false;
                 }
                 m_donjon.deplacerEntitee(e, newPos);
@@ -258,7 +258,7 @@ public class Partie {
             case "obs":
                 return m_donjon.ajouterObstacle(pos);
             default:
-                Affichage.affiche("Sélectionnez une action valide");
+                Affichage.affiche("\u001B[31m Sélectionnez une action valide\u001B[0m");
                 return false;
         }
     }
@@ -340,9 +340,9 @@ public class Partie {
                 txt += resultDes + "+";
             }
 
-            txt = somme + txt.substring(0, txt.length() - 1) + ")";
+            txt = "\u001B[31m"+somme+ "\u001B[0m" + txt.substring(0, txt.length() - 1) + ")";
             e.sePrendreDegats(somme);
-            Affichage.affiche("Vous avez infligé " + txt + " dégâts");
+            Affichage.affiche("Vous avez infligé " + txt + "\u001B[31m dégâts\u001B[0m");
 
         } catch (NumberFormatException nfe) {
             Affichage.affiche("Erreur : veuillez entrer uniquement des nombres valides dans le format <nbDes>d<nbFace>.");
@@ -377,11 +377,11 @@ public class Partie {
     }
     String concatString(String[] tab)
     {
-        String txt = "";
-        for(int i = 0; i<tab.length; i++)
+        String txt = "\u001B[33m";
+        for(int i = 1; i<tab.length; i++)
         {
             txt += tab[i]+" ";
         }
-        return txt;
+        return txt+"\u001B[0m";
     }
 }

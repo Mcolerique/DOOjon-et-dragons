@@ -90,7 +90,7 @@ public class Affichage {
             int x = entry.getValue()[0];
             int y = entry.getValue()[1];
             if (y >= 0 && y < lignes && x >= 0 && x < colonnes)
-                grille[y][x] = " * ";
+                grille[y][x] = "\u001B[34m * \u001B[0m";
         }
 
         // Entités : initiales pour Personnage, symbole pour Monstre
@@ -102,11 +102,11 @@ public class Affichage {
             String symbole;
 
             if (entite.getType() == TypeEntitee.PERSONNAGE) {
-                String nom = ((Personnage) entite).getInitiale(); // ex : "Alt"
-                symbole = centerText(nom, 3);
+                String nom = "\u001B[32m"+((Personnage) entite).getInitiale() +"\u001B[0m"; // ex : "Alt"
+                symbole = centerTextAnsi(nom, 3);
             } else if (entite.getType() == TypeEntitee.MONSTRE) {
-                String s = ((Monstre) entite).getSymbole(); // ex : "X^"
-                symbole = centerText(s, 3);
+                String s = "\u001B[31m"+((Monstre) entite).getSymbole()+"\u001B[0m"; // ex : "X^"
+                symbole = centerTextAnsi(s, 3);
             } else {
                 symbole = " ? ";
             }
@@ -159,6 +159,13 @@ public class Affichage {
         int padEnd = padding - padStart;
         return " ".repeat(padStart) + text + " ".repeat(padEnd);
     }
+    private static String centerTextAnsi(String text, int width) {
+        String textVisible = text.replaceAll("\u001B\\[[;\\d]*m", ""); // supprime les codes ANSI
+        int padding = width - textVisible.length();
+        int padStart = padding / 2;
+        int padEnd = padding - padStart;
+        return " ".repeat(padStart) + text + " ".repeat(padEnd);
+    }
     public static void afficheAction(Entitee e, int numAction, boolean objetARecup)
     {
         if (e.getType() == TypeEntitee.PERSONNAGE)
@@ -181,7 +188,7 @@ public class Affichage {
         // Armure
         Armure armure = e.getArmure();
         if (armure != null) {
-            sb.append("  Arme: ").append(armure.getNom());
+            sb.append("  armure: ").append(armure.getNom()).append("\n");
 
         } else {
             sb.append("  Armure: aucune\n");

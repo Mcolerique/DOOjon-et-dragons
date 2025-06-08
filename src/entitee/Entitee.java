@@ -41,20 +41,31 @@ public abstract class Entitee {
     }
     public void attaquer(Entitee ennemie)
     {
-        int jetAttaque = Des.lancerDes(20) + this.m_stats[m_arme.quelleStat()] + m_arme.getBonusAttaque();
-        Affichage.affiche("Vous avec fait un "+ jetAttaque+" a votre jet d'attaque");
-        if(ennemie.seFaireAttaquer(jetAttaque))
+        if(m_arme != null)
         {
-            Affichage.affiche("Votre attaque touche");
-            ennemie.sePrendreDegats(m_arme.infligerDegats());
+            int jetAttaque = Des.lancerDes(20) + this.m_stats[m_arme.quelleStat()] + m_arme.getBonusAttaque();
+            Affichage.affiche("Vous avec fait un "+ jetAttaque+" a votre jet d'attaque");
+            if(ennemie.seFaireAttaquer(jetAttaque))
+            {
+                Affichage.affiche("\u001B[32mVotre attaque touche\u001B[0m");
+                ennemie.sePrendreDegats(m_arme.infligerDegats());
+            }
+            else
+            {
+                Affichage.affiche("\u001B[31m Votre attaque rate\u001B[0m");
+            }
         }
         else
         {
-            Affichage.affiche("Votre attaque rate");
+            Affichage.affiche("\u001B[31m Vous n'avez pas d'arme équiper.\u001B[0m");
         }
     }
     public int getPorteeArme()
     {
+        if(m_arme == null)
+        {
+            return 0;
+        }
         return m_arme.getPortee();
     }
     public boolean estVivant()
