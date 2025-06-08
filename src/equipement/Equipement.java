@@ -1,15 +1,7 @@
 package equipement;
 
-import entitee.Monstre;
-import equipement.arme.Arme;
-import equipement.armure.Armure;
-import interactionUtilisateur.Affichage;
-import interactionUtilisateur.Scanner;
-
-import java.util.ArrayList;
-
 public abstract class Equipement {
-    private String m_nom;
+    private final String m_nom;
     protected int[] m_modifStat = new int[5];
     protected TypeEquipement m_typeEquipement;
 

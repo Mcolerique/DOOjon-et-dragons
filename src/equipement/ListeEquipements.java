@@ -1,15 +1,13 @@
 package equipement;
 
-import entitee.Entitee;
-import entitee.Monstre;
+
 import equipement.arme.Arme;
 import equipement.arme.TypeCaC;
 import equipement.armure.Armure;
 import equipement.armure.Poids;
-import interactionUtilisateur.*;
+import interactionUtilisateur.Affichage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ListeEquipements {
 
@@ -28,30 +26,12 @@ public class ListeEquipements {
         add(new Arme("Arc court", 1, 6, 16));
         add(new Arme("Epée à deux mains", 2,  6, TypeCaC.GUERRE));
     }};
-
     private static ArrayList<Equipement> m_listeEquipementsUtilises = new ArrayList<>() {};
-
-    public static boolean ajtEquipement (Equipement equipement){
-        int difficulte;
-        boolean aPuEtreCree;
-
-        aPuEtreCree = !m_listeEquipements.contains(equipement);
-        if (!aPuEtreCree) {
-            return false;
-        }
-
-        m_listeEquipements.add(equipement);
-        System.out.println(equipement.getNom() + "a pu être ajouté avec succès à la liste.");
-
-
-        return true;
-    }
 
     public static void deDispoADejaUtilise(int equip){
         m_listeEquipementsUtilises.add(m_listeEquipements.get(equip));
         m_listeEquipements.remove(equip);
     }
-
     public static Equipement utiliserEquipement(int equip){
 
         Equipement returnEquip = m_listeEquipements.get(equip);
@@ -61,25 +41,20 @@ public class ListeEquipements {
         return returnEquip;
 
     }
-
     public static Equipement utiliserEquipAuto(int equip){
         Equipement equipementAReturn = m_listeEquipements.get(equip);
         deDispoADejaUtilise(equip);
         return equipementAReturn;
     }
-
     public static int nbEquipDispo(){
         return m_listeEquipements.size();
     }
-
     public static String getNomEquip(int equip){
         return m_listeEquipements.get(equip).getNom();
     }
-
     public static ArrayList<Equipement> getListeEquips(){
         return m_listeEquipements;
     }
-
     public static void retourEtatInitialEquipements(){
         m_listeEquipements.addAll(m_listeEquipementsUtilises);
         m_listeEquipementsUtilises.clear();

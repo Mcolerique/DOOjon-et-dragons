@@ -19,7 +19,6 @@ public class Monstre extends Entitee{
         m_espece = "MissingNo."; //pas mal la ref Favien
         m_type = TypeEntitee.MONSTRE;
     }
-
     public Monstre(int numMonstre, String espece, int[] stats, Equipement[] attaqueEtArmure)
     {
         super(stats);
@@ -29,7 +28,6 @@ public class Monstre extends Entitee{
         m_armure = (Armure)attaqueEtArmure[1];
         m_type = TypeEntitee.MONSTRE;
     }
-
     public String getAppellation(){
         return (m_espece + m_numMonstre);
     }
@@ -59,8 +57,6 @@ public class Monstre extends Entitee{
         }
         return monstres;
     }
-
-
     public static Monstre creerMonstre(){
         Monstre monstre = new Monstre();
         Affichage.affiche("Nom d'espèce de votre monstre ?");
@@ -81,7 +77,6 @@ public class Monstre extends Entitee{
 
         return monstre;
     }
-
     public static Equipement[] creerAtqDefMonstre(String nomEspece){
         Equipement[] atqDefMonstre = new Equipement[2];
         int portee;
@@ -110,7 +105,6 @@ public class Monstre extends Entitee{
         return atqDefMonstre;
 
     }
-
     public static int compteNumMonstre(ArrayList<Monstre> listeMonstres, Monstre monstre){
         int compteNumMonstre = -1;
         for(Monstre m : listeMonstres){
@@ -118,7 +112,6 @@ public class Monstre extends Entitee{
         }
         return compteNumMonstre;
     }
-
     public static Monstre utiliserMonstre(int monstre, ArrayList<Monstre> monstres){
         //System.out.println("Quel monstre voulez-vous placer ?");
         //int numMonstre = Scanner.demandeInt();
@@ -127,5 +120,4 @@ public class Monstre extends Entitee{
         System.out.println("Monstre ajouté.\n");
         return returnMonstre;
     }
-
 }

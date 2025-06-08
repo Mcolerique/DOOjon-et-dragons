@@ -38,41 +38,15 @@ public class ListeMonstres{
     }};
 
     // Liste des monstres utilisés pour chaque donjon
-    private static ArrayList<Monstre> m_listeMonstresUtilises = new ArrayList<>() {{}};
-
+    private static ArrayList<Monstre> m_listeMonstresUtilises = new ArrayList<>() {};
 
     public static int nbMonstresDispo(){
         return m_listeMonstres.size();
     }
-
-
-    public static boolean addMonstre (Monstre Monstre){
-        boolean aPuEtreCree;
-
-        aPuEtreCree = (m_listeMonstres.contains(Monstre)) ? false : true;
-        if (!aPuEtreCree) {
-            return aPuEtreCree;
-        }
-
-        m_listeMonstres.add(Monstre);
-        aPuEtreCree = true;
-        System.out.println(Monstre.getAppellation() + "a pu être ajouté avec succès à la liste.");
-
-
-        return aPuEtreCree;
-
-    }
-
     public static void deDispoADejaUtilise(int monstre) {
         m_listeMonstresUtilises.add(m_listeMonstres.get(monstre));
         m_listeMonstres.remove(monstre);
     }
-
-    public static void deDispoADejaUtilise(int liste, int monstre){
-        m_listeMonstresUtilises.add(m_listeMonstres.get(monstre));
-        m_listeMonstres.remove(monstre);
-    }
-
     public static Monstre utiliserMonstre(int monstre){
         Monstre returnMonstre = m_listeMonstres.get(monstre);
         deDispoADejaUtilise(monstre);
@@ -80,25 +54,19 @@ public class ListeMonstres{
         Affichage.afficherMonstre(m_listeMonstresUtilises);
         return returnMonstre;
     }
-
     public static Monstre utiliserMonstreAuto(int monstre){
         Monstre monstreAReturn = m_listeMonstres.get(monstre);
         deDispoADejaUtilise(monstre);
         return monstreAReturn;
     }
-
     public static String getNomMonstre(int monstre){
         return m_listeMonstres.get(monstre).getAppellation();
     }
-
     public static ArrayList<Monstre> getListeMonstres() {
         return m_listeMonstres;
     }
-
     public static void retourEtatInitialMonstres(){
-        for(Monstre monstre : m_listeMonstresUtilises){
-            m_listeMonstres.add(monstre);
-        }
+        m_listeMonstres.addAll(m_listeMonstresUtilises);
         m_listeMonstresUtilises.clear();
     }
 

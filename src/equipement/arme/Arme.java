@@ -22,7 +22,6 @@ public class Arme extends Equipement {
         m_type = TypeCaC.COURANTE;
         m_typeEquipement = TypeEquipement.ARME;
     }
-
     public Arme(String nom, int nbDes, int nbFaces, int portee){
         super(nom);
         m_nbDesDeg = nbDes;
@@ -33,7 +32,6 @@ public class Arme extends Equipement {
         m_type = null;
         m_typeEquipement = TypeEquipement.ARME;
     }
-
     public Arme(String nom, int nbDes, int nbFaces, TypeCaC type){
         super(nom);
         m_nbDesDeg = nbDes;
@@ -48,7 +46,6 @@ public class Arme extends Equipement {
             m_modifStat[1] = 4;
         }
     }
-
     public int getPortee(){
         return m_portee;
     }
