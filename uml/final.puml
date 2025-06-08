@@ -316,10 +316,10 @@ package entitee
     class ListeMonstre
     {
         + {static} nbMonstresDispo() : Integer
-        + {static} deDispoADejaUtilise(Integer : monstre)
-        + {static} utiliserMonstre(Integer : monstre) : Monstre
-        + {static} utiliserMonstreAuto(Integer : monstre) : Monstre
-        + {static} getNomMonstre(Integer : monstre) : String
+        + {static} deDispoADejaUtilise(monstre : Integer)
+        + {static} utiliserMonstre(monstre : Integer) : Monstre
+        + {static} utiliserMonstreAuto(monstre : Integer) : Monstre
+        + {static} getNomMonstre(monstre : Integer) : String
         + {static} getListeMonstres() : ArrayList<Monstre>
         + {static} retourEtatInitialMonstres()
     }
@@ -349,11 +349,11 @@ package equipement
     Equipement *-> "1\n type" TypeEquipement
     class ListeEquipement
     {
-        + {static} deDispoADejaUtilise(Integer : equip)
-        + {static} utiliserEquipement(Integer : equip) : Equipement
-        + {static} utiliserEquipAuto(Integer : equip) : Equipement
+        + {static} deDispoADejaUtilise(equip : Integer)
+        + {static} utiliserEquipement(equip : Integer) : Equipement
+        + {static} utiliserEquipAuto(equip : Integer) : Equipement
         + {static} nbEquipDispo() : Integer
-        + {static} getNomEquip(Integer : equip) : String
+        + {static} getNomEquip(equip : Integer) : String
         + {static} getListeEquips() : ArrayList<Equipement>
         + {static} retourEtatInitialEquipements()
     }

@@ -16,14 +16,21 @@ import interactionUtilisateur.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Personnage extends Entitee{
+/**
+ * La classe Personnage représente un personnage jouable dans le jeu.
+ * Elle hérite de la classe Entitee.
+ */
+public class Personnage extends Entitee {
     private final String m_nom;
     private final Race m_race;
     private final Classe m_classe;
     private ArrayList<Sort> m_sort;
     private ArrayList<Equipement> m_inventaire;
-    public Personnage()
-    {
+
+    /**
+     * Construit un personnage par défaut.
+     */
+    public Personnage() {
         super();
         m_nom = "Saral Porcattache";
         m_race = new Halfelin();
@@ -31,83 +38,92 @@ public class Personnage extends Entitee{
         m_type = TypeEntitee.PERSONNAGE;
         setPerso();
     }
-    public Personnage(String nom, Race r, Classe c)
-    {
+
+    /**
+     * Construit un personnage avec un nom, une race et une classe spécifiés.
+     *
+     * @param nom le nom du personnage
+     * @param r la race du personnage
+     * @param c la classe du personnage
+     */
+    public Personnage(String nom, Race r, Classe c) {
         m_nom = nom;
         m_race = r;
         m_classe = c;
         m_type = TypeEntitee.PERSONNAGE;
         setPerso();
     }
-    public void setPerso()
-    {
+
+    /**
+     * Initialise les statistiques et l'inventaire du personnage.
+     */
+    public void setPerso() {
         m_stats[0] = m_classe.getPV();
-        for(int i=1; i<5; i++)
-        {
-            for (int j = 0; j<4; j++)
-            {
+        for (int i = 1; i < 5; i++) {
+            for (int j = 0; j < 4; j++) {
                 m_stats[i] += Des.lancerDes(4);
             }
-            m_stats[i]+=3;
+            m_stats[i] += 3;
         }
-        for(int i =0; i<5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             m_stats[i] += m_race.getStats()[i];
         }
         m_inventaire = new ArrayList<>();
         m_inventaire.addAll(Arrays.asList(m_classe.getEquipement()));
-        if(m_classe.getSort() != null)
-        {
+        if (m_classe.getSort() != null) {
             m_sort = new ArrayList<>();
             m_sort.addAll(Arrays.asList(m_classe.getSort()));
+        } else {
+            m_sort = null;
         }
-        else{m_sort = null;}
         m_pvActuelle = m_stats[0];
     }
-    public void equiper(int e)
-    {
+
+    /**
+     * Équipe le personnage avec un équipement de l'inventaire.
+     *
+     * @param e l'index de l'équipement dans l'inventaire
+     */
+    public void equiper(int e) {
         TypeEquipement t = m_inventaire.get(e).getType();
-        switch (t)
-        {
-            case ARME :
+        switch (t) {
+            case ARME:
                 Arme armeAEquiper = (Arme) m_inventaire.get(e);
-                if(m_arme != null)
-                {
-                    for (int i = 0; i<5; i++)
-                    {
+                if (m_arme != null) {
+                    for (int i = 0; i < 5; i++) {
                         m_stats[i] += m_arme.getModifStat()[i];
                     }
                     m_inventaire.add(m_arme);
                 }
                 m_arme = armeAEquiper;
                 m_inventaire.remove(armeAEquiper);
-                for (int i = 0; i<5; i++)
-                {
+                for (int i = 0; i < 5; i++) {
                     m_stats[i] -= m_arme.getModifStat()[i];
                 }
                 break;
             case ARMURE:
                 Armure aEquiper = (Armure) m_inventaire.get(e);
-                if(m_armure!= null)
-                {
-                    for (int i = 0; i<5; i++)
-                    {
+                if (m_armure != null) {
+                    for (int i = 0; i < 5; i++) {
                         m_stats[i] += m_armure.getModifStat()[i];
                     }
                     m_inventaire.add(m_armure);
                 }
                 m_armure = aEquiper;
                 m_inventaire.remove(aEquiper);
-                for (int i = 0; i<5; i++)
-                {
+                for (int i = 0; i < 5; i++) {
                     m_stats[i] -= m_armure.getModifStat()[i];
                 }
                 break;
             default:
-                Affichage.affiche("erreur");
+                Affichage.affiche("Erreur");
                 break;
         }
     }
+
+    /**
+     * Permet au joueur de choisir une arme dans l'inventaire.
+     */
     public void choisirArme() {
         ArrayList<Integer> index = new ArrayList<>();
         ArrayList<Equipement> arme = new ArrayList<>();
@@ -127,11 +143,9 @@ public class Personnage extends Entitee{
 
         try {
             int choix = Scanner.demandeInt() - 1;
-            if (choix == -1)
-            {
+            if (choix == -1) {
                 return;
-            }
-            else if (choix < -1 || choix >= index.size()) {
+            } else if (choix < -1 || choix >= index.size()) {
                 Affichage.affiche("Choix invalide. Aucun équipement sélectionné.");
                 return;
             }
@@ -141,6 +155,9 @@ public class Personnage extends Entitee{
         }
     }
 
+    /**
+     * Permet au joueur de choisir une armure dans l'inventaire.
+     */
     public void choisirArmure() {
         ArrayList<Integer> index = new ArrayList<>();
         ArrayList<Equipement> armure = new ArrayList<>();
@@ -160,11 +177,9 @@ public class Personnage extends Entitee{
 
         try {
             int choix = Scanner.demandeInt() - 1;
-            if (choix == -1)
-            {
+            if (choix == -1) {
                 return;
-            }
-            else if (choix < -1 || choix >= index.size()) {
+            } else if (choix < -1 || choix >= index.size()) {
                 Affichage.affiche("Choix invalide. Aucun équipement sélectionné.");
                 return;
             }
@@ -173,16 +188,31 @@ public class Personnage extends Entitee{
             Affichage.affiche("Erreur de saisie. Veuillez entrer un entier valide.");
         }
     }
-    public void ramasserObjet(Equipement objet)
-    {
+
+    /**
+     * Permet au personnage de ramasser un objet et de l'ajouter à son inventaire.
+     *
+     * @param objet l'objet à ramasser
+     */
+    public void ramasserObjet(Equipement objet) {
         m_inventaire.add(objet);
     }
-    public int getTailleInventaire()
-    {
+
+    /**
+     * Obtient la taille de l'inventaire du personnage.
+     *
+     * @return la taille de l'inventaire
+     */
+    public int getTailleInventaire() {
         return m_inventaire.size();
     }
-    public static Personnage creePersonnage()
-    {
+
+    /**
+     * Crée un personnage en fonction des choix de l'utilisateur.
+     *
+     * @return le personnage créé
+     */
+    public static Personnage creePersonnage() {
         Race[] raceDispo = {new Humain(), new Halfelin(), new Elfe(), new Nain()};
         Classe[] classeDispo = {new Guerrier(), new Magicien(), new Clerc(), new Roublard()};
 
@@ -219,31 +249,91 @@ public class Personnage extends Entitee{
 
         return new Personnage(nom, r, c);
     }
+
+    /**
+     * Obtient l'inventaire du personnage.
+     *
+     * @return l'inventaire du personnage
+     */
     public ArrayList<Equipement> getInventaire() {
         return m_inventaire;
     }
-    public Equipement getInventaire(int i) { return  m_inventaire.get(i); }
-    public ArrayList<Sort> getSort(){
+
+    /**
+     * Obtient un équipement spécifique de l'inventaire du personnage.
+     *
+     * @param i l'index de l'équipement dans l'inventaire
+     * @return l'équipement à l'index spécifié
+     */
+    public Equipement getInventaire(int i) {
+        return m_inventaire.get(i);
+    }
+
+    /**
+     * Obtient les sorts du personnage.
+     *
+     * @return les sorts du personnage
+     */
+    public ArrayList<Sort> getSort() {
         return m_sort;
     }
-    public Sort getSort(int i){ return m_sort.get(i); }
-    public int getTailleSort(){ return m_sort.size(); }
-    public String getNom()
-    {
+
+    /**
+     * Obtient un sort spécifique du personnage.
+     *
+     * @param i l'index du sort
+     * @return le sort à l'index spécifié
+     */
+    public Sort getSort(int i) {
+        return m_sort.get(i);
+    }
+
+    /**
+     * Obtient la taille de la liste des sorts du personnage.
+     *
+     * @return la taille de la liste des sorts
+     */
+    public int getTailleSort() {
+        return m_sort.size();
+    }
+
+    /**
+     * Obtient le nom du personnage.
+     *
+     * @return le nom du personnage
+     */
+    @Override
+    public String getNom() {
         return m_nom;
     }
-    public String getDescription()
-    {
-        return m_race.toString()+" "+m_classe.toString();
-    }
-    public String getInitiale()
-    {
-        if(m_nom.length() < 3) return m_nom;
 
-        else return m_nom.substring(0,3);
-    }
+    /**
+     * Obtient la description du personnage.
+     *
+     * @return la description du personnage
+     */
     @Override
-    public String toString(){
+    public String getDescription() {
+        return m_race.toString() + " " + m_classe.toString();
+    }
+
+    /**
+     * Obtient les initiales du nom du personnage.
+     *
+     * @return les initiales du nom du personnage
+     */
+    public String getInitiale() {
+        if (m_nom.length() < 3) return m_nom;
+        else return m_nom.substring(0, 3);
+    }
+
+    /**
+     * Retourne une représentation sous forme de chaîne de caractères du personnage.
+     *
+     * @return le nom du personnage
+     */
+    @Override
+    public String toString() {
         return m_nom;
     }
 }
