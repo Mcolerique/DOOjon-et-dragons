@@ -11,7 +11,7 @@ package interactionUtilisateur
         +{static}affiche(texte : String)
         +{static}afficheTour(e : Entitee[*], i : Integer, d : Donjon, numDonjon : Integer, numTour : Integer)
         +{static}afficherDonjon(d : Donjon)
-        +{static}centerText(text : String, width : Integer) : String
+        +{static}centerTextAnsi(text : String, width : Integer) : String
         +{static}afficheAction(e : Entitee, numAction : Integer, objetARecup : Boolean)
         +{static}afficheActionPerso(e : Personnage, numAction : Integer, objetARecup : Boolean)
         +{static}afficheActionMonstre(e : Monstre, numAction : Integer)
@@ -19,6 +19,8 @@ package interactionUtilisateur
         +{static}afficheListeEntitee(list : Entitee[*])
         +{static}listeEquipement(list : Equipement[*])
         +{static}selectionTableau(tab : Object[])
+        +{static}afficherMonstre(monstres : ArrayList<Monstre>)
+        +{static}afficherEquip(equipements : ArrayList<Equipement>)
         +{static}defaite(e : Entitee)
         +{static}victoireDonjon(numDonjon : Integer)
 
@@ -50,29 +52,42 @@ package donjon
 
         +<<create>>Donjon(tailleMap : Integer[2])
         +<<create>>Donjon(posEntitee : Integer[2], posEquip : Integer[2], obstacles : [*]Integer[2], tailleMap : Integer[2])
-        + {static} creerDonjon(listePersos : Personnage[]) : Donjon
-        - setValeurDonjon(posEntitee : Integer[2], posEquip : Integer[2], obstacles : [*]Integer[2])
-        - {static} donjonAuto(personnages : Personnage[*], numDonjon : Integer ) : Donjon
-        + listeCible(attaquant : Entitee) : ArrayList<Entitee>
-        + {static} randomValue(int borneInf, int borneSup) : Integer
-        + existeAEmplacement(aVerifier : Integer[2]) : Boolean
-        + verifAEmplacement(aVerifier : Integer[2]) : Boolean
-        + getLongueur() : Integer
-        + getLargeur() : Integer
-        + estVaincu() : Boolean
-        + getPosEntitee(entitee : Entitee) : Integer[2]
-        + deplacerEntitee(entitee : Entitee, position : Integer[2])
-        + getEntiteeAPos(position : Integer[2]) : Entitee
-        + equipAPos(position : Integer[2]) : Boolean
-        + getEquipAPos(position : Integer[2]) : Equipement
-        + supprEquip(equip : Equipement)
-        + lancerInitiative() : Entitee[*]
-        + triEntitees(entitees : Entitee[*], initiativeEntitee Integer[*])
-        + getObstacle() : [*]Integer[2]
-        + getPositionEntitee() : Integer[2]
-        + getPositionEquipement() : Integer[2]
+        + donjonAuto(personnages: ArrayList<Personnage>): Donjon
+        - tailleDonjonAuto(): Donjon
+        - {static}poserObstaclesAuto(d: Donjon, obstaclesDonjon: ArrayList<int[]>, nbrObstacles: int)
+        - {static}poserMonstresAuto(d: Donjon, positionEntitee: Hashtable<Entitee, int[]>, nbrMonstres: int, obstaclesDonjon: ArrayList<int[]>)
+        - {static}poserPersonnagesAuto(d: Donjon, positionEntitee: Hashtable<Entitee, int[]>, personnages: ArrayList<Personnage>, obstaclesDonjon: ArrayList<int[]>)
+        - {static}poserEquipementAuto(d: Donjon, positionEquip: Hashtable<Equipement, int[]>, obstaclesDonjon: ArrayList<int[]>, positionEntitee: Hashtable<Entitee, int[]>)
+        + {static}donjonManuel(personnages: ArrayList<Personnage>): Donjon
+        - {static}tailleDonjonManuel(): Donjon
+        - {static}poserObstaclesManuel(d: Donjon, obstaclesDonjon: ArrayList<int[]>)
+        - {static}poserMesMonstresManuel(d: Donjon, positionEntitee: Hashtable<Entitee, int[]>, mesMonstres: ArrayList<Monstre>, obstaclesDonjon: ArrayList<int[]>)
+        - {static}poserListeMonstresManuel(d: Donjon, positionEntitee: Hashtable<Entitee, int[]>, obstaclesDonjon: ArrayList<int[]>)
+        - {static}poserPersonnagesManuel(d: Donjon, positionEntitee: Hashtable<Entitee, int[]>, personnages: ArrayList<Personnage>, obstaclesDonjon: ArrayList<int[]>)
+        - {static}poserEquipementManuel(d: Donjon, positionEquip: Hashtable<Equipement, int[]>, obstaclesDonjon: ArrayList<int[]>, positionEntitee: Hashtable<Entitee, int[]>)
+        - setValeurDonjon(posEntitee: Hashtable<Entitee, int[]>, posEquip: Hashtable<Equipement, int[]>, obstacles: ArrayList<int[]>)
+        + verifAEmplacement(aVerifier: int[]): boolean
+        + getLongueur(): int
+        + getLargeur(): int
+        + estVaincu(): boolean
+        + getPosEntitee(entitee: Entitee): int[]
+        + deplacerEntitee(entitee: Entitee, position: int[])
+        + getEntiteeAPos(position: int[]): Entitee
+        + equipAPos(position: int[]): boolean
+        + getEquipAPos(position: int[]): Equipement
+        + supprEquip(equip: Equipement)
+        + supprEntite(e: Entitee)
+        + lancerInitiative(): ArrayList<Entitee>
+        - triEntitees(entitees: ArrayList<Entitee>, initiativeEntitees: ArrayList<Integer>)
+        + getObstacle(): ArrayList<int[]>
+        + getPositionEntitee(): Hashtable<Entitee, int[]>
+        + getPositionEquipement(): Hashtable<Equipement, int[]>
+        + ajouterObstacle(position: int[]): boolean
+        + echangePosEntite(e1: Entitee, e2: Entitee)
+        + getListeEntite(): ArrayList<Entitee>
+        + getListePersonnage(): ArrayList<Entitee>
     }
-    Donjon .> Affichage : "<<call>>"
+    Donjon ..> Affichage : "<<call>>"
     Donjon ..> Scanner : "<<call>>"
 }
 package entitee
@@ -103,8 +118,9 @@ package entitee
         +{abstract}getNom() : String
         +{abstract}getDescription() : String
     }
-    Entitee .> Affichage : "<<call>>"
+    Entitee ..> Affichage : "<<call>>"
     Entitee ..> Scanner : "<<call>>"
+    Entitee ..> Des : "<<call>>"
     Enum TypeEntitee
     {
         PERSONNAGE
@@ -269,6 +285,7 @@ package entitee
                 +utiliserSort(ArrayList<Entitee> : listEntite) : boolean
                 +remplirListeArme(list : ArrayList<Entitee>) : ArrayList<Equipement>
             }
+            Guerison ..> Des : "<<call>>"
         }
     }
     class Monstre extends Entitee
@@ -290,17 +307,15 @@ package entitee
     {
         -{static}listeMonstres : [3]Monstre[*]
         -{static}listeMonstresUtilises : [3]Monstre[*]
-        +{static}afficherMonstreDispo()
         +{static}monstresDispoParDiff(numDonjon : Integer)
         +{static}nbMonstresDispoParDiff(difficulte : Integer) : Integer
-        +{static}afficherMonstreUtilis()
         +{static}addMonstre(monstre : Monstre) : Boolean
         +{static}deDispoADejaUtilise(liste : Integer, monstre : Integer)
         +{static}utiliserMonstre(listeMonstre : Integer, monstre : Integer) : Monstre
         +{static}utiliserMonstreAuto(listeMonstre : Integer, monstre : Integer) : Monstre
         +{static}getNomMonstre(listeMonstre : Integer, monstre : Integer) : String
     }
-    ListeMonstres .> Affichage : "<<call>>"
+    ListeMonstres ..> Affichage : "<<call>>"
     ListeMonstres ..> Scanner : "<<call>>"
 }
 
@@ -326,8 +341,6 @@ package equipement
     {
         -{static}listeEquipements : [3]Equipement[*]
         -{static}listeEquipementsUtilises : [3]Equipement[*]
-        +{static}afficherEquipDispo()
-        +{static}afficherEquipUtilis()
         +{static}addEquipement(equipement : Equipement) : Boolean
         +{static}deDispoADejaUtilise(liste : Integer, equip : Integer)
         +{static}utiliserEquipement()
@@ -377,6 +390,7 @@ package equipement
             +getBonusAttaque() : Integer
         }
         Arme *-> "1\n type"TypeCaC
+        Arme ..> Des : "<<call>>"
     }
 }
 
@@ -384,31 +398,36 @@ package partie
 {
     class Partie
     {
-        -perso : Personnage[*]
         -numDonjon : Integer
-        +<<create>>Partie()
-        +miseEnPlacePerso() : Personnage[*]
-        +lancerPartie()
-        +traiterTour(e : Entitee, choix : String[], objetARecup : Boolean) : boolean
-        +tourPerso(p : Personnage, choix : String[], objetARecup : Boolean) : boolean
-        +deplacementPossible(entitee : Entitee, pos Integer[2]) : Boolean
-        +attaquePossible(entitee : Entitee, position : Integer[2]) : Boolean
-        +verifEntierValide(e : Integer) return Boolean
-        +verifCharValide(c : String) : Boolean
-        +equiperPerso()
-        +defaite(e : Entitee)
-        +actionMJ(choix : String[]) : Boolean
-        +concatString(tab : String[]) : String
+        + <<create>> Partie()
+        + miseEnPlacePerso() : Personnage[*]
+        + lancerPartie()
+        + executerTour(e : Entitee)
+        + traiterTour(e : Entitee, choix : String[], objetARecup : Boolean) : Boolean
+        + tourPerso(p : Personnage, choix : String[], objetARecup : Boolean) : Boolean
+        + actionMJ(choix : String[]) : Boolean
+        + utiliserSort(s : Sort) : Boolean
+        + {static}attaqueEntitee(e : Entitee)
+        + extrairePosition(s : String) : Integer[2]
+        + deplacementPossible(entitee : Entitee, pos : Integer[2]) : Boolean
+        + attaquePossible(entitee : Entitee, pos : Integer[2]) : Boolean
+        + verifEntierValide(e : Integer) : Boolean
+        + verifCharValide(c : Char) : Boolean
+        + equiperPerso()
+        + defaite(e : Entitee)
+        + concatString(tab : String[]) : String
     }
 
-    Partie .> Affichage : "<<call>>"
-    Partie .> Scanner : "<<call>>"
-    Partie *-> "\t3\n \t-m_donjon" Donjon : \tse déroule pendant \t\t >
+    Partie ..> Affichage : "<<call>>"
+    Partie ..> Scanner : "<<call>>"
+    Partie ..> Des : "<<call>>"
+    Partie *-> "1\n -m_donjon" Donjon : \tse déroule pendant \t\t >
+    Partie *--> "*\n -perso" entitee.personnage.Personnage
 }
 
 
     class Main{
             +{static} main(args: String[*])
         }
-    Main *-> "1\n -m_progression" Partie : est lancée \t\t >
+    Main ..> Partie : "<<instanciate>>"
 @enduml

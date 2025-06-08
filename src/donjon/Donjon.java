@@ -49,15 +49,6 @@ public class Donjon {
             m_obstacles.add(obs.clone());
         }
     }
-
-    /*
-    * Note à moi meme je devrais faire des méthodes placerObstacles avec les boucles et conditions pour les appeler
-    * et genre un parametre autoOuManuel pour savoir si le truc fait tout seul ou demander a l'user mais le temps est compté
-    * et dcp c pas la priorité.
-    */
-
-
-
     private static Donjon donjonAuto(ArrayList<Personnage> personnages) {
 
         Donjon d = tailleDonjonAuto();
@@ -75,12 +66,10 @@ public class Donjon {
 
         return d;
     }
-
     private static Donjon tailleDonjonAuto(){
         int[] tailleTabl = new int[] {randomValue(15, 25), randomValue(15,25)};
         return new Donjon(tailleTabl);
     }
-
     private static void poserObstaclesAuto(Donjon d, ArrayList<int[]> obstaclesDonjon, int nbrObstacles){
         int[] positionObstacle = new int[2];
         for(int i = 0; i < nbrObstacles; i++) {
@@ -91,7 +80,6 @@ public class Donjon {
             obstaclesDonjon.add(positionObstacle.clone());
         }
     }
-
     private static void poserMonstresAuto(Donjon d, Hashtable<Entitee, int[]> positionEntitee, int nbrMonstres, ArrayList<int[]> obstaclesDonjon){
         int[] positionMonstre = new int[2];
         for(int i = 0; i < nbrMonstres; i++) { //Par défaut, nous allons utiliser 3 monstres (le nombre de monstres créés par defaut)
@@ -102,7 +90,6 @@ public class Donjon {
             positionEntitee.put(ListeMonstres.utiliserMonstreAuto(randomValue(0, ListeMonstres.nbMonstresDispo())), positionMonstre.clone());
         }
     }
-
     private static void poserPersonnagesAuto(Donjon d, Hashtable<Entitee, int[]> positionEntitee, ArrayList<Personnage> personnages, ArrayList<int[]> obstaclesDonjon){
         int[] positionPerso = new int[2];
         for(Personnage personnage : personnages) {
@@ -114,7 +101,6 @@ public class Donjon {
             positionEntitee.put(personnage, positionPerso.clone());
         }
     }
-
     private static void poserEquipementAuto(Donjon d, Hashtable<Equipement, int[]> positionEquip, ArrayList<int[]> obstaclesDonjon, Hashtable<Entitee, int[]> positionEntitee){
         int[] positionEquipement = new int[2];
         for(int i = 0; i < 5; i++) {
@@ -152,7 +138,6 @@ public class Donjon {
 
         return d;
     }
-
     private static Donjon tailleDonjonManuel(){
 
         int[] tailleTabl = new int[2];
@@ -170,7 +155,6 @@ public class Donjon {
 
         return new Donjon(tailleTabl);
     }
-
     private static void poserObstaclesManuel(Donjon d, ArrayList<int[]> obstaclesDonjon){
         int limiteObstacles = (d.m_tailleMap[0] * d.m_tailleMap[1] - (d.m_tailleMap[0] - 1) * d.m_tailleMap[1] - 1);
         int nombreDobstacles;
@@ -203,7 +187,6 @@ public class Donjon {
             } while (!placementPossible);
         }
     }
-
     private static void poserMesMonstresManuel(Donjon d, Hashtable<Entitee, int[]> positionEntitee, ArrayList<Monstre> mesMonstres, ArrayList<int[]> obstaclesDonjon){
         for(int i = 0; i < mesMonstres.size(); i++) {
             Affichage.affiche("Monstres disponibles : \n\n");
@@ -237,7 +220,6 @@ public class Donjon {
             }while (!placementPossible);
         }
     }
-
     private static void poserListeMonstresManuel(Donjon d, Hashtable<Entitee, int[]> positionEntitee, ArrayList<int[]> obstaclesDonjon){
         Affichage.affiche("Il y a " + ListeMonstres.nbMonstresDispo() + " monstre(s) de disponible(s)\nCombien de monstres souhaitez-vous placer ?\n");
         int nbrMonstres;
@@ -280,7 +262,6 @@ public class Donjon {
 
         }
     }
-
     private static void poserPersonnagesManuel(Donjon d, Hashtable<Entitee, int[]> positionEntitee, ArrayList<Personnage> personnages, ArrayList<int[]> obstaclesDonjon){
         int compteur = 0;
         for(Personnage personnage : personnages) {
@@ -308,7 +289,6 @@ public class Donjon {
             }while (!placementPossible);
         }
     }
-
     private static void poserEquipementManuel(Donjon d, Hashtable<Equipement, int[]> positionEquip, ArrayList<int[]> obstaclesDonjon, Hashtable<Entitee, int[]> positionEntitee){
         Affichage.affiche("Il y a " + ListeEquipements.nbEquipDispo() + " équipement(s) de disponible(s)\nCombien d'équipements souhaitez-vous placer ?\n");
         int nbrEquips;
@@ -351,8 +331,6 @@ public class Donjon {
             }while (!placementPossible);
         }
     }
-
-
     public static Donjon creerDonjon(ArrayList<Personnage> personnages){
         int reponseCreation;
         do {
@@ -370,12 +348,10 @@ public class Donjon {
             return donjonAuto(personnages);
         }
     }
-
     public static int randomValue(int borneInf, int borneSup){
         Random random = new Random();
         return borneInf + random.nextInt(borneSup - borneInf);
     }
-
     public boolean existeAEmplacement(int[] aVerifier){
 
         if(verifAEmplacement(aVerifier)){return true;}
@@ -385,7 +361,6 @@ public class Donjon {
         }
         return false;
     }
-
     public boolean existeAEmplacement(int[] aVerifier, ArrayList<int[]> obstacles,
                                       Hashtable<Entitee, int[]> posEntitee,
                                       Hashtable<Equipement, int[]> posEquip
@@ -425,15 +400,12 @@ public class Donjon {
         }
         return false;
     }
-
     public int getLongueur(){
         return m_tailleMap[0];
     }
-
     public int getLargeur(){
         return m_tailleMap[1];
     }
-
     public boolean estVaincu() {
         //return m_estVaincu;
         boolean termine = true;
@@ -446,15 +418,12 @@ public class Donjon {
         }
         return termine;
     }
-
     public int[] getPosEntitee(Entitee entitee){
         return m_positionEntitee.get(entitee);
     }
-
     public void deplacerEntitee(Entitee entitee, int[] position){
         m_positionEntitee.replace(entitee, position);
     }
-
     public Entitee getEntiteeAPos(int[] position){
         for(Entitee entitee : m_positionEntitee.keySet()){
             if(m_positionEntitee.get(entitee)[0] == position[0] && m_positionEntitee.get(entitee)[1] == position[1]){
@@ -463,7 +432,6 @@ public class Donjon {
         }
         return null;
     }
-
     public boolean equipAPos(int[] position){
         boolean equipAPos = false;
         for(Equipement equip : m_positionEquip.keySet()){
@@ -475,7 +443,6 @@ public class Donjon {
         }
         return equipAPos;
     }
-
     public Equipement getEquipAPos(int[] position){
         for(Equipement equip : m_positionEquip.keySet()){
             if(m_positionEquip.get(equip)[0] == position[0] && m_positionEquip.get(equip)[1] == position[1]){
@@ -484,12 +451,10 @@ public class Donjon {
         }
         return null;
     }
-
     public void supprEquip(Equipement equip){
         m_positionEquip.remove(equip);
     }
     public void supprEntite(Entitee e){m_positionEntitee.remove(e);}
-
     public ArrayList<Entitee> lancerInitiative(){
         ArrayList<Entitee> listeEntitee = new ArrayList<>();
         ArrayList<Integer> listeInitiative = new ArrayList<>();
@@ -502,7 +467,6 @@ public class Donjon {
         triEntitees(listeEntitee, listeInitiative);
         return listeEntitee;
     }
-
     public void triEntitees(ArrayList<Entitee> entitees, ArrayList<Integer> initiativeEntitees){
 
         for(int i = 0 ; i <= entitees.size()-2 ; i++){
@@ -532,7 +496,6 @@ public class Donjon {
     {
         return m_obstacles;
     }
-
     public Hashtable<Entitee, int[]> getPositionEntitee() {
         return m_positionEntitee;
     }

@@ -9,9 +9,7 @@ import entitee.personnage.sort.Sort;
 import equipement.Equipement;
 import interactionUtilisateur.Affichage;
 import interactionUtilisateur.Scanner;
-
 import java.util.ArrayList;
-
 import static java.lang.Math.abs;
 
 public class Partie {

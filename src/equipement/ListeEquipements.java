@@ -81,9 +81,7 @@ public class ListeEquipements {
     }
 
     public static void retourEtatInitialEquipements(){
-        for(Equipement equip : m_listeEquipementsUtilises){
-            m_listeEquipements.add(equip);
-        }
+        m_listeEquipements.addAll(m_listeEquipementsUtilises);
         m_listeEquipementsUtilises.clear();
     }
 
