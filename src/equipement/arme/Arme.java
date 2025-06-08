@@ -62,7 +62,7 @@ public class Arme extends Equipement {
             txt += degats+"+";
         }
         txt = degatsTotal + txt + +m_bonusDegats + ")";
-        Affichage.affiche("Vous avez infliger "+txt+" dégâts");
+        Affichage.affiche("Vous avez infligé "+txt+" dégâts");
         return degats+m_bonusDegats;
     }
     public void boost(int bonus)

@@ -20,11 +20,11 @@ public class BoogieWoogie extends Sort{
 
         try {
             Affichage.afficheListeEntitee(listEntite);
-            Affichage.affiche("Sélectionnez deux entités à échanger (format : x;y)");
+            Affichage.affiche("Sélectionnez deux entitées à échanger (format : x;y)");
 
             String[] choix = Scanner.demandeString().split(";");
             if (choix.length != 2) {
-                Affichage.affiche("Erreur : vous devez sélectionner exactement deux entités séparées par ';'.");
+                Affichage.affiche("Erreur : vous devez sélectionner exactement deux entitées séparées par ';'.");
                 return false;
             }
 

@@ -9,7 +9,7 @@ public class Main {
         do {
             p = new Partie();
             p.lancerPartie();
-            Affichage.affiche("Lancer nouvelle partie (y/n)");
+            Affichage.affiche("Lancer une nouvelle partie ? (y/n)");
             choix = Scanner.demandeString();
         }while (!choix.equals("n"));
     }

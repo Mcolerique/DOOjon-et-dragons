@@ -236,15 +236,15 @@ public class Affichage {
 
         // Menu d’actions
         sb.append("  - laisser le maître du jeu commenter l'action précédente (mj <texte>)\n");
-        sb.append("  - commenter action précédente (com <texte>)\n");
+        sb.append("  - commenter l'action précédente (com <texte>)\n");
         sb.append("  - attaquer (att <Case>)\n");
         sb.append("  - se déplacer (dep <Case>)\n");
         sb.append("  - s'équiper (equ <numero equipement>)\n");
         if(sort != null && !sort.isEmpty()) {
-            sb.append("  - lancer sort (sor <numero sort>)\n");
+            sb.append("  - lancer un sort (sor <numero sort>)\n");
         }
         if (objetARecup) {
-            sb.append("  - ramasser objet (ram)\n");
+            sb.append("  - ramasser un objet (ram)\n");
         }
         sb.append("  - passer l'action (pas)\n");
 
@@ -299,7 +299,7 @@ public class Affichage {
     {
         affiche(" que souhaitez vous faire ?");
         affiche("  - attaquer une entitée (att <Case>)");
-        affiche("  - deplacer une Entitée (dep <CaseEntitée> <CaseDestination>)");
+        affiche("  - deplacer une entitée (dep <CaseEntitée> <CaseDestination>)");
         affiche("  - ajouter un obstacle (obs <Case>)");
     }
     public static void afficheListeEntitee(ArrayList<Entitee> list){

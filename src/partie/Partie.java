@@ -134,10 +134,10 @@ public class Partie {
                     }
                     Entitee ennemi = m_donjon.getEntiteeAPos(pos);
                     if (ennemi == null) {
-                        Affichage.affiche("Attaque impossible, sélectionnez une entité valide");
+                        Affichage.affiche("Attaque impossible, sélectionnez une entitée valide");
                         return false;
                     } else if (e.getType() == ennemi.getType()) {
-                        Affichage.affiche("Friendly fire off, sélectionnez un ennemi valide");
+                        Affichage.affiche("Friendly fire is off, sélectionnez un ennemi valide");
                         return false;
                     }
                     e.attaquer(ennemi);
@@ -228,7 +228,7 @@ public class Partie {
                 }
                     e = m_donjon.getEntiteeAPos(pos);
                 if (e == null) {
-                    Affichage.affiche("Attaque impossible, séléctionnez une entité valide");
+                    Affichage.affiche("Attaque impossible, séléctionnez une entitée valide");
                     return false;
                 }
                 attaqueEntitee(e);
@@ -245,12 +245,12 @@ public class Partie {
                 }
                 e = m_donjon.getEntiteeAPos(pos);
                 if (e == null) {
-                    Affichage.affiche("Déplacement impossible, séléctionnez une entité");
+                    Affichage.affiche("Déplacement impossible, séléctionnez une entitée");
                     return false;
                 }
                 int[] newPos = extrairePosition(choix[2]);
                 if (newPos == null ) {
-                    Affichage.affiche("Emplacement d'arriver non valide.");
+                    Affichage.affiche("Emplacement d'arrivée non valide.");
                     return false;
                 }
                 m_donjon.deplacerEntitee(e, newPos);
@@ -258,7 +258,7 @@ public class Partie {
             case "obs":
                 return m_donjon.ajouterObstacle(pos);
             default:
-                Affichage.affiche("Sélectionner une action valide");
+                Affichage.affiche("Sélectionnez une action valide");
                 return false;
         }
     }

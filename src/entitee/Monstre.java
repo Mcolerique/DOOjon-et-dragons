@@ -49,7 +49,7 @@ public class Monstre extends Entitee{
     public static ArrayList<Monstre> creerMonstres(){
         Affichage.affiche("Combien de monstres souhaitez vous créer ?");
         int nbrMonstres = Scanner.demandeInt();
-        if(nbrMonstres <= 0){Affichage.affiche("Arrêt de la création de monstre. Passage aux monstres par défaut."); return null;} //faire que dans Donjon si return null ça fasse liste Monstre
+        if(nbrMonstres <= 0){Affichage.affiche("Arrêt de la création de monstre. Passage aux monstres par défaut."); return null;}
         ArrayList<Monstre> monstres = new ArrayList<>();
         for(int i = 0; i < nbrMonstres; i++){
             Affichage.affiche("Monstre n°"+(i+1));
@@ -63,7 +63,7 @@ public class Monstre extends Entitee{
 
     public static Monstre creerMonstre(){
         Monstre monstre = new Monstre();
-        Affichage.affiche("Nom d'espèce de votre monstre");
+        Affichage.affiche("Nom d'espèce de votre monstre ?");
         monstre.m_espece = Scanner.demandeString();
         Affichage.affiche("Points de vie ?");
         monstre.m_stats[0] = Scanner.demandeInt();
@@ -71,9 +71,9 @@ public class Monstre extends Entitee{
         monstre.m_stats[1] = Scanner.demandeInt();
         Affichage.affiche("Force ?");
         monstre.m_stats[2] = Scanner.demandeInt();
-        Affichage.affiche("Dextérité");
+        Affichage.affiche("Dextérité ?");
         monstre.m_stats[3] = Scanner.demandeInt();
-        Affichage.affiche("Points de vie");
+        Affichage.affiche("Points de vie ?");
         monstre.m_stats[4] = Scanner.demandeInt();
         Equipement atqArmure[] = creerAtqDefMonstre(monstre.m_espece);
         monstre.m_arme = (Arme)atqArmure[0];

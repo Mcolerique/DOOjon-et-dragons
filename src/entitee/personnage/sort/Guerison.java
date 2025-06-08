@@ -16,11 +16,11 @@ public class Guerison extends Sort{
     public boolean utiliserSort(ArrayList<Entitee> listEntite) {
         try {
             if (listEntite == null || listEntite.isEmpty()) {
-                Affichage.affiche("Aucune entité disponible à soigner.");
+                Affichage.affiche("Aucune entitée disponible à soigner.");
                 return false;
             }
 
-            Affichage.affiche("Sélectionnez l'entité à soigner :");
+            Affichage.affiche("Sélectionnez l'entitée à soigner :");
             Affichage.afficheListeEntitee(listEntite);
             int choix = Scanner.demandeInt()-1;
 
@@ -36,7 +36,7 @@ public class Guerison extends Sort{
         } catch (NumberFormatException e) {
             Affichage.affiche("Erreur : entrée non valide, veuillez saisir un nombre.");
         } catch (IndexOutOfBoundsException e) {
-            Affichage.affiche("Erreur : l'entité sélectionnée n'existe pas.");
+            Affichage.affiche("Erreur : l'entitée sélectionnée n'existe pas.");
         } catch (Exception e) {
             Affichage.affiche("Une erreur s'est produite lors de l'utilisation du sort : " + e.getMessage());
         }
