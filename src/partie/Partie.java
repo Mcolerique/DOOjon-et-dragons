@@ -65,6 +65,8 @@ public class Partie {
                     }
                     ordreEntite.removeAll(morts);
                     if (defaite) break;
+                    if (m_donjon.estVaincu()) break;
+
                 }
                 numTour++;
             }

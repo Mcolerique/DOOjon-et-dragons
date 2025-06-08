@@ -63,9 +63,9 @@ public class ArmeMagique extends Sort{
         Personnage p;
         for(Entitee e : list)
         {
-            armes.add(e.getArme());
             if(e.getType() == TypeEntitee.PERSONNAGE)
             {
+                armes.add(e.getArme());
                 p = (Personnage) e;
                 for(int i = 0; i<p.getTailleInventaire(); i++)
                 {
