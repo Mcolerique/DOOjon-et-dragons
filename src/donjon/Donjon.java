@@ -173,9 +173,11 @@ public class Donjon {
                 do {
                     emplacementObstacle = Scanner.demandeString();
                     coordonnees = emplacementObstacle.split(";");
-                    if(!emplacementObstacle.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
-                    positionObstacle[0] = Integer.parseInt(coordonnees[0]);
-                    positionObstacle[1] = Integer.parseInt(coordonnees[1]);
+                    if (!emplacementObstacle.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
+                    if(coordonnees.length == 2){
+                        positionObstacle[0] = Integer.parseInt(coordonnees[0]);
+                        positionObstacle[1] = Integer.parseInt(coordonnees[1]);
+                    }
                     if((positionObstacle[0] >= d.m_tailleMap[0] || positionObstacle[0] < 0) || (positionObstacle[1] >= d.m_tailleMap[1] && positionObstacle[1] < 0))
                         Affichage.affiche("Veuillez rester dans le périmètre de la carte.");
                 }while(!emplacementObstacle.contains(";") || (positionObstacle[0] >= d.m_tailleMap[0] || positionObstacle[0] < 0) || (positionObstacle[1] >= d.m_tailleMap[1] && positionObstacle[1] < 0));
@@ -207,8 +209,10 @@ public class Donjon {
                     emplacementMonstre = Scanner.demandeString();
                     coordonnees = emplacementMonstre.split(";");
                     if(!emplacementMonstre.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
-                    positionMonstre[0] = Integer.parseInt(coordonnees[0]);
-                    positionMonstre[1] = Integer.parseInt(coordonnees[1]);
+                    if(coordonnees.length == 2) {
+                        positionMonstre[0] = Integer.parseInt(coordonnees[0]);
+                        positionMonstre[1] = Integer.parseInt(coordonnees[1]);
+                    }
                     if((positionMonstre[0] >= d.m_tailleMap[0] || positionMonstre[0] < 0) || (positionMonstre[1] >= d.m_tailleMap[1] && positionMonstre[1] < 0))
                         Affichage.affiche("Veuillez rester dans le périmètre de la carte.");
                 }while(!emplacementMonstre.contains(";") || (positionMonstre[0] >= d.m_tailleMap[0] || positionMonstre[0] < 0) || (positionMonstre[1] >= d.m_tailleMap[1] && positionMonstre[1] < 0));
@@ -246,9 +250,11 @@ public class Donjon {
                 do {
                     emplacementMonstre = Scanner.demandeString();
                     coordonnees = emplacementMonstre.split(";");
-                    if(!emplacementMonstre.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
-                    positionMonstre[0] = Integer.parseInt(coordonnees[0]);
-                    positionMonstre[1] = Integer.parseInt(coordonnees[1]);
+                    if (!emplacementMonstre.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
+                    if(coordonnees.length == 2){
+                        positionMonstre[0] = Integer.parseInt(coordonnees[0]);
+                        positionMonstre[1] = Integer.parseInt(coordonnees[1]);
+                    }
                     if((positionMonstre[0] >= d.m_tailleMap[0] || positionMonstre[0] < 0) || (positionMonstre[1] >= d.m_tailleMap[1] && positionMonstre[1] < 0))
                         Affichage.affiche("Veuillez rester dans le périmètre de la carte.");
                 }while(!emplacementMonstre.contains(";") || (positionMonstre[0] >= d.m_tailleMap[0] || positionMonstre[0] < 0) || (positionMonstre[1] >= d.m_tailleMap[1] && positionMonstre[1] < 0));
@@ -275,8 +281,10 @@ public class Donjon {
                     emplacementPerso = Scanner.demandeString();
                     coordonnees = emplacementPerso.split(";");
                     if(!emplacementPerso.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
-                    positionPerso[0] = Integer.parseInt(coordonnees[0]);
-                    positionPerso[1] = Integer.parseInt(coordonnees[1]);
+                    if(coordonnees.length == 2) {
+                        positionPerso[0] = Integer.parseInt(coordonnees[0]);
+                        positionPerso[1] = Integer.parseInt(coordonnees[1]);
+                    }
                     if((positionPerso[0] >= d.m_tailleMap[0] || positionPerso[0] < 0) || (positionPerso[1] >= d.m_tailleMap[1] && positionPerso[1] < 0))
                         Affichage.affiche("Veuillez rester dans le périmètre de la carte.");
                 }while(!emplacementPerso.contains(";") || (positionPerso[0] >= d.m_tailleMap[0] || positionPerso[0] < 0) || (positionPerso[1] >= d.m_tailleMap[1] && positionPerso[1] < 0));
@@ -317,8 +325,10 @@ public class Donjon {
                     emplacementEquip = Scanner.demandeString();
                     coordonnees = emplacementEquip.split(";");
                     if(!emplacementEquip.contains(";")) Affichage.affiche("Veuillez respecter le format  x;y");
-                    posEquip[0] = Integer.parseInt(coordonnees[0]);
-                    posEquip[1] = Integer.parseInt(coordonnees[1]);
+                    if(coordonnees.length == 2) {
+                        posEquip[0] = Integer.parseInt(coordonnees[0]);
+                        posEquip[1] = Integer.parseInt(coordonnees[1]);
+                    }
                     if((posEquip[0] >= d.m_tailleMap[0] || posEquip[0] < 0) || (posEquip[1] >= d.m_tailleMap[1] && posEquip[1] < 0))
                         Affichage.affiche("Veuillez rester dans le périmètre de la carte.");
                 }while(!emplacementEquip.contains(";") || (posEquip[0] >= d.m_tailleMap[0] || posEquip[0] < 0) || (posEquip[1] >= d.m_tailleMap[1] && posEquip[1] < 0));
