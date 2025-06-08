@@ -5,7 +5,6 @@ import entitee.TypeEntitee;
 import entitee.personnage.Personnage;
 import equipement.Equipement;
 import equipement.TypeEquipement;
-import equipement.arme.Arme;
 import interactionUtilisateur.Affichage;
 import interactionUtilisateur.Scanner;
 

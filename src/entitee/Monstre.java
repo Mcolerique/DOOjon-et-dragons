@@ -8,6 +8,7 @@ import interactionUtilisateur.*;
 
 import java.util.ArrayList;
 import java.lang.*;
+import java.util.Objects;
 
 public class Monstre extends Entitee{
     private String m_espece;
@@ -71,7 +72,7 @@ public class Monstre extends Entitee{
         monstre.m_stats[3] = Scanner.demandeInt();
         Affichage.affiche("Points de vie ?");
         monstre.m_stats[4] = Scanner.demandeInt();
-        Equipement atqArmure[] = creerAtqDefMonstre(monstre.m_espece);
+        Equipement[] atqArmure = creerAtqDefMonstre(monstre.m_espece);
         monstre.m_arme = (Arme)atqArmure[0];
         monstre.m_armure = (Armure)atqArmure[1];
 
@@ -85,7 +86,7 @@ public class Monstre extends Entitee{
             portee = Scanner.demandeInt();
         }while(portee<1);
 
-        String dgtsFaceAtq[] = new String[2];
+        String[] dgtsFaceAtq;
         String tempDgtsFaceAtq;
         do {
             Affichage.affiche("Indiquez le lancer de dé attendu (au format xdy)");
@@ -94,8 +95,8 @@ public class Monstre extends Entitee{
             if(!tempDgtsFaceAtq.contains("d")) Affichage.affiche("Veuillez respecter le format  xdy");
         }while(!tempDgtsFaceAtq.contains("d"));
 
-        atqDefMonstre[0] = new Arme("attaque"+nomEspece , Integer.valueOf(dgtsFaceAtq[0]).intValue(),
-                                                        Integer.valueOf(dgtsFaceAtq[1]).intValue(), portee);
+        atqDefMonstre[0] = new Arme("attaque"+nomEspece , Integer.parseInt(dgtsFaceAtq[0]),
+                Integer.parseInt(dgtsFaceAtq[1]), portee);
 
         Affichage.affiche("Classe d'armure de votre monstre");
         int cArmure = Scanner.demandeInt();
@@ -108,13 +109,11 @@ public class Monstre extends Entitee{
     public static int compteNumMonstre(ArrayList<Monstre> listeMonstres, Monstre monstre){
         int compteNumMonstre = -1;
         for(Monstre m : listeMonstres){
-            if(m.m_espece == monstre.m_espece){compteNumMonstre++;}
+            if(Objects.equals(m.m_espece, monstre.m_espece)){compteNumMonstre++;}
         }
         return compteNumMonstre;
     }
     public static Monstre utiliserMonstre(int monstre, ArrayList<Monstre> monstres){
-        //System.out.println("Quel monstre voulez-vous placer ?");
-        //int numMonstre = Scanner.demandeInt();
         Monstre returnMonstre = monstres.get(monstre);
         monstres.remove(monstre);
         System.out.println("Monstre ajouté.\n");

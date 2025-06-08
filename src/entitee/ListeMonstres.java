@@ -5,11 +5,9 @@ import equipement.Equipement;
 import equipement.arme.Arme;
 import equipement.armure.Armure;
 import equipement.armure.Poids;
-import interactionUtilisateur.*;
-import entitee.Monstre;
+import interactionUtilisateur.Affichage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ListeMonstres{
 
