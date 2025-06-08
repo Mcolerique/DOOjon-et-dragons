@@ -10,12 +10,25 @@ import interactionUtilisateur.Scanner;
 
 import java.util.ArrayList;
 
-public class ArmeMagique extends Sort{
-    public ArmeMagique()
-    {
+/**
+ * La classe ArmeMagique représente un sort permettant d'améliorer une arme dans le jeu.
+ * Elle hérite de la classe Sort.
+ */
+public class ArmeMagique extends Sort {
+
+    /**
+     * Construit un sort ArmeMagique avec un nom et une description par défaut.
+     */
+    public ArmeMagique() {
         super("Arme magique", "Améliore une arme au choix. L'arme gagne alors un bonus de 1 lors des jets d'attaque et de 1 lors des jets de dégâts (les bonus peuvent se cumuler)");
     }
 
+    /**
+     * Utilise le sort ArmeMagique pour améliorer une arme sélectionnée.
+     *
+     * @param listEntite la liste des entités disponibles pour l'amélioration d'une arme
+     * @return vrai si le sort a été utilisé avec succès, faux sinon
+     */
     @Override
     public boolean utiliserSort(ArrayList<Entitee> listEntite) {
         try {
@@ -28,7 +41,7 @@ public class ArmeMagique extends Sort{
 
             Affichage.affiche("Sélectionnez l'arme à améliorer :");
             Affichage.listeEquipement(armes);
-            int choix = Scanner.demandeInt() -1;
+            int choix = Scanner.demandeInt() - 1;
 
             if (choix < 0 || choix >= armes.size()) {
                 Affichage.affiche("Erreur : choix invalide.");
@@ -56,20 +69,22 @@ public class ArmeMagique extends Sort{
 
         return false;
     }
-    public ArrayList<Equipement> remplirListeArme(ArrayList<Entitee> list)
-    {
+
+    /**
+     * Remplit une liste d'armes à partir d'une liste d'entités.
+     *
+     * @param list la liste des entités
+     * @return la liste des armes
+     */
+    public ArrayList<Equipement> remplirListeArme(ArrayList<Entitee> list) {
         ArrayList<Equipement> armes = new ArrayList<>();
         Personnage p;
-        for(Entitee e : list)
-        {
-            if(e.getType() == TypeEntitee.PERSONNAGE)
-            {
+        for (Entitee e : list) {
+            if (e.getType() == TypeEntitee.PERSONNAGE) {
                 armes.add(e.getArme());
                 p = (Personnage) e;
-                for(int i = 0; i<p.getTailleInventaire(); i++)
-                {
-                    if (p.getInventaire(i).getType() == TypeEquipement.ARME)
-                    {
+                for (int i = 0; i < p.getTailleInventaire(); i++) {
+                    if (p.getInventaire(i).getType() == TypeEquipement.ARME) {
                         armes.add(p.getInventaire(i));
                     }
                 }

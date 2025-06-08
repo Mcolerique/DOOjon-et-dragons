@@ -3,14 +3,28 @@ package entitee.personnage.sort;
 import entitee.Entitee;
 import interactionUtilisateur.Affichage;
 import interactionUtilisateur.Scanner;
+
 import java.util.ArrayList;
 
-public class BoogieWoogie extends Sort{
-    public BoogieWoogie()
-    {
-        super("Boogie Woogie", "Echangez la place de deux entité au choix");
+/**
+ * La classe BoogieWoogie représente un sort permettant d'échanger les positions de deux entités dans le jeu.
+ * Elle hérite de la classe Sort.
+ */
+public class BoogieWoogie extends Sort {
+
+    /**
+     * Construit un sort BoogieWoogie avec un nom et une description par défaut.
+     */
+    public BoogieWoogie() {
+        super("Boogie Woogie", "Échangez la place de deux entités au choix");
     }
 
+    /**
+     * Utilise le sort BoogieWoogie pour échanger les positions de deux entités sélectionnées.
+     *
+     * @param listEntite la liste des entités disponibles pour l'échange
+     * @return vrai si le sort a été utilisé avec succès, faux sinon
+     */
     @Override
     public boolean utiliserSort(ArrayList<Entitee> listEntite) {
         if (listEntite.size() < 2) {
@@ -20,11 +34,11 @@ public class BoogieWoogie extends Sort{
 
         try {
             Affichage.afficheListeEntitee(listEntite);
-            Affichage.affiche("Sélectionnez deux entitées à échanger (format : x;y)");
+            Affichage.affiche("Sélectionnez deux entités à échanger (format : x;y)");
 
             String[] choix = Scanner.demandeString().split(";");
             if (choix.length != 2) {
-                Affichage.affiche("Erreur : vous devez sélectionner exactement deux entitées séparées par ';'.");
+                Affichage.affiche("Erreur : vous devez sélectionner exactement deux entités séparées par ';'.");
                 return false;
             }
 

@@ -9,34 +9,49 @@ import entitee.personnage.sort.Sort;
 import equipement.Equipement;
 import interactionUtilisateur.Affichage;
 import interactionUtilisateur.Scanner;
+
 import java.util.ArrayList;
+
 import static java.lang.Math.abs;
 
+/**
+ * La classe Partie gère le déroulement d'une partie de jeu.
+ */
 public class Partie {
     private Donjon m_donjon;
     private final ArrayList<Personnage> m_perso;
     private int m_numDonjon;
 
-    public Partie()
-    {
+    /**
+     * Constructeur de la classe Partie.
+     * Initialise les personnages et le donjon.
+     */
+    public Partie() {
         m_perso = miseEnPlacePerso();
         m_donjon = null;
         m_numDonjon = 0;
     }
-    public ArrayList<Personnage> miseEnPlacePerso()
-    {
+
+    /**
+     * Crée et retourne une liste de personnages pour la partie.
+     *
+     * @return la liste des personnages créés
+     */
+    public ArrayList<Personnage> miseEnPlacePerso() {
         ArrayList<Personnage> perso = new ArrayList<>();
         int choix;
-        Affichage.affiche("Combien de personnages joueurs voulez vous créer ?");
+        Affichage.affiche("Combien de personnages joueurs voulez-vous créer ?");
         choix = Scanner.demandeInt();
-        for(int i = 0; i<choix; i++)
-        {
+        for (int i = 0; i < choix; i++) {
             perso.add(Personnage.creePersonnage());
         }
         return perso;
     }
-    public void lancerPartie()
-    {
+
+    /**
+     * Lance la partie et gère les tours de jeu jusqu'à la victoire ou la défaite.
+     */
+    public void lancerPartie() {
         int numTour = 1;
         boolean defaite = false;
         while (m_numDonjon < 3) {
@@ -66,7 +81,6 @@ public class Partie {
                     ordreEntite.removeAll(morts);
                     if (defaite) break;
                     if (m_donjon.estVaincu()) break;
-
                 }
                 numTour++;
             }
@@ -75,8 +89,13 @@ public class Partie {
             m_numDonjon++;
         }
     }
-    public void executerTour(Entitee e)
-    {
+
+    /**
+     * Exécute un tour pour une entité donnée.
+     *
+     * @param e l'entité pour laquelle exécuter le tour
+     */
+    public void executerTour(Entitee e) {
         String choix;
         boolean objetARecup;
         boolean finAction;
@@ -95,7 +114,7 @@ public class Partie {
                     Affichage.affiche("Erreur de saisie. Réessayez.");
                 }
             }
-            Affichage.affiche("mj voulez vous faire une action ? y/n");
+            Affichage.affiche("MJ, voulez-vous faire une action ? y/n");
             try {
                 choix = Scanner.demandeString();
                 finAction = false;
@@ -116,10 +135,18 @@ public class Partie {
             i++;
         }
     }
-    public boolean traiterTour(Entitee e, String[] choix, boolean objetARecup)
-    {
+
+    /**
+     * Traite le tour d'une entité en fonction de son choix d'action.
+     *
+     * @param e l'entité qui effectue l'action
+     * @param choix le choix d'action de l'entité
+     * @param objetARecup indique s'il y a un objet à récupérer
+     * @return vrai si l'action est terminée, faux sinon
+     */
+    public boolean traiterTour(Entitee e, String[] choix, boolean objetARecup) {
         int[] pos = new int[2];
-        if(choix.length>1) {
+        if (choix.length > 1) {
             pos = extrairePosition(choix[1]);
         }
         try {
@@ -134,7 +161,7 @@ public class Partie {
                     }
                     Entitee ennemi = m_donjon.getEntiteeAPos(pos);
                     if (ennemi == null) {
-                        Affichage.affiche("\u001B[31m Attaque impossible, sélectionnez une entitée valide\u001B[0m");
+                        Affichage.affiche("\u001B[31m Attaque impossible, sélectionnez une entité valide\u001B[0m");
                         return false;
                     } else if (e.getType() == ennemi.getType()) {
                         Affichage.affiche("\u001B[31m Friendly fire is off, sélectionnez un ennemi valide\u001B[0m");
@@ -170,8 +197,16 @@ public class Partie {
             return false;
         }
     }
-    public boolean tourPerso(Personnage p, String[] choix, boolean objetARecup)
-    {
+
+    /**
+     * Traite le tour d'un personnage en fonction de son choix d'action.
+     *
+     * @param p le personnage qui effectue l'action
+     * @param choix le choix d'action du personnage
+     * @param objetARecup indique s'il y a un objet à récupérer
+     * @return vrai si l'action est terminée, faux sinon
+     */
+    public boolean tourPerso(Personnage p, String[] choix, boolean objetARecup) {
         try {
             switch (choix[0]) {
                 case "com":
@@ -210,8 +245,14 @@ public class Partie {
             return false;
         }
     }
-    public boolean actionMJ(String[] choix)
-    {
+
+    /**
+     * Traite une action du maître du jeu.
+     *
+     * @param choix le choix d'action du maître du jeu
+     * @return vrai si l'action est terminée, faux sinon
+     */
+    public boolean actionMJ(String[] choix) {
         if (choix.length < 2) {
             Affichage.affiche("\u001B[31m Commande MJ incomplète \u001B[0m");
             return false;
@@ -221,14 +262,13 @@ public class Partie {
         Entitee e;
         switch (choix[0]) {
             case "att":
-                if (pos == null )
-                {
+                if (pos == null) {
                     Affichage.affiche("\u001B[31m Emplacement non valide. \u001B[0m");
                     return false;
                 }
-                    e = m_donjon.getEntiteeAPos(pos);
+                e = m_donjon.getEntiteeAPos(pos);
                 if (e == null) {
-                    Affichage.affiche("\u001B[31m Attaque impossible, séléctionnez une entitée valide \u001B[0m");
+                    Affichage.affiche("\u001B[31m Attaque impossible, sélectionnez une entité valide \u001B[0m");
                     return false;
                 }
                 attaqueEntitee(e);
@@ -237,19 +277,17 @@ public class Partie {
                 if (choix.length < 3) {
                     Affichage.affiche("\u001B[31m Commande déplacement MJ incomplète \u001B[0m");
                     return false;
-                }
-                else if (pos == null )
-                {
+                } else if (pos == null) {
                     Affichage.affiche("\u001B[31m Emplacement départ non valide.\u001B[0m");
                     return false;
                 }
                 e = m_donjon.getEntiteeAPos(pos);
                 if (e == null) {
-                    Affichage.affiche("\u001B[31m Déplacement impossible, séléctionnez une entitée\u001B[0m");
+                    Affichage.affiche("\u001B[31m Déplacement impossible, sélectionnez une entité\u001B[0m");
                     return false;
                 }
                 int[] newPos = extrairePosition(choix[2]);
-                if (newPos == null ) {
+                if (newPos == null) {
                     Affichage.affiche("\u001B[31m Emplacement d'arrivée non valide.\u001B[0m");
                     return false;
                 }
@@ -262,6 +300,13 @@ public class Partie {
                 return false;
         }
     }
+
+    /**
+     * Extrait une position à partir d'une chaîne de caractères.
+     *
+     * @param s la chaîne de caractères représentant la position
+     * @return un tableau d'entiers représentant la position, ou null si la position est invalide
+     */
     public int[] extrairePosition(String s) {
         try {
             if (s.length() < 2) return null;
@@ -274,42 +319,81 @@ public class Partie {
             return null;
         }
     }
-    public boolean deplacementPossible(Entitee entitee, int[] pos)
-    {
+
+    /**
+     * Vérifie si un déplacement est possible pour une entité.
+     *
+     * @param entitee l'entité à déplacer
+     * @param pos la position de destination
+     * @return vrai si le déplacement est possible, faux sinon
+     */
+    public boolean deplacementPossible(Entitee entitee, int[] pos) {
         int[] posEntitee = m_donjon.getPosEntitee(entitee);
-        int distance = (int)Math.sqrt(Math.pow(pos[0] - posEntitee[0], 2) + Math.pow(pos[1] - posEntitee[1], 2));
-        if(distance < 1)
-        {
+        int distance = (int) Math.sqrt(Math.pow(pos[0] - posEntitee[0], 2) + Math.pow(pos[1] - posEntitee[1], 2));
+        if (distance < 1) {
             distance = 1;
         }
         return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.seDeplacer(abs(distance)) && !m_donjon.verifAEmplacement(pos);
     }
-    public boolean attaquePossible(Entitee entitee, int[] pos)
-    {
+
+    /**
+     * Vérifie si une attaque est possible pour une entité.
+     *
+     * @param entitee l'entité qui attaque
+     * @param pos la position de la cible
+     * @return vrai si l'attaque est possible, faux sinon
+     */
+    public boolean attaquePossible(Entitee entitee, int[] pos) {
         int[] posEntitee = m_donjon.getPosEntitee(entitee);
-        int distance = (int)Math.sqrt(Math.pow(pos[0] - posEntitee[0], 2) + Math.pow(pos[1] - posEntitee[1], 2));
-        return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.getPorteeArme()>=distance;
+        int distance = (int) Math.sqrt(Math.pow(pos[0] - posEntitee[0], 2) + Math.pow(pos[1] - posEntitee[1], 2));
+        return pos[0] < m_donjon.getLongueur() && pos[1] < m_donjon.getLargeur() && entitee.getPorteeArme() >= distance;
     }
-    public boolean verifEntierValide(int e)
-    {
+
+    /**
+     * Vérifie si un entier est valide pour une position dans le donjon.
+     *
+     * @param e l'entier à vérifier
+     * @return vrai si l'entier est valide, faux sinon
+     */
+    public boolean verifEntierValide(int e) {
         return e < m_donjon.getLargeur() && e >= 0;
     }
-    public boolean verifCharValide(char c)
-    {
+
+    /**
+     * Vérifie si un caractère est valide pour une position dans le donjon.
+     *
+     * @param c le caractère à vérifier
+     * @return vrai si le caractère est valide, faux sinon
+     */
+    public boolean verifCharValide(char c) {
         return c >= 'A' && c <= 'Z';
     }
-    public void equiperPerso()
-    {
+
+    /**
+     * Équip les personnages avec une armure et une arme.
+     */
+    public void equiperPerso() {
         for (Personnage personnage : m_perso) {
             personnage.choisirArmure();
             personnage.choisirArme();
         }
     }
-    public void defaite(Entitee e){
+
+    /**
+     * Affiche un message de défaite.
+     *
+     * @param e l'entité qui a causé la défaite
+     */
+    public void defaite(Entitee e) {
         Affichage.defaite(e);
     }
-    public static void attaqueEntitee(Entitee e)
-    {
+
+    /**
+     * Attaque une entité avec des dégâts spécifiés par le maître du jeu.
+     *
+     * @param e l'entité à attaquer
+     */
+    public static void attaqueEntitee(Entitee e) {
         try {
             int nbDes, degats, resultDes;
             int somme = 0;
@@ -340,7 +424,7 @@ public class Partie {
                 txt += resultDes + "+";
             }
 
-            txt = "\u001B[31m"+somme+ "\u001B[0m" + txt.substring(0, txt.length() - 1) + ")";
+            txt = "\u001B[31m" + somme + "\u001B[0m" + txt.substring(0, txt.length() - 1) + ")";
             e.sePrendreDegats(somme);
             Affichage.affiche("Vous avez infligé " + txt + "\u001B[31m dégâts\u001B[0m");
 
@@ -350,19 +434,23 @@ public class Partie {
             Affichage.affiche("Une erreur s'est produite : " + ex.getMessage());
         }
     }
-    public boolean utiliserSort(Sort s)
-    {
+
+    /**
+     * Utilise un sort spécifié.
+     *
+     * @param s le sort à utiliser
+     * @return vrai si le sort a été utilisé avec succès, faux sinon
+     */
+    public boolean utiliserSort(Sort s) {
         ArrayList<Entitee> listEntite;
         String nom = s.getNom();
-        switch (nom)
-        {
+        switch (nom) {
             case "Guérison":
                 listEntite = m_donjon.getListePersonnage();
                 return s.utiliserSort(listEntite);
             case "Boogie Woogie":
                 listEntite = m_donjon.getListeEntite();
-                if (s.utiliserSort(listEntite))
-                {
+                if (s.utiliserSort(listEntite)) {
                     m_donjon.echangePosEntite(listEntite.get(0), listEntite.get(1));
                     return true;
                 }
@@ -375,13 +463,18 @@ public class Partie {
         }
         return false;
     }
-    String concatString(String[] tab)
-    {
+
+    /**
+     * Concatène les éléments d'un tableau de chaînes de caractères.
+     *
+     * @param tab le tableau de chaînes de caractères
+     * @return la chaîne de caractères concaténée
+     */
+    String concatString(String[] tab) {
         String txt = "\u001B[33m";
-        for(int i = 1; i<tab.length; i++)
-        {
-            txt += tab[i]+" ";
+        for (int i = 1; i < tab.length; i++) {
+            txt += tab[i] + " ";
         }
-        return txt+"\u001B[0m";
+        return txt + "\u001B[0m";
     }
 }
