@@ -61,7 +61,7 @@ public class Arme extends Equipement {
             degatsTotal += degats;
             txt += degats+"+";
         }
-        txt = "\u001B[31m"+degatsTotal+"\u001B[0m" + txt + +m_bonusDegats + ")";
+        txt = "\u001B[31m"+degatsTotal+"\u001B[0m" + txt + m_bonusDegats + ")";
         Affichage.affiche("Vous avez infligé "+txt+" \u001B[31mdégâts\u001B[0m");
         return degats+m_bonusDegats;
     }

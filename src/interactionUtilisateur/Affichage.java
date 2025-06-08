@@ -152,13 +152,6 @@ public class Affichage {
     }
 
     // Fonction utilitaire : centre une chaîne sur N caractères
-    private static String centerText(String text, int width) {
-        if (text.length() >= width) return text.substring(0, width);
-        int padding = width - text.length();
-        int padStart = padding / 2;
-        int padEnd = padding - padStart;
-        return " ".repeat(padStart) + text + " ".repeat(padEnd);
-    }
     private static String centerTextAnsi(String text, int width) {
         String textVisible = text.replaceAll("\u001B\\[[;\\d]*m", ""); // supprime les codes ANSI
         int padding = width - textVisible.length();
