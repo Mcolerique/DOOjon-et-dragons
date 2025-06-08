@@ -119,12 +119,6 @@ public class Monstre extends Entitee{
         return compteNumMonstre;
     }
 
-    public static void afficherMonstreDispo(ArrayList<Monstre> monstres){
-        for(int i = 0; i < monstres.size(); i++){
-            System.out.println("\t Monstre n°" + i + " : " + monstres.get(i).getAppellation() + "\n");
-        }
-        System.out.println("\n\n");
-    }
     public static Monstre utiliserMonstre(int monstre, ArrayList<Monstre> monstres){
         //System.out.println("Quel monstre voulez-vous placer ?");
         //int numMonstre = Scanner.demandeInt();

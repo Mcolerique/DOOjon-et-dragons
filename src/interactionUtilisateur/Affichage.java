@@ -328,6 +328,23 @@ public class Affichage {
         }
         affiche(txt);
     }
+
+    public static void afficherMonstre(ArrayList<Monstre> monstres){
+        for(int i = 0; i < monstres.size(); i++){
+            System.out.println("\t Monstre n°" + i + " : " + monstres.get(i).getAppellation() + "\n");
+        }
+        System.out.println("\n\n");
+    }
+
+    public static void afficherEquip(ArrayList<Equipement> equipements){
+        for(int i = 0; i < equipements.size(); i++){
+            System.out.println("\t Equipement n°" + i + " : " + equipements.get(i).getNom() + "\n");
+        }
+        System.out.println("\n\n");
+    }
+
+
+
     public static void defaite(Entitee e)
     {
         affiche("Vous avez perdu car "+e.toString()+" est mort");

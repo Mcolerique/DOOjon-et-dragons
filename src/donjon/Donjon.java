@@ -203,7 +203,7 @@ public class Donjon {
     private static void poserMesMonstresManuel(Donjon d, Hashtable<Entitee, int[]> positionEntitee, ArrayList<Monstre> mesMonstres, ArrayList<int[]> obstaclesDonjon){
         for(int i = 0; i < mesMonstres.size(); i++) {
             Affichage.affiche("Monstres disponibles : \n\n");
-            Monstre.afficherMonstreDispo(mesMonstres);
+            Affichage.afficherMonstre(mesMonstres);
             boolean placementPossible;
             int numMonstre;
             do{
@@ -240,14 +240,10 @@ public class Donjon {
         do{
             nbrMonstres = Scanner.demandeInt();
         }while(!(nbrMonstres <= ListeMonstres.nbMonstresDispo()));
-        /*
-         * Quand on aura refactor faudra ajouter la possibilité au MJ s'il le veut de créer des monstres
-         * donc juste faire une fonction creerMonstre dans monstre et l'utiliser s'il dit oui.
-         * Une série de Scanners pour ensuite intégrer le monstre avec ListeMonstres.add()
-         */
+
         for(int i = 0; i < nbrMonstres; i++) {
             Affichage.affiche("Monstres disponibles : \n\n");
-            ListeMonstres.afficherMonstreDispo();
+            Affichage.afficherMonstre(ListeMonstres.getListeMonstres());
             boolean placementPossible;
 
             int numMonstre;
@@ -319,7 +315,7 @@ public class Donjon {
 
         for(int i = 0; i < nbrEquips; i++) {
             Affichage.affiche("Equipements disponibles : \n\n");
-            ListeEquipements.afficherEquipDispo();
+            Affichage.afficherEquip(ListeEquipements.getListeEquips());
             boolean placementPossible;
 
             int numEquip;
@@ -377,20 +373,9 @@ public class Donjon {
     }
 
     public boolean existeAEmplacement(int[] aVerifier){
-        /*Verification avec les obstacles
-        existe = m_obstacles.contains(aVerifier);
-        for(int i = 0; i < m_obstacles.size() ;i++){
-            existe = m_obstacles.get(i).equals(aVerifier);
-        }
-
-        //Verification avec les entitées (monstres et personnages)
-        for(int[] positionEntitee : m_positionEntitee.values()){
-            existe = positionEntitee[0] == aVerifier[0] && positionEntitee[1] == aVerifier[1];
-        }*/
 
         if(verifAEmplacement(aVerifier)){return true;}
 
-        //Verification avec les équipements
         for(int[] positionEquip : m_positionEquip.values()){
             if(positionEquip[0] == aVerifier[0] && positionEquip[1] == aVerifier[1]) {return true;}
         }

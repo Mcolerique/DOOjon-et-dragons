@@ -12,11 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ListeEquipements {
-    //creer des listes dequip
-    //get element de la liste
-    //add dans une liste
-    //creer une liste dejaUtilise et y mettre les elements deja utilises
-
 
 
     private static ArrayList<Equipement> m_listeEquipements = new ArrayList<>(){{
@@ -35,21 +30,6 @@ public class ListeEquipements {
     }};
 
     private static ArrayList<Equipement> m_listeEquipementsUtilises = new ArrayList<>() {{}};
-
-
-    public static void afficherEquipDispo(){
-        for(int i = 0; i < m_listeEquipements.size(); i++){
-            System.out.println("\t Equipement n°" + i + " : " + m_listeEquipements.get(i).getNom() + "\n");
-        }
-        System.out.println("\n\n");
-    }
-
-    public static void afficherEquipUtilis(){
-        for(int i = 0; i < m_listeEquipementsUtilises.size(); i++){
-            System.out.println("\t Monstre n°" + i + " : " + m_listeEquipementsUtilises.get(i).getNom() + "\n");
-        }
-        System.out.println("\n\n");
-    }
 
     public static boolean ajtEquipement (Equipement equipement){
         int difficulte;
@@ -74,18 +54,11 @@ public class ListeEquipements {
     }
 
     public static Equipement utiliserEquipement(int equip){
-        /*afficherEquipDispo();
-        System.out.println("Quel équipement voulez-vous utiliser ?");
-        int numEquip = Scanner.demandeInt();
-        deDispoADejaUtilise(numEquip);
-        System.out.println("Equipements utilisés : \n\n");
-        afficherEquipUtilis();*/
-
 
         Equipement returnEquip = m_listeEquipements.get(equip);
         deDispoADejaUtilise(equip);
         System.out.println("Equipement ajouté. \nEquipements placés : \n");
-        afficherEquipUtilis();
+        Affichage.afficherEquip(m_listeEquipementsUtilises);
         return returnEquip;
 
     }
@@ -102,6 +75,10 @@ public class ListeEquipements {
 
     public static String getNomEquip(int equip){
         return m_listeEquipements.get(equip).getNom();
+    }
+
+    public static ArrayList<Equipement> getListeEquips(){
+        return m_listeEquipements;
     }
 
 }
