@@ -90,6 +90,7 @@ package entitee
         +getPorteeArme() : Integer
         +estVivant() : Boolean
         +lancerInitiative() : Integer
+        +soin(soin : Integer)
         +getForce() : Integer
         +getDexterite() : Integer
         +getVitesse() : Integer
@@ -97,14 +98,18 @@ package entitee
         +getPvActuelle() : Integer
         +getNomArmure() : String
         +getArme(): Arme
+        +getType() : TypeEntitee
         +{abstract}getNom() : String
         +{abstract}getDescription() : String
     }
-
     Entitee .> Affichage : "<<call>>"
     Entitee ..> Scanner : "<<call>>"
-
-    package Personnage
+    Enum TypeEntitee
+    {
+        PERSONNAGE
+        MONSTRE
+    }
+    package personnage
     {
         class Personnage extends entitee.Entitee
         {
@@ -129,6 +134,8 @@ package entitee
         Personnage o-down-> "1\n classe" classe.Classe: est un >
         Entitee *-right--> "2\n equipement" .equipement.Equipement: a equiper >
         Personnage *-right--> "*\n inventaire" equipement.Equipement: possède >
+        Personnage *---> "*\n sort" sort.Sort: maitrise >
+        Entitee *-> "1\n type" TypeEntitee
         Package race
         {
             abstract class Race
@@ -167,6 +174,7 @@ package entitee
             {
                 +{abstract}getPv() : Integer
                 +{abstract}getEquipement() : Equipement[]
+                +{abstract}getSort() : Sort[]
             }
             class Clerc extends Classe
             {
@@ -192,6 +200,35 @@ package entitee
             Magicien *--> "2\n {static}equipementBase" .equipement.arme.Arme
             Clerc *--> "3\n{static}equipementBase" .equipement.Equipement
             Guerrier *---> "3\n{static}equipementBase" .equipement.Equipement
+            Magicien *--> "3\n {static}sort" .entitee.personnage.sort.Sort
+            Clerc *--> "1\n {static}sort" .entitee.personnage.sort.Sort
+        }
+        package sort
+        {
+            abstract class Sort
+            {
+                -nom : String
+                -description : String
+                +<<create>>Sort(n : String, desc : String)
+                +{abstract}utiliserSort(ArrayList<Entitee> : listEntite) : boolean
+                +getNom() : String
+            }
+            class Guerison extends Sort
+            {
+                +<<create>>Guerison()
+                +utiliserSort(ArrayList<Entitee> : listEntite) : boolean
+            }
+            class BoogieWoogie extends Sort
+            {
+                +<<create>>BoogieWoogie()
+                +utiliserSort(ArrayList<Entitee> : listEntite) : boolean
+            }
+            class ArmeMagique extends Sort
+            {
+                +<<create>>ArmeMagique()
+                +utiliserSort(ArrayList<Entitee> : listEntite) : boolean
+                +remplirListeArme(list : ArrayList<Entitee>) : ArrayList<Equipement>
+            }
         }
     }
     class Monstre extends Entitee
@@ -234,8 +271,14 @@ package equipement
         +<<create>>Equipement(nom : String)
         +getModifStat() : Integer[5]
         +getNom() : String
+        +getType() : TypeEquipement
     }
-
+    Enum TypeEquipement
+    {
+        ARME
+        ARMURE
+    }
+    Equipement *-> "1\n type" TypeEquipement
     class ListeEquipements
     {
         -{static}listeEquipements : [3]Equipement[*]
@@ -279,6 +322,8 @@ package equipement
             -nbDesDeg : Integer
             -degats : Integer
             -portee : Integer
+            -bonusAttaque : Integer
+            -bonusDegat : Integer
             +<<create>>Arme()
             +<<create>>Arme(nom : String, nbDes : Integer, nbFaces : Integer, portee : Integer)
             +<<create>>Arme(nom : String, nbDes : Integer, nbFaces : Integer, type : TypeCaC)
@@ -286,6 +331,7 @@ package equipement
             +infligerDegats() : Integer
             +getDegats() : String
             +quelleStat() : Integer
+            +getBonusAttaque() : Integer
         }
         Arme *-> "1\n type"TypeCaC
     }

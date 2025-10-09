@@ -3,14 +3,28 @@ package entitee.personnage.sort;
 import entitee.Entitee;
 import interactionUtilisateur.Affichage;
 import interactionUtilisateur.Scanner;
+
 import java.util.ArrayList;
 
-public class BoogieWoogie extends Sort{
-    public BoogieWoogie()
-    {
-        super("Boogie Woogie", "Echangez la place de deux entité au choix");
+/**
+ * La classe BoogieWoogie représente un sort permettant d'échanger les positions de deux entités dans le jeu.
+ * Elle hérite de la classe Sort.
+ */
+public class BoogieWoogie extends Sort {
+
+    /**
+     * Construit un sort BoogieWoogie avec un nom et une description par défaut.
+     */
+    public BoogieWoogie() {
+        super("Boogie Woogie", "Échangez la place de deux entités au choix");
     }
 
+    /**
+     * Utilise le sort BoogieWoogie pour échanger les positions de deux entités sélectionnées.
+     *
+     * @param listEntite la liste des entités disponibles pour l'échange
+     * @return vrai si le sort a été utilisé avec succès, faux sinon
+     */
     @Override
     public boolean utiliserSort(ArrayList<Entitee> listEntite) {
         if (listEntite.size() < 2) {

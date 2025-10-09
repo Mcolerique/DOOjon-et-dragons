@@ -7,11 +7,25 @@ import interactionUtilisateur.Scanner;
 
 import java.util.ArrayList;
 
-public class Guerison extends Sort{
-    public Guerison()
-    {
+/**
+ * La classe Guerison représente un sort de guérison dans le jeu.
+ * Elle hérite de la classe Sort.
+ */
+public class Guerison extends Sort {
+
+    /**
+     * Construit un sort de guérison avec un nom et une description par défaut.
+     */
+    public Guerison() {
         super("Guérison", "Soigne un personnage de 1d10");
     }
+
+    /**
+     * Utilise le sort de guérison sur une entité sélectionnée.
+     *
+     * @param listEntite la liste des entités disponibles à soigner
+     * @return vrai si le sort a été utilisé avec succès, faux sinon
+     */
     @Override
     public boolean utiliserSort(ArrayList<Entitee> listEntite) {
         try {
@@ -22,7 +36,7 @@ public class Guerison extends Sort{
 
             Affichage.affiche("Sélectionnez l'entité à soigner :");
             Affichage.afficheListeEntitee(listEntite);
-            int choix = Scanner.demandeInt()-1;
+            int choix = Scanner.demandeInt() - 1;
 
             if (choix < 0 || choix >= listEntite.size()) {
                 Affichage.affiche("Erreur : sélection invalide.");
