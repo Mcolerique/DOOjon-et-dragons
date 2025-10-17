@@ -61,7 +61,7 @@ git clone https://github.com/Mcolerique/DOOjon-et-dragons.git
 
 3. Clic droit sur Main.java → Run
 
-4. e jeu se lancera dans la console intégrée d’IntelliJ
+4. Le jeu se lancera dans la console intégrée d’IntelliJ
 
 ### Compilation et exécution manuelle
 
